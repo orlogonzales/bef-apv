@@ -102,7 +102,6 @@
 			$apMaternoCS       =$dato['apMaterno'];
 			$generoCS          =$dato['genero'];
 			$fechaNacimientoCS =$dato['fechaNacimiento'];
-			$fotoSocioCS       =$dato['fotoSocio'];
 			$nacionalidadCS    =$dato['nacionalidad'];
 			$estadoCivilCS     =$dato['estadoCivil'];
 			$direccionCS       =$dato['direccion'];
