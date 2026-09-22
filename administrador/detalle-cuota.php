@@ -2,10 +2,10 @@
 	/////////////////////////////////////////////////////////////////////
 	/// VARIABLES
 	/////////////////////////////////////////////////////////////////////
-	$codigoCuota   =$_GET[codigoCuota];
-	$opcion        =$_GET[opcion];
-	$pagina        =$_GET[pagina];
-	$conceptoCuota =$_GET[conceptoCuota];
+	$codigoCuota   =isset($_GET['codigoCuota']) ? $_GET['codigoCuota'] : '';
+	$opcion        =isset($_GET['opcion']) ? $_GET['opcion'] : '';
+	$pagina        =isset($_GET['pagina']) ? $_GET['pagina'] : '';
+	$conceptoCuota =isset($_GET['conceptoCuota']) ? $_GET['conceptoCuota'] : '';
 	$ruta          ='../';
 
 	/////////////////////////////////////////////////////////////////////
@@ -34,14 +34,14 @@
 				$sql="SELECT conceptoCuota, montoCuota, codigoCuenta, fechaPago, observacion, fecha, hora, usuario FROM sm_mod_cuotas WHERE codigoCuota='$codigoCuota'";
 				$row=mysqli_query($conexion,$sql);
 				$dato=mysqli_fetch_array($row);
-				$conceptoCuota =texto($dato[conceptoCuota]);
-				$montoCuota    =$dato[montoCuota];
-				$codigoCuenta  =$dato[codigoCuenta];
-				$fechaPago     =$dato[fechaPago];
-				$observacion   =$dato[observacion];
-				$fecha         =$dato[fecha];
-				$hora          =$dato[hora];
-				$usuario       =$dato[usuario];
+				$conceptoCuota =texto($dato['conceptoCuota']);
+				$montoCuota    =$dato['montoCuota'];
+				$codigoCuenta  =$dato['codigoCuenta'];
+				$fechaPago     =$dato['fechaPago'];
+				$observacion   =$dato['observacion'];
+				$fecha         =$dato['fecha'];
+				$hora          =$dato['hora'];
+				$usuario       =$dato['usuario'];
 				$aforo         =infoCuota($idJuntaDirectiva,$codigoCuota,'aforo');
 				$pagaron       =infoCuota($idJuntaDirectiva,$codigoCuota,'pagaron');
 				$deben         =infoCuota($idJuntaDirectiva,$codigoCuota,'deben');
@@ -50,7 +50,7 @@
 				$totalDeben    =infoCuota($idJuntaDirectiva,$codigoCuota,'totalDeben');
 				$totalPorpagar =$totalCuotas-$totalPagados;
 				$urlPaginacion ='detalle-cuota.php?codigoCuota='.$codigoCuota.'&opcion=detalles';
-				$pagina        =$_GET[pagina];
+				$pagina        =isset($_GET['pagina']) ? $_GET['pagina'] : '';
 
 				if ($codigoCuenta){
 					$codigoBanco     =infoCuentas($codigoCuenta,'','codigoBanco');
@@ -185,10 +185,10 @@
 																$sql="SELECT codigoBanco, codigoCuenta, numeroCuenta, detalle FROM sm_banco_cuentas WHERE estado='ACT'";
 																$rs=mysqli_query($conexion,$sql);
 																while($datos=mysqli_fetch_array($rs)){
-																	$codigoBanco  =$datos[codigoBanco];
-																	$codCuenta    =$datos[codigoCuenta];
-																	$numeroCuenta =$datos[numeroCuenta];
-																	$detalle      =$datos[detalle];
+																	$codigoBanco  =$datos['codigoBanco'];
+																	$codCuenta    =$datos['codigoCuenta'];
+																	$numeroCuenta =$datos['numeroCuenta'];
+																	$detalle      =$datos['detalle'];
 																	$infoCuenta   =infoBancos($codigoBanco,'detalleEntidad').' - '.texto($detalle).' ('.$numeroCuenta.')';
 																	if($codCuenta==$codigoCuenta){ 
 																		echo '<option value="'.$codCuenta.'" selected>'.$infoCuenta.'</option>';
