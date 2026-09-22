@@ -37,8 +37,8 @@
 										$sql="SELECT id, categoria FROM sm_notas_categorias ORDER BY id DESC";
 										$rs=mysqli_query($conexion,$sql);
 										while($datos=mysqli_fetch_array($rs)){
-											$id        =$datos[id];
-											$categoria =$datos[categoria];
+											$id        =$datos['id'];
+											$categoria =$datos['categoria'];
 											echo '<option value="'.$id.'">'.texto($categoria).'</option>';
 										}
 									?>
