@@ -27,6 +27,17 @@
 	/// SECCION - RUTA DEL SISTEMA
 	/////////////////////////////////////////////////////////////////////
 	include($ruta.'template/header.tpl');
+
+	if($_SESSION['rol_apv']=='ADM' || $_SESSION['rol_apv']=='ADM'){
+		$idJuntaDirectiva='ALL';
+	}else{
+		if(strlen($_SESSION['idJDActual'])>0){
+			$idJuntaDirectiva=$_SESSION['idJDActual'];
+		}else{
+			$idJuntaDirectiva='ALL';
+		}
+	}
+
 	$existeSocio=infoSocios($codigoSocio,'verifica');
 
 	if($existeSocio){
