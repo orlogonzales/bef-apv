@@ -282,10 +282,10 @@
 						$rs=mysqli_query($conexion,$sql);
 						$i=1;
 						while($n=mysqli_fetch_array($rs)){
-							$codigoCuota   =$n[codigoCuota];
-							$conceptoCuota =utf8_encode($n[conceptoCuota]);
-							$montoCuota    =$n[montoCuota];
-							$fechaPago     =$n[fechaPago];
+							$codigoCuota   =$n['codigoCuota'];
+							$conceptoCuota =utf8_encode($n['conceptoCuota']);
+							$montoCuota    =$n['montoCuota'];
+							$fechaPago     =$n['fechaPago'];
 							$diasEntre     =diasEntre($hoy,$fechaPago);
 							$pagaron       =infoCuota($idJuntaDirectiva,$codigoCuota,'pagaron');
 							$deben         =infoCuota($idJuntaDirectiva,$codigoCuota,'deben');
