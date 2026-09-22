@@ -389,16 +389,16 @@
 									$rs=mysqli_query($conexion,$sql);
 									$i=1;
 									while($n=mysqli_fetch_array($rs)){
-										$codigoCuota  =$n[codigoCuota];
-										$codigoSocio  =$n[codigoSocio];
-										$lotes        =$n[lotes];
-										$montoCuota   =$n[montoCuota];
-										$montoPago    =$n[montoPago];
-										$estadoPago   =$n[estadoPago];
-										$dni          =$n[dni];
-										$nombre       =$n[nombre];
-										$apPaterno    =$n[apPaterno];
-										$apMaterno    =$n[apMaterno];
+										$codigoCuota  =$n['codigoCuota'];
+										$codigoSocio  =$n['codigoSocio'];
+										$lotes        =$n['lotes'];
+										$montoCuota   =$n['montoCuota'];
+										$montoPago    =$n['montoPago'];
+										$estadoPago   =$n['estadoPago'];
+										$dni          =$n['dni'];
+										$nombre       =$n['nombre'];
+										$apPaterno    =$n['apPaterno'];
+										$apMaterno    =$n['apMaterno'];
 										$nombre       =texto($apPaterno.' '.$apMaterno.' '.$nombre);
 										$programado   =conceptoProgramado($codigoSocio,$codigoCuota);
 										$conceptoPago ="CUO";
@@ -509,16 +509,16 @@
 														$sql="SELECT fechaOperacion, concepto, tipoDocumento, nroDocumento, monto, detalleConcepto, codigoOperacion, fecha, hora, usuario FROM sm_mod_caja WHERE codigoSocio='$codigoSocio' AND  codigoConcepto='$codigoCuota'";
 														$infopago=mysqli_query($conexion,$sql);
 														$dato=mysqli_fetch_array($infopago);
-														$fechaOperacion  =$dato[fechaOperacion];
-														$concepto        =$dato[concepto];
-														$tipoDocumento   =$dato[tipoDocumento];
-														$nroDocumento    =$dato[nroDocumento];
-														$monto           =$dato[monto];
-														$detalleConcepto =$dato[detalleConcepto];
-														$codigoOperacion =$dato[codigoOperacion];
-														$fecha           =$dato[fecha];
-														$hora            =$dato[hora];
-														$usuario         =$dato[usuario];
+														$fechaOperacion  =$dato['fechaOperacion'];
+														$concepto        =$dato['concepto'];
+														$tipoDocumento   =$dato['tipoDocumento'];
+														$nroDocumento    =$dato['nroDocumento'];
+														$monto           =$dato['monto'];
+														$detalleConcepto =$dato['detalleConcepto'];
+														$codigoOperacion =$dato['codigoOperacion'];
+														$fecha           =$dato['fecha'];
+														$hora            =$dato['hora'];
+														$usuario         =$dato['usuario'];
 													?>
 													<div class="row mb-20">
 														<div class="col-sm-12">
@@ -558,7 +558,7 @@
 
 		<?php if($opcion=="deben"){ ?>
 			<?php
-				$pagina        =$_GET[pagina];
+				$pagina        =isset($_GET['pagina']) ? $_GET['pagina'] : '';
 				$deben         =infoCuota($idJuntaDirectiva,$codigoCuota,'deben');
 				$totalDeben    =infoCuota($idJuntaDirectiva,$codigoCuota,'totalDeben');
 				$urlPaginacion ='detalle-cuota.php?codigoCuota='.$codigoCuota.'&opcion=deben';
@@ -603,16 +603,16 @@
 									$rs=mysqli_query($conexion,$sql);
 									$i=1;
 									while($n=mysqli_fetch_array($rs)){
-										$codigoCuota  =$n[codigoCuota];
-										$codigoSocio  =$n[codigoSocio];
-										$lotes        =$n[lotes];
-										$montoCuota   =$n[montoCuota];
-										$montoPago    =$n[montoPago];
-										$estadoPago   =$n[estadoPago];
-										$dni          =$n[dni];
-										$nombre       =$n[nombre];
-										$apPaterno    =$n[apPaterno];
-										$apMaterno    =$n[apMaterno];
+										$codigoCuota  =$n['codigoCuota'];
+										$codigoSocio  =$n['codigoSocio'];
+										$lotes        =$n['lotes'];
+										$montoCuota   =$n['montoCuota'];
+										$montoPago    =$n['montoPago'];
+										$estadoPago   =$n['estadoPago'];
+										$dni          =$n['dni'];
+										$nombre       =$n['nombre'];
+										$apPaterno    =$n['apPaterno'];
+										$apMaterno    =$n['apMaterno'];
 										$nombre       =texto($apPaterno.' '.$apMaterno.' '.$nombre);
 
 										if($estadoPago=="NP"){ $estado='<span class="label label-danger">PENDIENTE</span>'; }
@@ -702,11 +702,11 @@
 								$rs=mysqli_query($conexion,$sql);
 								$i=1;
 								while($n=mysqli_fetch_array($rs)){
-									$codigoSocio=$n[codigoSocio];
-									$proceso=$n[proceso];
-									$fecha=$n[fecha];
-									$hora=$n[hora];
-									$usuario=$n[usuario];
+									$codigoSocio=$n['codigoSocio'];
+									$proceso=$n['proceso'];
+									$fecha=$n['fecha'];
+									$hora=$n['hora'];
+									$usuario=$n['usuario'];
 							?>
 							<tr>
 								<td class="text-center"><?= ceros($i,2) ?></td>
