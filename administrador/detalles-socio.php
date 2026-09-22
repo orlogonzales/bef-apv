@@ -2489,7 +2489,7 @@
 															</div>
 															<div class="col-sm-6">
 																<ul class="list-group">
-																	<li class="list-group-item"><span class="textoNegrita">CONCEPTO</span> <span class="pull-right text-danger"><?= $rotuloCM ?></span></li>
+																	<li class="list-group-item"><span class="textoNegrita">CONCEPTO</span> <span class="pull-right text-danger"><?= $inforazon ?></span></li>
 																	<li class="list-group-item"><span class="textoNegrita">DOCUMENTO</span> <span class="pull-right text-danger"><?= infoTipoDOC($tipoDocumento) ?></span></li>
 																	<li class="list-group-item"><span class="textoNegrita">FECHA OPERACION</span> <span class="pull-right text-danger textoMayuscula"><?= infoFecha($fechaOperacion,'larga') ?></span></li>
 																	<li class="list-group-item"><span class="textoNegrita">INGRESADO POR</span> <span class="pull-right text-danger"><?= texto(datoUsuario($usuario,'nombreFull')) ?></span></li>
@@ -3115,7 +3115,7 @@
 															</div>
 															<div class="col-sm-6">
 																<ul class="list-group">
-																	<li class="list-group-item"><span class="textoNegrita">CONCEPTO</span> <span class="pull-right text-danger"><?= $rotuloCM ?></span></li>
+																	<li class="list-group-item"><span class="textoNegrita">CONCEPTO</span> <span class="pull-right text-danger"><?= $inforazon ?></span></li>
 																	<li class="list-group-item"><span class="textoNegrita">DOCUMENTO</span> <span class="pull-right text-danger"><?= infoTipoDOC($tipoDocumento) ?></span></li>
 																	<li class="list-group-item"><span class="textoNegrita">FECHA OPERACION</span> <span class="pull-right text-danger textoMayuscula"><?= infoFecha($fechaOperacion,'larga') ?></span></li>
 																	<li class="list-group-item"><span class="textoNegrita">INGRESADO POR</span> <span class="pull-right text-danger"><?= texto(datoUsuario($usuario,'nombreFull')) ?></span></li>
