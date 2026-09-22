@@ -165,7 +165,7 @@
 				fwrite($handle, $nombre);
 				fwrite($handle, chr(27). chr(100). chr(1));
 				fwrite($handle, chr(27). chr(100). chr(1));
-				fwrite($handle, ."DNI:". $dni);
+				fwrite($handle, "DNI:". $dni);
 				fwrite($handle, chr(27). chr(100). chr(1));
 				fwrite($handle, chr(27). chr(100). chr(1));
 				fwrite($handle, chr(27). chr(32). chr(3)); //Espacio entre letras
