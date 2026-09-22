@@ -1,35 +1,37 @@
 <?php
 	include ('funciones.php');
-	$operacion =$_POST[operacion];
+	if (session_status() !== PHP_SESSION_ACTIVE) { session_start(); }
+	$respuesta = new stdClass();
+	$operacion =isset($_POST['operacion']) ? $_POST['operacion'] : '';
 	$conexion  =conexionDB();
 
 	if($operacion=="BUSCA_SOCIO_COD"){
-		$codigoSocio=$_POST[codigoSocio];
+		$codigoSocio=isset($_POST['codigoSocio']) ? $_POST['codigoSocio'] : '';
 
 		$sql="SELECT dni, tratamiento, nombre, apPaterno, apMaterno, genero, fechaNacimiento, fotoSocio, nacionalidad, estadoCivil, direccion, departamento, provincia, distrito, telefono, celular, observaciones, sincronizado, fecha, hora FROM sm_socios WHERE codigoSocio='$codigoSocio'";
 		$row=mysqli_query($conexion,$sql);
 		$dato=mysqli_fetch_array($row);
 		$contar=mysqli_num_rows($row);
-		$dni             =$dato[dni];
-		$tratamiento     =$dato[tratamiento];
-		$nombre          =$dato[nombre];
-		$apPaterno       =$dato[apPaterno];
-		$apMaterno       =$dato[apMaterno];
-		$genero          =$dato[genero];
-		$fechaNacimiento =$dato[fechaNacimiento];
-		$fotoSocio       =$dato[fotoSocio];
-		$nacionalidad    =$dato[nacionalidad];
-		$estadoCivil     =$dato[estadoCivil];
-		$direccion       =$dato[direccion];
-		$departamento    =$dato[departamento];
-		$provincia       =$dato[provincia];
-		$distrito        =$dato[distrito];
-		$telefono        =$dato[telefono];
-		$celular         =$dato[celular];
-		$observaciones   =$dato[observaciones];
-		$sincronizado    =$dato[sincronizado];
-		$fecha           =$dato[fecha];
-		$hora            =$dato[hora];
+		$dni             =$dato['dni'];
+		$tratamiento     =$dato['tratamiento'];
+		$nombre          =$dato['nombre'];
+		$apPaterno       =$dato['apPaterno'];
+		$apMaterno       =$dato['apMaterno'];
+		$genero          =$dato['genero'];
+		$fechaNacimiento =$dato['fechaNacimiento'];
+		$fotoSocio       =$dato['fotoSocio'];
+		$nacionalidad    =$dato['nacionalidad'];
+		$estadoCivil     =$dato['estadoCivil'];
+		$direccion       =$dato['direccion'];
+		$departamento    =$dato['departamento'];
+		$provincia       =$dato['provincia'];
+		$distrito        =$dato['distrito'];
+		$telefono        =$dato['telefono'];
+		$celular         =$dato['celular'];
+		$observaciones   =$dato['observaciones'];
+		$sincronizado    =$dato['sincronizado'];
+		$fecha           =$dato['fecha'];
+		$hora            =$dato['hora'];
 		$cantidadLotes   =infoSocios($codigoSocio,'cantidadLotes');
 
 		if($contar>0){
@@ -42,9 +44,9 @@
 	}
 
 	if($operacion=="BUSCA_SOCIO_NOM"){
-		$nombreSocio    =$_POST[nombreSocio];
-		$apPaternoSocio =$_POST[apPaternoSocio];
-		$apMaternoSocio =$_POST[apMaternoSocio];
+		$nombreSocio    =isset($_POST['nombreSocio']) ? $_POST['nombreSocio'] : '';
+		$apPaternoSocio =isset($_POST['apPaternoSocio']) ? $_POST['apPaternoSocio'] : '';
+		$apMaternoSocio =isset($_POST['apMaternoSocio']) ? $_POST['apMaternoSocio'] : '';
 
 		if($nombreSocio=="" AND $apPaternoSocio=="" AND $apMaternoSocio==""){
 			$resultado='<div class="row"><div class="col-sm-12"><div class="alert alert-danger no-border text-center">La busqueda no tubo resultados, intentelo nuevamente...</div></div></div>';
@@ -57,27 +59,27 @@
 			if($contar>0){
 				$resultado='<div class="form-group"><div class="row"><div class="col-sm-12"><div class="table-responsive"><table class="table tabla table-bordered table-hover"><thead><tr class="success"><th class="text-left">CODIGO SOCIO</th><th class="text-center">LOTES</th><th class="text-left">NOMBRE DE SOCIOS</th><th class="text-center">DNI</th><th class="text-left">CELULAR</th><th class="text-center"><i class="fa fa-align-justify"></i></th></tr></thead><tbody>';
 				while($dato=mysqli_fetch_array($row)){
-					$codigoSocio     =$dato[codigoSocio];
-					$dni             =$dato[dni];
-					$tratamiento     =$dato[tratamiento];
-					$nombre          =$dato[nombre];
-					$apPaterno       =$dato[apPaterno];
-					$apMaterno       =$dato[apMaterno];
-					$genero          =$dato[genero];
-					$fechaNacimiento =$dato[fechaNacimiento];
-					$fotoSocio       =$dato[fotoSocio];
-					$nacionalidad    =$dato[nacionalidad];
-					$estadoCivil     =$dato[estadoCivil];
-					$direccion       =$dato[direccion];
-					$departamento    =$dato[departamento];
-					$provincia       =$dato[provincia];
-					$distrito        =$dato[distrito];
-					$telefono        =$dato[telefono];
-					$celular         =$dato[celular];
-					$observaciones   =$dato[observaciones];
-					$sincronizado    =$dato[sincronizado];
-					$fecha           =$dato[fecha];
-					$hora            =$dato[hora];
+					$codigoSocio     =$dato['codigoSocio'];
+					$dni             =$dato['dni'];
+					$tratamiento     =$dato['tratamiento'];
+					$nombre          =$dato['nombre'];
+					$apPaterno       =$dato['apPaterno'];
+					$apMaterno       =$dato['apMaterno'];
+					$genero          =$dato['genero'];
+					$fechaNacimiento =$dato['fechaNacimiento'];
+					$fotoSocio       =$dato['fotoSocio'];
+					$nacionalidad    =$dato['nacionalidad'];
+					$estadoCivil     =$dato['estadoCivil'];
+					$direccion       =$dato['direccion'];
+					$departamento    =$dato['departamento'];
+					$provincia       =$dato['provincia'];
+					$distrito        =$dato['distrito'];
+					$telefono        =$dato['telefono'];
+					$celular         =$dato['celular'];
+					$observaciones   =$dato['observaciones'];
+					$sincronizado    =$dato['sincronizado'];
+					$fecha           =$dato['fecha'];
+					$hora            =$dato['hora'];
 					$cantidadLotes   =infoSocios($codigoSocio,'cantidadLotes');
 
 					if($_SESSION['rol_apv']!='ADM'){
