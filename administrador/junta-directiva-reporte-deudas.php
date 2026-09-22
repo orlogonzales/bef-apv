@@ -78,7 +78,7 @@
 								$sql="SELECT sector FROM sm_lotes_socio GROUP BY sector ORDER BY sector ASC";
 								$rs=mysqli_query($conexion,$sql);
 								while($datos=mysqli_fetch_array($rs)){
-									$sector  =$datos[sector];
+									$sector  =$datos['sector'];
 									echo '<option value="'.$sector.'"> SECTOR - '.$sector.'</option>';
 								}
 							?>
