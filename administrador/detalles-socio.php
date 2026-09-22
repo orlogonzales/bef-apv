@@ -1074,12 +1074,12 @@
 										$contar=mysqli_num_rows($rs);
 										mysqli_set_charset($conexion, "utf8");
 										while($n=mysqli_fetch_array($rs)){
-											$lotes      =$n[lotes];
-											$sector     =$n[sector];
-											$manzana    =$n[manzana];
-											$lote       =$n[lote];
-											$codigoLote =$n[codigoLote];
-											$direccion  =$n[direccion];
+											$lotes      =$n['lotes'];
+											$sector     =$n['sector'];
+											$manzana    =$n['manzana'];
+											$lote       =$n['lote'];
+											$codigoLote =$n['codigoLote'];
+											$direccion  =$n['direccion'];
 									 ?>
 										<tr>
 											<td><?= $l ?></td>
@@ -1153,11 +1153,11 @@
 										$rs=mysqli_query($conexion,$sql);
 										$i=1;
 										while($n=mysqli_fetch_array($rs)){
-											$id          =$n[id];
-											$observacion =$n[observacion];
-											$fecha       =$n[fecha];
-											$hora        =$n[hora];
-											$usuario     =$n[usuario];
+											$id          =$n['id'];
+											$observacion =$n['observacion'];
+											$fecha       =$n['fecha'];
+											$hora        =$n['hora'];
+											$usuario     =$n['usuario'];
 											$infoRegistro=registradoPor($usuario,$fecha,$hora,'NO','');
 									?>
 									<tr>
@@ -1225,10 +1225,10 @@
 										$rs=mysqli_query($conexion,$sql);
 										$i=1;
 										while($n=mysqli_fetch_array($rs)){
-											$proceso =$n[proceso];
-											$fecha   =$n[fecha];
-											$hora    =$n[hora];
-											$usuario =$n[usuario];
+											$proceso =$n['proceso'];
+											$fecha   =$n['fecha'];
+											$hora    =$n['hora'];
+											$usuario =$n['usuario'];
 									?>
 									<tr>
 										<td class="text-center"><?= ceros($i,2) ?></td>
