@@ -32,9 +32,11 @@
 		return $conexion;
 	}
 
-	function cerrarDB(){
-		$cerrar = mysqli_close($conexion);
-		return $cerrar;
+	function cerrarDB($conexion = null){
+		if ($conexion instanceof mysqli) {
+			return mysqli_close($conexion);
+		}
+		return true;
 	}
 
 	function conexionBEF(){
