@@ -21,13 +21,13 @@
 	if($opcion=="conceptoCUO"){ $conceptoCUO='class="active"'; }
 
 
-	if($_GET[fechaInicio]){ $fechaInicio=$_GET[fechaInicio]; }else{ $fechaInicio=infoFecha(infoTiempo('primerDia'),'resultados'); }
-	if($_GET[fechaFin]){ $fechaFin=$_GET[fechaFin]; }else{ $fechaFin=infoFecha(infoTiempo('ultimoDia'),'resultados'); }
-	if($_GET[usuarioConsulta]){ $usuarioConsulta=$_GET[usuarioConsulta]; }else{ $usuarioConsulta="ALL"; }
-	if($_GET[tipoCheque]){ $tipoCheque=$_GET[tipoCheque]; }else{ $tipoCheque="ALL"; }
-	if($_GET[entidadBancaria]){ $entidadBancaria=$_GET[entidadBancaria]; }else{ $entidadBancaria="ALL"; }
-	if($_GET[codigoCuenta]){ $codigoCuenta=$_GET[codigoCuenta]; }else{ $codigoCuenta="ALL"; }
-	if($_GET[codigoChequera]){ $codigoChequera=$_GET[codigoChequera]; }else{ $codigoChequera="ALL"; }
+	if(!empty($_GET['fechaInicio'])){ $fechaInicio=$_GET['fechaInicio']; }else{ $fechaInicio=infoFecha(infoTiempo('primerDia'),'resultados'); }
+	if(!empty($_GET['fechaFin'])){ $fechaFin=$_GET['fechaFin']; }else{ $fechaFin=infoFecha(infoTiempo('ultimoDia'),'resultados'); }
+	if(!empty($_GET['usuarioConsulta'])){ $usuarioConsulta=$_GET['usuarioConsulta']; }else{ $usuarioConsulta="ALL"; }
+	if(!empty($_GET['tipoCheque'])){ $tipoCheque=$_GET['tipoCheque']; }else{ $tipoCheque="ALL"; }
+	if(!empty($_GET['entidadBancaria'])){ $entidadBancaria=$_GET['entidadBancaria']; }else{ $entidadBancaria="ALL"; }
+	if(!empty($_GET['codigoCuenta'])){ $codigoCuenta=$_GET['codigoCuenta']; }else{ $codigoCuenta="ALL"; }
+	if(!empty($_GET['codigoChequera'])){ $codigoChequera=$_GET['codigoChequera']; }else{ $codigoChequera="ALL"; }
 
 	$consultaFechaIni=fechaSQL($fechaInicio);
 	$consultaFechaFin=fechaSQL($fechaFin);

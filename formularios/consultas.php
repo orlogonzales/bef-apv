@@ -1,4 +1,4 @@
-<?php $modulo=$_GET[modulo]; ?>
+<?php $modulo = isset($_GET['modulo']) ? $_GET['modulo'] : ''; ?>
 
 <?php if($modulo=="formINGpB"){ ?>
 	<div class="panel">
