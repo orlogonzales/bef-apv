@@ -3887,10 +3887,10 @@
 							$rs=mysqli_query($conexion,$sql);
 							$i=1;
 							while($n=mysqli_fetch_array($rs)){
-								$proceso =$n[proceso];
-								$fecha   =$n[fecha];
-								$hora    =$n[hora];
-								$usuario =$n[usuario];
+								$proceso =$n['proceso'];
+								$fecha   =$n['fecha'];
+								$hora    =$n['hora'];
+								$usuario =$n['usuario'];
 						?>
 						<tr>
 							<td class="text-center"><?= ceros($i,2) ?></td>
