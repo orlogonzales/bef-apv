@@ -1,0 +1,249 @@
+.m-0{
+  margin: 0px !important;
+}
+.mt-0{
+  margin-top: 0px !important;
+}
+.ml-0{
+  margin-left: 0px !important;
+}
+.mr-0{
+  margin-right: 0px !important;
+}
+.mb-0{
+  margin-bottom: 0px !important;
+}
+.p-0{
+  padding: 0px !important;
+}
+.pt-0{
+  padding-top: 0px !important;
+}
+.pl-0{
+  padding-left: 0px !important;
+}
+.pr-0{
+  padding-right: 0px !important;
+}
+.pb-0{
+  padding-bottom: 0px !important;
+}
+.text-bold{
+  font-weight: bold !important;
+}
+
+.mt-5{ margin-top: 5px !important;  }
+.mt-10{ margin-top: 10px !important;  }
+.mt-15{ margin-top: 15px !important;  }
+.mt-20{ margin-top: 20px !important;  }
+
+.ml-5{ margin-left: 5px !important;  }
+.ml-10{ margin-left: 10px !important;  }
+.ml-15{ margin-left: 15px !important;  }
+.ml-20{ margin-left: 20px !important;  }
+
+.mr-5{ margin-right: 5px !important;  }
+.mr-10{ margin-right: 10px !important;  }
+.mr-15{ margin-right: 15px !important;  }
+.mr-20{ margin-right: 20px !important;  }
+
+.mb-5{ margin-bottom: 5px !important;  }
+.mb-10{ margin-bottom: 10px !important;  }
+.mb-15{ margin-bottom: 15px !important;  }
+.mb-20{ margin-bottom: 20px !important;  }
+
+.pt-5{ padding-top: 5px !important;  }
+.pt-10{ padding-top: 10px !important;  }
+.pt-15{ padding-top: 15px !important;  }
+.pt-20{ padding-top: 20px !important;  }
+
+.pl-5{ padding-left: 5px !important;  }
+.pl-10{ padding-left: 10px !important;  }
+.pl-15{ padding-left: 15px !important;  }
+.pl-20{ padding-left: 20px !important;  }
+
+.pr-5{ padding-right: 5px !important;  }
+.pr-10{ padding-right: 10px !important;  }
+.pr-15{ padding-right: 15px !important;  }
+.pr-20{ padding-right: 20px !important;  }
+
+.pb-5{ padding-bottom: 5px !important;  }
+.pb-10{ padding-bottom: 10px !important;  }
+.pb-15{ padding-bottom: 15px !important;  }
+.pb-20{ padding-bottom: 20px !important;  }
+
+.vcenter {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+.error-campo{
+  font-size: 11px !important;
+  color: #DC3545 !important;
+  display: none !important;
+  overflow: none !important;
+}
+.text-uppercase{
+  text-transform: uppercase !important;
+}
+.text-strong{
+  font-weight: bold !important;
+}
+.font-15{
+  font-size: 15px !important;
+}
+.font-20{
+  font-size: 20px !important;
+}
+.bg-light{
+  background-color: #EEE !important;
+}
+.bg-dark{
+  background-color: #37474F !important;
+  color: #FFF !important;
+}
+.bg-dark:hover{
+  background-color: #1E282D !important;
+}
+table td, table th {
+  white-space: nowrap;
+}
+form input.invalido, form select.invalido, form textarea.invalido {
+  border: 2px solid #FF5B57 !important;
+}
+form input.invalido:hover, form select.invalido:hover, form textarea.invalido:hover {
+  border: 2px solid #B20000 !important;
+}
+form input.invalido:focus, form select.invalido:focus, form textarea.invalido:focus {
+  border: 2px solid #B20000 !important;
+}
+
+form input.valido, form select.valido, form textarea.valido {
+  border: 2px solid #7C868F !important;
+}
+form input.valido:hover, form select.valido:hover, form textarea.valido:hover {
+  border: 2px solid #7C868F !important;
+}
+form input.valido:focus, form select.valido:focus, form textarea.valido:focus {
+  border: 2px solid #00ACAC !important;
+}
+.infoHActividad{
+  font-family:'BebasNeueRegular', Arial, Helvetica, sans-serif;
+  font-size:25px;
+  text-align:center;
+  margin: 15px 0px 20px 0px !important;
+  padding: 0px 0px 10px 0px !important;
+  border-bottom: 1px dotted #ccc;
+}
+.bg-cargo{
+  background-color: #CCC !important;
+  font-weight: bold !important;
+}
+.bg-dark{
+  background-color: #777 !important;
+  color: #FFF !important;
+}
+.content-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#overlay{
+  position: absolute !important;
+  background-image: url('../images/preloader-sm.svg') !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  background-color: rgba(255,255,255,0.9) !important;
+  color: #FFF !important;
+  position: absolute !important;
+  height: 100% !important;
+  width: 100% !important;
+  z-index: 9999999 !important;
+  top: 0 !important;
+  left: 0 !important;
+  overflow: hidden !important;
+}
+.btn-dark{
+  background-color: #333 !important;
+  color: #FFF !important;
+}
+.btn-dark-1{
+  background-color: #555 !important;
+  color: #FFF !important;
+}
+.btn-dark-2{
+  background-color: #666 !important;
+  color: #FFF !important;
+}
+.btn-xs{
+  padding: 0px 6px 3px 6px !important;
+  height: 20px !important;
+  width: auto !important;
+  line-height: 20px !important;
+  font-size: 10px !important;
+  -webkit-border-radius: 3px !important;
+  -moz-border-radius: 3px !important;
+  border-radius: 3px !important;
+}
+.text-yellow{
+  color: #FFD24D !important;
+}
+.bg-gray{
+  background-color: #333333 !important;
+  border-color: #333333 !important;
+  color: #FFFFFF !important;
+}
+.bg-gray-1{
+  background-color: #555555 !important;
+  border-color: #555555 !important;
+  color: #FFFFFF !important;
+}
+.bg-gray-2{
+  background-color: #666666 !important;
+  border-color: #666666 !important;
+  color: #FFFFFF !important;
+}
+.bg-gray-3{
+  background-color: #777777 !important;
+  border-color: #777777 !important;
+  color: #FFFFFF !important;
+}
+.bg-gray-4{
+  background-color: #888888 !important;
+  border-color: #888888 !important;
+  color: #FFFFFF !important;
+}
+.bg-gray-5{
+  background-color: #999999 !important;
+  border-color: #999999 !important;
+  color: #FFFFFF !important;
+}
+.border-top-gray-1{
+  border-top-color: #CCC !important;
+}
+.select2-container--default .select2-selection--single.error {
+  border-color: red !important;
+}
+table.ajustar {
+    width: 100% !important;
+    table-layout: auto !important;
+    white-space: nowrap;
+}
+
+/* Para navegadores WebKit (Chrome, Safari, Edge) */
+input[type="number"]::-webkit-inner-spin-button, 
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Para Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+/* Para Microsoft Edge */
+input[type="number"]::-ms-clear,
+input[type="number"]::-ms-reveal {
+    display: none;
+}

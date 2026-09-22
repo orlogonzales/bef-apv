@@ -1,0 +1,17 @@
+# Archivos de log
+*.log
+error_log
+error_log.txt
+
+# Archivos de sistema operativo
+.DS_Store
+Thumbs.db
+
+# Directorios de IDEs
+.idea/
+.vscode/
+
+# Temporales y caché
+tmp/
+temp/
+cache/
