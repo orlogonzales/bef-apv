@@ -2,8 +2,11 @@
 	/////////////////////////////////////////////////////////////////////
 	/// VARIABLES DEL SISTEMA
 	/////////////////////////////////////////////////////////////////////
-	$tipoActividad=$_GET[tipoActividad];
+	$tipoActividad=isset($_GET['tipoActividad']) ? $_GET['tipoActividad'] : '';
 	$operacion="REGISTRA_ACTIVIDAD";
+	$rotuloACTma="";
+	$rotuloACTmi="";
+	$menuActual="";
 	
 	if($tipoActividad=="ASA"){
 		$rotuloACTma="ASAMBLEA";
@@ -121,16 +124,16 @@
 											$sql="SELECT idJuntaDirectiva, fechaPeriodo, fechaFinPeriodo FROM sm_junta_directiva";
 											$rs=mysqli_query($conexion,$sql);
 											while($datos=mysqli_fetch_array($rs)){
-												$idJuntaDirectiva  =$datos[idJuntaDirectiva];
-												$fechaPeriodo    =$datos[fechaPeriodo];
-												$fechaFinPeriodo =$datos[fechaFinPeriodo];
+												$idJuntaDirectiva  =$datos['idJuntaDirectiva'];
+												$fechaPeriodo    =$datos['fechaPeriodo'];
+												$fechaFinPeriodo =$datos['fechaFinPeriodo'];
 												$infoFechaInicio= infoFecha($fechaPeriodo, 'year');
 												$infoFechaFin= infoFecha($fechaFinPeriodo, 'year');
 
 												$query="SELECT CONCAT(sm_socios.nombre,' ',sm_socios.apPaterno,' ',sm_socios.apMaterno) AS nombrePresidente FROM sm_junta_directiva_integrantes INNER JOIN sm_socios ON sm_junta_directiva_integrantes.codigoSocio = sm_socios.codigoSocio WHERE idJuntaDirectiva = '$idJuntaDirectiva' AND idCargoJunta = '1'";
 												$consulta = $conexion->query($query);
 												$resultado = $consulta->fetch_assoc();
-												$nombrePresidente=$resultado[nombrePresidente];
+												$nombrePresidente=isset($resultado['nombrePresidente']) ? $resultado['nombrePresidente'] : '';
 												$infoJuntaDirectiva=$nombrePresidente.'&nbsp;&nbsp;|&nbsp;&nbsp;'.$infoFechaInicio.' - '.$infoFechaFin;
 												
 												echo '<option value="'.$idJuntaDirectiva.'">'.$infoJuntaDirectiva.'</option>';
