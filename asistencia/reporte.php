@@ -1,6 +1,6 @@
 <?php 
 	include('template/header.tpl');
-	$codigoActividad =$_GET[codigoActividad];
+	$codigoActividad =$_GET['codigoActividad'];
 	$tipoActividad   =infoActividad($idJuntaDirectiva,$codigoActividad,'','tipoActividad');
 	$infoActividad   =infoActividad($idJuntaDirectiva,$codigoActividad,'','temaActividad');
 	$terminal        =terminal();
