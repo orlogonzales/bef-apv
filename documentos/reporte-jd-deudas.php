@@ -26,12 +26,12 @@
 	    $sql="SELECT sm_socios.nombre, sm_socios.apPaterno, sm_socios.apMaterno, sm_junta_directiva.fechaPeriodo, sm_junta_directiva.fechaFinPeriodo, sm_junta_directiva_integrantes.codigoSocio FROM sm_junta_directiva INNER JOIN sm_junta_directiva_integrantes ON sm_junta_directiva.idJuntaDirectiva = sm_junta_directiva_integrantes.idJuntaDirectiva INNER JOIN sm_socios ON sm_junta_directiva_integrantes.codigoSocio = sm_socios.codigoSocio WHERE sm_junta_directiva.idJuntaDirectiva = '$idJuntaDirectiva' AND sm_junta_directiva_integrantes.idCargoJunta = 1";
 		$consulta = $conexion->query($sql);
 		$resultado = $consulta->fetch_assoc();
-		$nombre=$resultado[nombre];
-		$apPaterno=$resultado[apPaterno];
-		$apMaterno=$resultado[apMaterno];
+		$nombre=$resultado['nombre'];
+		$apPaterno=$resultado['apPaterno'];
+		$apMaterno=$resultado['apMaterno'];
 		$nombrePresidente=$nombre.' '.$apPaterno.' '.$apMaterno;
-		$fechaPeriodo=$resultado[fechaPeriodo];
-		$fechaFinPeriodo=$resultado[fechaFinPeriodo];
+		$fechaPeriodo=$resultado['fechaPeriodo'];
+		$fechaFinPeriodo=$resultado['fechaFinPeriodo'];
 		$infoJD=$nombrePresidente.' / '.infoFecha($fechaPeriodo,'normal').' - '.infoFecha($fechaFinPeriodo,'normal');
     }
 
