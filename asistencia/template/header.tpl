@@ -65,7 +65,7 @@
 
 		<a href="socios.php?modulo=controlAsistencia" class="btn btn-lg btn-link pull-right"><i class="icon-users"></i></a>
 		<a href="reporte.php?codigoActividad=<?= $codigoActividad ?>&modulo=controlAsistencia" class="btn btn-lg btn-link pull-right"><i class="icon-cog3"></i></a>
-		<?php if($_GET[modulo]=="controlAsistencia"){ ?>
+		<?php if($_GET['modulo']=="controlAsistencia"){ ?>
 			<a href="index.php?opcion=asistencia" class="btn btn-lg btn-link pull-right"><i class="icon-esc"></i></a>
 		<?php }else{} ?>
 		<div class="navbar-header">
