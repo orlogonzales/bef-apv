@@ -13,9 +13,9 @@
 	use Dompdf\Dompdf;
 
     $conexion   = conexionDB();
-    $sector     = $_GET[sector];
-	$manzana    = $_GET[manzana];
-	$ordenar    = $_GET[ordenar];
+    $sector     = $_GET['sector'];
+	$manzana    = $_GET['manzana'];
+	$ordenar    = $_GET['ordenar'];
 	$hoy        = fechaSQL(infoTiempo('fechaHoy'));
 	$hora       = infoTiempo('hora');
 	$dniUsuario = $_SESSION['dni_apv'];
