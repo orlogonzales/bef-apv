@@ -14,9 +14,9 @@
 	use Dompdf\Dompdf;
 	
 	$conexion        =conexionDB();
-	$codigoSocio     =$_GET[codigoSocio];
-	$codigoOperacion =$_GET[codigoOperacion];
-	$opcion          =$_GET[opcion];
+	$codigoSocio     =$_GET['codigoSocio'];
+	$codigoOperacion =$_GET['codigoOperacion'];
+	$opcion          =$_GET['opcion'];
 	$nombreSocio     =infoSocios($codigoSocio,'nombre');
 	$lotesSocio      =infoSocios($codigoSocio,'cantidadLotes');
 	$hoy             =fechaSQL(infoTiempo('fechaHoy'));
@@ -30,17 +30,17 @@
 	$sql="SELECT tipoActividad, fechaOperacion, codigoConcepto, concepto, tipoDocumento, nroDocumento, monto, detalleConcepto, fecha, hora, usuario FROM sm_mod_caja WHERE codigoOperacion='$codigoOperacion'";
 	$infopago=mysqli_query($conexion,$sql);
 	$dato=mysqli_fetch_array($infopago);
-	$tipoActividad   =$dato[tipoActividad];
-	$fechaOperacion  =$dato[fechaOperacion];
-	$concepto        =$dato[concepto];
-	$codigoConcepto  =$dato[codigoConcepto];
-	$tipoDocumento   =$dato[tipoDocumento];
-	$nroDocumento    =$dato[nroDocumento];
-	$monto           =$dato[monto];
-	$detalleConcepto =$dato[detalleConcepto];
-	$fecha           =$dato[fecha];
-	$hora            =$dato[hora];
-	$usuario         =$dato[usuario];
+	$tipoActividad   =$dato['tipoActividad'];
+	$fechaOperacion  =$dato['fechaOperacion'];
+	$concepto        =$dato['concepto'];
+	$codigoConcepto  =$dato['codigoConcepto'];
+	$tipoDocumento   =$dato['tipoDocumento'];
+	$nroDocumento    =$dato['nroDocumento'];
+	$monto           =$dato['monto'];
+	$detalleConcepto =$dato['detalleConcepto'];
+	$fecha           =$dato['fecha'];
+	$hora            =$dato['hora'];
+	$usuario         =$dato['usuario'];
 
 	if($tipoActividad=="CUO"){
 		$infoDetallepago=texto(infoCuota($idJuntaDirectiva,$codigoConcepto,'conceptoCuota'));
