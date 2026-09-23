@@ -1077,17 +1077,17 @@
 									$rs=mysqli_query($conexion,$sql);
 									$i=1;
 									while($n=mysqli_fetch_array($rs)){
-										$codigoSocio    =$n[codigoSocio];
-										$lotes          =$n[lotes];
+										$codigoSocio    =$n['codigoSocio'];
+										$lotes          =$n['lotes'];
 										$temaActividad  =infoActividad($idJuntaDirectiva,$codigoActividad,'','temaActividad');
 										$multaTarde     =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaporTardanza');
 										$multaFalta     =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaPorFalta');
-										$multa          =$n[multa];
-										$estadoPago     =$n[estadoPago];
-										$apPaterno      =$n[apPaterno];
-										$apMaterno      =$n[apMaterno];
-										$nombre         =$n[nombre];
-										$dni            =$n[dni];
+										$multa          =$n['multa'];
+										$estadoPago     =$n['estadoPago'];
+										$apPaterno      =$n['apPaterno'];
+										$apMaterno      =$n['apMaterno'];
+										$nombre         =$n['nombre'];
+										$dni            =$n['dni'];
 										$nombre         =texto($apPaterno.' '.$apMaterno.' '.$nombre);
 										$porcentajePago =porcentajePago($codigoSocio,$codigoActividad,$multa);
 										$razonBTpago    ='inasistencia';
@@ -1281,16 +1281,16 @@
 															$sql="SELECT fechaOperacion, concepto, tipoDocumento, nroDocumento, monto, detalleConcepto, codigoOperacion, fecha, hora, usuario FROM sm_mod_caja WHERE codigoSocio='$codigoSocio' AND  codigoConcepto='$codigoActividad'";
 															$infopago=mysqli_query($conexion,$sql);
 															$dato=mysqli_fetch_array($infopago);
-															$fechaOperacion  =$dato[fechaOperacion];
-															$concepto        =$dato[concepto];
-															$tipoDocumento   =$dato[tipoDocumento];
-															$nroDocumento    =$dato[nroDocumento];
-															$monto           =$dato[monto];
-															$detalleConcepto =$dato[detalleConcepto];
-															$codigoOperacion =$dato[codigoOperacion];
-															$fecha           =$dato[fecha];
-															$hora            =$dato[hora];
-															$usuario         =$dato[usuario];
+															$fechaOperacion  =$dato['fechaOperacion'];
+															$concepto        =$dato['concepto'];
+															$tipoDocumento   =$dato['tipoDocumento'];
+															$nroDocumento    =$dato['nroDocumento'];
+															$monto           =$dato['monto'];
+															$detalleConcepto =$dato['detalleConcepto'];
+															$codigoOperacion =$dato['codigoOperacion'];
+															$fecha           =$dato['fecha'];
+															$hora            =$dato['hora'];
+															$usuario         =$dato['usuario'];
 															cerrarDB();
 														?>
 														<div class="row mb-20">
