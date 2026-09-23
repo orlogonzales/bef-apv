@@ -32,13 +32,13 @@
 	$query = "SELECT CONCAT(sm_socios.nombre,' ', sm_socios.apPaterno,' ', sm_socios.apMaterno) AS nombrePresidente FROM sm_junta_directiva_integrantes INNER JOIN sm_socios ON sm_junta_directiva_integrantes.codigoSocio = sm_socios.codigoSocio WHERE idJuntaDirectiva = '$idJuntaDirectiva' AND idCargoJunta = '1'";
 	$row=mysqli_query($conexion,$query);
 	$dato=mysqli_fetch_array($row);
-	$nombrePresidente=$dato[nombrePresidente];
+	$nombrePresidente=$dato['nombrePresidente'];
 
 	$query = "SELECT fechaPeriodo, fechaFinPeriodo FROM sm_junta_directiva WHERE idJuntaDirectiva = '$idJuntaDirectiva'";
 	$row=mysqli_query($conexion,$query);
 	$dato=mysqli_fetch_array($row);
-	$fechaPeriodo=$dato[fechaPeriodo];
-	$fechaFinPeriodo=$dato[fechaFinPeriodo];
+	$fechaPeriodo=$dato['fechaPeriodo'];
+	$fechaFinPeriodo=$dato['fechaFinPeriodo'];
 	$inicioPeriodo=infoFecha($fechaPeriodo,'year');
 	$finPeriodo=infoFecha($fechaFinPeriodo,'year');
 	$infoperiodo= $inicioPeriodo.' - '.$finPeriodo;
