@@ -14,9 +14,9 @@
 	use Dompdf\Dompdf;
 	
 	$conexion       =conexionDB();
-	$conceptoPago   =$_GET[conceptoPago];
-	$codigoConcepto =$_GET[codigoConcepto];
-	$codigoSocio    =$_GET[codigoSocio];
+	$conceptoPago   =$_GET['conceptoPago'];
+	$codigoConcepto =$_GET['codigoConcepto'];
+	$codigoSocio    =$_GET['codigoSocio'];
 	$nombreSocio    =infoSocios($codigoSocio,'nombre');
 	$lotesSocio     =infoSocios($codigoSocio,'cantidadLotes');
 	$totalpagado    =infoPagoFechas($codigoSocio,$codigoConcepto,'totalFechasPagadas');
@@ -99,17 +99,17 @@
 	$sql="SELECT cuota, fechaProgramada, montoPago, tipoDocumento, nroDocumento, fechaPago, estadoPago, codigoOperacion, fecha, hora, usuario FROM sm_mod_cuentas WHERE codigoSocio='$codigoSocio' AND codigoConcepto='$codigoConcepto'";
 	$rs=mysqli_query($conexion,$sql);
 	while($n=mysqli_fetch_array($rs)){
-		$cuota           =$n[cuota];
-		$fechaProgramada =$n[fechaProgramada];
-		$montoPago       =$n[montoPago];
-		$tipoDocumento   =$n[tipoDocumento];
-		$nroDocumento    =$n[nroDocumento];
-		$fechaPago       =$n[fechaPago];
-		$estadoPago      =$n[estadoPago];
-		$codigoOperacion =$n[codigoOperacion];
-		$fecha           =$n[fecha];
-		$hora            =$n[hora];
-		$usuario         =$n[usuario];
+		$cuota           =$n['cuota'];
+		$fechaProgramada =$n['fechaProgramada'];
+		$montoPago       =$n['montoPago'];
+		$tipoDocumento   =$n['tipoDocumento'];
+		$nroDocumento    =$n['nroDocumento'];
+		$fechaPago       =$n['fechaPago'];
+		$estadoPago      =$n['estadoPago'];
+		$codigoOperacion =$n['codigoOperacion'];
+		$fecha           =$n['fecha'];
+		$hora            =$n['hora'];
+		$usuario         =$n['usuario'];
 
 		if($estadoPago=="PEN"){
 			$infoEstadoPago="PENDIENTE";
