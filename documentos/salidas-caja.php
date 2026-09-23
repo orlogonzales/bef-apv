@@ -13,10 +13,10 @@
 	use Dompdf\Dompdf;
 	
 	$conexion        =conexionDB();
-	$fechaInicio     =$_GET[fechaInicio];
-	$fechaFin        =$_GET[fechaFin];
-	$usuarioConsulta =$_GET[usuarioConsulta];
-	$tipoActividad   =$_GET[tipoActividad];
+	$fechaInicio     =$_GET['fechaInicio'];
+	$fechaFin        =$_GET['fechaFin'];
+	$usuarioConsulta =$_GET['usuarioConsulta'];
+	$tipoActividad   =$_GET['tipoActividad'];
 	$consultaFechaIni =fechaSQL($fechaInicio);
 	$consultaFechaFin =fechaSQL($fechaFin);
 
@@ -70,19 +70,19 @@
 	$rs=mysqli_query($conexion,$sql);
 	$i=1;
 	while($n=mysqli_fetch_array($rs)){
-		$fechaOperacion  =$n[fechaOperacion];
-		$tipoActividad   =$n[tipoActividad];
-		$concepto        =$n[concepto];
-		$codigoSocio     =$n[codigoSocio];
-		$codigoConcepto  =$n[codigoConcepto];
-		$tipoDocumento   =$n[tipoDocumento];
-		$nroDocumento    =$n[nroDocumento];
-		$monto           ='<span class="text-danger textoNegrita">S/. '.moneda($n[monto]).'</span>';
-		$detalleConcepto =$n[detalleConcepto];
-		$codigoOperacion =$n[codigoOperacion];
-		$fecha           =$n[fecha];
-		$hora            =$n[hora];
-		$usuario         =$n[usuario];
+		$fechaOperacion  =$n['fechaOperacion'];
+		$tipoActividad   =$n['tipoActividad'];
+		$concepto        =$n['concepto'];
+		$codigoSocio     =$n['codigoSocio'];
+		$codigoConcepto  =$n['codigoConcepto'];
+		$tipoDocumento   =$n['tipoDocumento'];
+		$nroDocumento    =$n['nroDocumento'];
+		$monto           ='<span class="text-danger textoNegrita">S/. '.moneda($n['monto']).'</span>';
+		$detalleConcepto =$n['detalleConcepto'];
+		$codigoOperacion =$n['codigoOperacion'];
+		$fecha           =$n['fecha'];
+		$hora            =$n['hora'];
+		$usuario         =$n['usuario'];
 		$infofecha       =infoFecha($fecha,'normal');
 		$nombreSocio     =texto(infoSocios($codigoSocio,'nombreCorto'));
 		$documento       ='<strong>'.infoTipoDOC($tipoDocumento).'</strong> N°'.$nroDocumento;
