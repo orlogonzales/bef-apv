@@ -1384,16 +1384,16 @@
 			$sql="SELECT codigoActividad, tipoActividad, temaActividad, contenidoActividad, fechaActividad, horaActividad, lugarActividad, mTardanza, mFalta, fecha, hora, usuario FROM sm_mod_actividades WHERE codigoActividad='$codigoActividad'";
 			$row=mysqli_query($conexion,$sql);
 			$dato=mysqli_fetch_array($row);
-			$temaActividad       =$dato[temaActividad];
-			$contenidoActividad  =$dato[contenidoActividad];
-			$fechaActividad      =$dato[fechaActividad];
-			$horaActividad       =$dato[horaActividad];
-			$lugarActividad      =$dato[lugarActividad];
-			$mTardanza           =$dato[mTardanza];
-			$mFalta              =$dato[mFalta];
-			$fecha               =$dato[fecha];
-			$hora                =$dato[hora];
-			$usuario             =$dato[usuario];
+			$temaActividad       =$dato['temaActividad'];
+			$contenidoActividad  =$dato['contenidoActividad'];
+			$fechaActividad      =$dato['fechaActividad'];
+			$horaActividad       =$dato['horaActividad'];
+			$lugarActividad      =$dato['lugarActividad'];
+			$mTardanza           =$dato['mTardanza'];
+			$mFalta              =$dato['mFalta'];
+			$fecha               =$dato['fecha'];
+			$hora                =$dato['hora'];
+			$usuario             =$dato['usuario'];
 			$aforo               =infoActividad($idJuntaDirectiva,$codigoActividad,'','aforo');
 			$asistio             =infoActividad($idJuntaDirectiva,$codigoActividad,'','asistio');
 			$tarde               =infoActividad($idJuntaDirectiva,$codigoActividad,'','tarde');
@@ -1555,12 +1555,12 @@
 											$sql="SELECT terminal, socios, archivo, fecha, hora, usuario FROM sm_mod_asistencia_json WHERE codigoActividad='$codigoActividad' ORDER BY terminal ASC";
 											$rs=mysqli_query($conexion,$sql);
 											while($n=mysqli_fetch_array($rs)){
-												$terminal   =$n[terminal];
-												$socios     =$n[socios];
-												$archivo    =$n[archivo];
-												$fecha      =$n[fecha];
-												$hora       =$n[hora];
-												$usuario    =$n[usuario];
+												$terminal   =$n['terminal'];
+												$socios     =$n['socios'];
+												$archivo    =$n['archivo'];
+												$fecha      =$n['fecha'];
+												$hora       =$n['hora'];
+												$usuario    =$n['usuario'];
 												$registro   =registradoPor($usuario,$fecha,$hora,'SI','bg-grey-300');
 												$asistentes =infoTerminal($codigoActividad,'','','totalAsistentes');
 										?>
