@@ -15,9 +15,9 @@
 
 	$documentos      ='../assets/images/docs/';
 	$conexion        =conexionDB();
-	$tipoActividad   =$_GET[tipoActividad];
-	$codigoActividad =$_GET[codigoActividad];
-	$codigoSocio     =$_GET[codigoSocio];
+	$tipoActividad   =$_GET['tipoActividad'];
+	$codigoActividad =$_GET['codigoActividad'];
+	$codigoSocio     =$_GET['codigoSocio'];
 	$nombreSocio     =infoSocios($codigoSocio,'nombre');
 	$lotesSocio      =infoSocios($codigoSocio,'cantidadLotes');
 	$hoy             =fechaSQL(infoTiempo('fechaHoy'));
@@ -32,8 +32,8 @@
 	$sql="SELECT observacion, documento FROM sm_mod_asistencia WHERE codigoActividad='$codigoActividad' AND codigoSocio='$codigoSocio'";
 	$row=mysqli_query($conexion,$sql);
 	$dato=mysqli_fetch_array($row);
-	$observacion =texto($dato[observacion]);
-	$documento   =$dato[documento];
+	$observacion =texto($dato['observacion']);
+	$documento   =$dato['documento'];
 	if($documento){ $imagenJUS=$documentos.$documento; }else{ $imagenJUS=''; }
 
 	$reporte='
