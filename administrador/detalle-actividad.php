@@ -2,10 +2,10 @@
 	/////////////////////////////////////////////////////////////////////
 	/// VARIABLES
 	/////////////////////////////////////////////////////////////////////
-	$codigoActividad =$_GET[codigoActividad];
-	$opcion          =$_GET[opcion];
-	$tipoActividad   =$_GET[tipoActividad];
-	$temaActividad   =$_GET[temaActividad];
+	$codigoActividad =$_GET['codigoActividad'];
+	$opcion          =$_GET['opcion'];
+	$tipoActividad   =$_GET['tipoActividad'];
+	$temaActividad   =$_GET['temaActividad'];
 	$ruta            ='../';
 	$documentos      ='../assets/images/docs/';
 
