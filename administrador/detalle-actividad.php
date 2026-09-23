@@ -346,10 +346,10 @@
 															$sql="SELECT codigoBanco, codigoCuenta, numeroCuenta, detalle FROM sm_banco_cuentas WHERE estado='ACT'";
 															$rs=mysqli_query($conexion,$sql);
 															while($datos=mysqli_fetch_array($rs)){
-																$codigoBanco  =$datos[codigoBanco];
-																$codCuenta    =$datos[codigoCuenta];
-																$numeroCuenta =$datos[numeroCuenta];
-																$detalle      =$datos[detalle];
+																$codigoBanco  =$datos['codigoBanco'];
+																$codCuenta    =$datos['codigoCuenta'];
+																$numeroCuenta =$datos['numeroCuenta'];
+																$detalle      =$datos['detalle'];
 																$infoCuenta   =infoBancos($codigoBanco,'detalleEntidad').' - '.texto($detalle).' ('.$numeroCuenta.')';
 																if($codCuenta==$codigoCuenta){ 
 																	echo '<option value="'.$codCuenta.'" selected>'.$infoCuenta.'</option>';
@@ -487,9 +487,9 @@
 												$sql="SELECT sm_mod_asistencia.multa, sm_socios.codigoSocio, CONCAT(sm_socios.nombre,' ',sm_socios.apPaterno,' ',sm_socios.apMaterno) as nombre FROM sm_socios, sm_mod_asistencia WHERE sm_socios.codigoSocio=sm_mod_asistencia.codigoSocio AND sm_mod_asistencia.codigoActividad='$codigoActividad' AND (sm_mod_asistencia.asistio='NO' OR (sm_mod_asistencia.asistio='SI' AND sm_mod_asistencia.retraso>0.15)) ORDER BY nombre ASC";
 												$rs=mysqli_query($conexion,$sql);
 												while($datos=mysqli_fetch_array($rs)){
-													$codigoSocio    =$datos[codigoSocio];
-													$multa          =$datos[multa];
-													$nombre         =$datos[nombre];
+													$codigoSocio    =$datos['codigoSocio'];
+													$multa          =$datos['multa'];
+													$nombre         =$datos['nombre'];
 													$infoAsistencia =infoAsistencia($codigoActividad,$codigoSocio);
 													$porcentajePago =porcentajePago($codigoSocio,$codigoActividad,$multa);
 													if($porcentajePago>0){}else{
