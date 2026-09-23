@@ -24,7 +24,7 @@
 	$sql="SELECT formaActividad FROM sm_mod_actividades WHERE codigoActividad='$codigoActividad'";
 	$row = mysqli_query($conexion,$sql);
 	$dato = mysqli_fetch_array($row);
-	$formaActividad = $dato[formaActividad];
+	$formaActividad = $dato['formaActividad'];
 ?>
 <div class="navbar navbar-default navbar-xs">
 	<ul class="nav navbar-nav visible-xs-block">
