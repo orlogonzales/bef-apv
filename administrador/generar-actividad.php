@@ -287,11 +287,11 @@
 					lugarActividad: { required: true },
 					fechaActividad: { required: true },
 					horaActividad: { required: true },
-		 			mTardanza: { number: true, min: 0 },
-					mFalta: { number: true, min: 0 },
+					mTardanza: { required: true, number: true, min: 0 },
+					mFalta: { required: true, number: true, min: 0 },
 					idJuntaDirectiva:{ required: true },
 					codigoCuenta: { required: true },
-					mPenalidad: { number: true, min: 0 },
+					mPenalidad: { required: true, number: true, min: 0 },
 					fechaInicioPenalidad: { required: true },
 					contenidoActividad: { required: true },
 				},
@@ -302,11 +302,11 @@
 					lugarActividad: { required: "Lugar de <?= $rotuloACTmi ?>", },
 					fechaActividad: { required: "Fecha de <?= $rotuloACTmi ?>", },
 					horaActividad: { required: "Hora de <?= $rotuloACTmi ?>", },
-					mTardanza: { required: "Multa por tardanza", number: "Solo numeros", min: "minimo S/. 10", },
-					mFalta: { required: "Multa por inasistencia", number: "Solo numeros", min: "minimo S/. 10", },
+					mTardanza: { required: "Multa por tardanza", number: "Solo numeros", min: "Mínimo S/. 0", },
+					mFalta: { required: "Multa por inasistencia", number: "Solo numeros", min: "Mínimo S/. 0", },
 					idJuntaDirectiva:{ required: "Seleccione Junta Directiva" },
 					codigoCuenta: { required: "Seleccione Cuenta de banco <?= $rotuloACTmi ?>", },
-					mPenalidad: { required: "Monto de penalidad", number: "Solo numeros", min: "minimo S/. 10", },					
+					mPenalidad: { required: "Monto de penalidad", number: "Solo numeros", min: "Mínimo S/. 0", },
 					fechaInicioPenalidad: { required: "Fecha de inicio de penalidad" },
 					contenidoActividad: { required: "Detalles adicionales...", },
 				}
@@ -314,6 +314,6 @@
 		});
 
 		// VALIDA FORMULARIO SOLO NUMEROS
-		$(function(){ $('#mTardanza, #mFalta').validar('0123456789.'); });
+		$(function(){ $('#mTardanza, #mFalta, #mPenalidad').validar('0123456789.'); });
 	</script>
 <?php include($ruta.'template/footer.tpl'); ?>

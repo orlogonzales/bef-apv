@@ -188,6 +188,11 @@
 		<tbody>
 	';
 
+		$a=1;
+		$deudaASA=0;
+		$deudaFAE=0;
+		$deudaCUO=0;
+
 		if($concepto=='ALL'){
 			if($cantidadRegistrosASA>0){
 					$a=1;
