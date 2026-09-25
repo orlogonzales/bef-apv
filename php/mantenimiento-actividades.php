@@ -5,24 +5,24 @@
 	$fecha       =infoTiempo('fecha');
 	$hora        =infoTiempo('hora');
 	$dniUsuario  =$_SESSION['dni_apv'];
-	$operacion   =$_POST[operacion];
+	$operacion   =$_POST['operacion'];
 
 	if($operacion=="REGISTRA_ACTIVIDAD"){
-		$tipoActividad        = $_POST[tipoActividad];
-		$codigoActividad      = codActividad($tipoActividad,fechaSQL($_POST[fechaActividad]),$_POST[horaActividad],$dniUsuario);
-		$temaActividad        = cTexto($_POST[temaActividad]);
-		$formaActividad       = cTexto($_POST[formaActividad]); //DATA: 0 -> SIN INTERNET | 1 -> CON INTERNET
-		$formaControl         = cTexto($_POST[formaControl]); //DATA: 0 -> REGISTRO IN/OUT | 1 -> REGISTRO OUT
-		$contenidoActividad   = cTexto($_POST[contenidoActividad]);
-		$fechaActividad       = fechaSQL($_POST[fechaActividad]);
-		$horaActividad        = $_POST[horaActividad];
-		$lugarActividad       = cTexto($_POST[lugarActividad]);
-		$mTardanza            = $_POST[mTardanza];
-		$mFalta               = $_POST[mFalta];
-		$codigoCuenta         = $_POST[codigoCuenta];
-		$idJuntaDirectiva     = $_POST[idJuntaDirectiva];
-		$mPenalidad           = $_POST[mPenalidad];
-		$fechaInicioPenalidad = fechaSQL($_POST[fechaInicioPenalidad]);
+		$tipoActividad        = $_POST['tipoActividad'];
+		$codigoActividad      = codActividad($tipoActividad,fechaSQL($_POST['fechaActividad']),$_POST['horaActividad'],$dniUsuario);
+		$temaActividad        = cTexto($_POST['temaActividad']);
+		$formaActividad       = cTexto($_POST['formaActividad']); //DATA: 0 -> SIN INTERNET | 1 -> CON INTERNET
+		$formaControl         = cTexto($_POST['formaControl']); //DATA: 0 -> REGISTRO IN/OUT | 1 -> REGISTRO OUT
+		$contenidoActividad   = cTexto($_POST['contenidoActividad']);
+		$fechaActividad       = fechaSQL($_POST['fechaActividad']);
+		$horaActividad        = $_POST['horaActividad'];
+		$lugarActividad       = cTexto($_POST['lugarActividad']);
+		$mTardanza            = $_POST['mTardanza'];
+		$mFalta               = $_POST['mFalta'];
+		$codigoCuenta         = $_POST['codigoCuenta'];
+		$idJuntaDirectiva     = $_POST['idJuntaDirectiva'];
+		$mPenalidad           = $_POST['mPenalidad'];
+		$fechaInicioPenalidad = fechaSQL($_POST['fechaInicioPenalidad']);
 		$fecha                = $fecha;
 		$hora                 = $hora;
 		$usuario              = $dniUsuario;
@@ -52,7 +52,7 @@
 			$rs=mysqli_query($conexion,$sql);
 			$i=1;
 			while($n=mysqli_fetch_array($rs)){
-				$codigoSocio =$n[codigoSocio];
+				$codigoSocio =$n['codigoSocio'];
 				$lotes       =infoSocios($codigoSocio,'cantidadLotes');
 				$asistio     ="IN";
 				$ingreso     ="";
@@ -87,16 +87,16 @@
 	}
 
 	if($operacion=="EDITA_ACTIVIDAD"){
-		$tipoActividad      =$_POST[tipoActividad];
-		$codigoActividad    =$_POST[codigoActividad];
-		$temaActividad      =cTexto($_POST[temaActividad]);
-		$contenidoActividad =cTexto($_POST[contenidoActividad]);
-		$fechaActividad     =fechaSQL($_POST[fechaActividad]);
-		$horaActividad      =$_POST[horaActividad];
-		$lugarActividad     =cTexto($_POST[lugarActividad]);
-		$mTardanza          =$_POST[mTardanza];
-		$mFalta             =$_POST[mFalta];
-		$codigoCuenta       =$_POST[codigoCuenta];
+		$tipoActividad      =$_POST['tipoActividad'];
+		$codigoActividad    =$_POST['codigoActividad'];
+		$temaActividad      =cTexto($_POST['temaActividad']);
+		$contenidoActividad =cTexto($_POST['contenidoActividad']);
+		$fechaActividad     =fechaSQL($_POST['fechaActividad']);
+		$horaActividad      =$_POST['horaActividad'];
+		$lugarActividad     =cTexto($_POST['lugarActividad']);
+		$mTardanza          =$_POST['mTardanza'];
+		$mFalta             =$_POST['mFalta'];
+		$codigoCuenta       =$_POST['codigoCuenta'];
 		$fecha              =$fecha;
 		$hora               =$hora;
 		$usuario            =$dniUsuario;
@@ -135,8 +135,8 @@
 	}
 
 	if($operacion=="ELIMINAR_ACTIVIDADA"){
-		$tipoActividad   =$_POST[tipoActividad];
-		$codigoActividad =$_POST[codigoActividad];
+		$tipoActividad   =$_POST['tipoActividad'];
+		$codigoActividad =$_POST['codigoActividad'];
 		$fecha           =$fecha;
 		$hora            =$hora;
 		$usuario         =$dniUsuario;
@@ -167,7 +167,7 @@
 		$rs=mysqli_query($conexion,$sql);
 		$i=1;
 		while($n=mysqli_fetch_array($rs)){
-			$codigoSocio =$n[codigoSocio];
+			$codigoSocio =$n['codigoSocio'];
 			$proceso     ="ELIMINADO DE ".$concepto." - <strong>".$conceptoCuota."</strong> | <strong>M. FALTA:</strong> S/. ".moneda($montoFalta)." | <strong>M. TARDANZA:</strong> S/. ".moneda($montoTarde);
 
 			$sql="INSERT INTO sm_procesos_socios(codigoSocio, proceso, fecha, hora, usuario) VALUES('$codigoSocio', '$proceso', '$fecha', '$hora','$usuario')";
@@ -187,12 +187,12 @@
 		$respuesta->mensaje ="ACTIVIDAD_ELIMINADA";
 	}
 
-	if($_GET[operacion]=="REGISTRA_JUSTIFICACION"){
-		$codigoSocio     =$_GET[codigoSocio];
-		$razon           =$_GET[razon];
-		$codigoActividad =$_GET[codigoActividad];
-		$observacion     =ctexto($_GET[observacion]);
-		$tipoActividad   =$_GET[tipoActividad];
+	if($_GET['operacion']=="REGISTRA_JUSTIFICACION"){
+		$codigoSocio     =$_GET['codigoSocio'];
+		$razon           =$_GET['razon'];
+		$codigoActividad =$_GET['codigoActividad'];
+		$observacion     =ctexto($_GET['observacion']);
+		$tipoActividad   =$_GET['tipoActividad'];
 		$archivoJUS      =$_FILES['documento']['name'];
 		$conceptoACT     =infoActividad($idJuntaDirectiva,$codigoActividad,'','temaActividad');
 
@@ -256,8 +256,8 @@
 	}
 
 	if($operacion=="CONSIGUE_RAZON"){
-		$codigoSocio     =$_POST[codigoSocio];
-		$codigoActividad =$_POST[codigoActividad];
+		$codigoSocio     =$_POST['codigoSocio'];
+		$codigoActividad =$_POST['codigoActividad'];
 		$asistio         =infoActividad($idJuntaDirectiva,$codigoActividad,$codigoSocio,'asistenciaSocio');
 		$tarde         =infoActividad($idJuntaDirectiva,$codigoActividad,$codigoSocio,'asistenciaTardeSocio');
 		if($asistio=="NO"){ $razon="FALTA"; }
@@ -265,7 +265,7 @@
 		$respuesta->razon = $razon;
 	}
 
-	if($_GET[operacion]=="SUBIR_ARCHIVO_ASISTENCIAS"){
+	if($_GET['operacion']=="SUBIR_ARCHIVO_ASISTENCIAS"){
 		/////////////////////////////////////////////////////////////////////
 		/// CONECCION CON LA INTERFACE JSON DEL SISTEMA DE VENTAS
 		/////////////////////////////////////////////////////////////////////
@@ -276,7 +276,7 @@
 			$urlSocios="https://{$_SERVER['HTTP_HOST']}/apv";
 		}
 
-		$codigoActividad =$_GET[codigoActividad];
+		$codigoActividad =$_GET['codigoActividad'];
 		$archivoJSON     =$_FILES['archivo']['name'];
 		$archivo         =explode(".", $_FILES['archivo']['name']);
 		$tipoFile        =end($archivo);
@@ -356,10 +356,10 @@
 	}
 
 	if($operacion=="ELIMINAR_JUSTIFICACION"){
-		$tipoActividad   =$_POST[tipoActividad];
-		$codigoActividad =$_POST[codigoActividad];
-		$codigoSocio     =$_POST[codigoSocio];
-		$razon           =$_POST[razon];
+		$tipoActividad   =$_POST['tipoActividad'];
+		$codigoActividad =$_POST['codigoActividad'];
+		$codigoSocio     =$_POST['codigoSocio'];
+		$razon           =$_POST['razon'];
 		$lotes           =infoSocios($codigoSocio,'cantidadLotes');
 		$conceptoACT     =infoActividad($idJuntaDirectiva,$codigoActividad,'','temaActividad');
 		$montoTarde      =$lotes*infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaporTardanza');
@@ -414,8 +414,8 @@
 	}
 
 	if($operacion=="GENERA_ARCHIVO_ACTIVIDAD"){
-		$tipoActividad   =$_POST[tipoActividad];
-		$codigoActividad =$_POST[codigoActividad];
+		$tipoActividad   =$_POST['tipoActividad'];
+		$codigoActividad =$_POST['codigoActividad'];
 		$fecha           =$fecha;
 		$hora            =$hora;
 		$usuario         =$dniUsuario;
@@ -429,12 +429,12 @@
 		$rs=mysqli_query($conexion,$sql);
 		mysqli_set_charset($conexion, "utf8"); 
 		while($dato=mysqli_fetch_array($rs)){
-			$temaActividad   =$dato[temaActividad];
-			$formaControl    =$dato[formaControl];
-			$fechaActividad  =$dato[fechaActividad];
-			$horaActividad   =$dato[horaActividad];
-			$mTardanza       =$dato[mTardanza];
-			$mFalta          =$dato[mFalta];
+			$temaActividad   =$dato['temaActividad'];
+			$formaControl    =$dato['formaControl'];
+			$fechaActividad  =$dato['fechaActividad'];
+			$horaActividad   =$dato['horaActividad'];
+			$mTardanza       =$dato['mTardanza'];
+			$mFalta          =$dato['mFalta'];
 			$infoActividad[] =array(
 				'tipoActividad'   => $tipoActividad,
 				'codigoActividad' => $codigoActividad,
@@ -481,7 +481,7 @@
 	}
 
 	if($operacion=="PROCESA_ASISTENCIAS_ACTIVIDAD"){
-		$codigoActividad =$_POST[codigoActividad];
+		$codigoActividad =$_POST['codigoActividad'];
 		$multaTarde      =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaporTardanza');
 		$multaFalta      =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaPorFalta');
 		
@@ -492,11 +492,11 @@
 		$rs=mysqli_query($conexion,$sql);
 		$x=0;
 		while($datos=mysqli_fetch_array($rs)){
-			$codigoSocio =$datos[codigoSocio];
-			$lotes       =$datos[lotes];
-			$ingreso     =$datos[ingreso];
-			$salida      =$datos[salida];
-			$retraso     =$datos[retraso];
+			$codigoSocio =$datos['codigoSocio'];
+			$lotes       =$datos['lotes'];
+			$ingreso     =$datos['ingreso'];
+			$salida      =$datos['salida'];
+			$retraso     =$datos['retraso'];
 			$infoIngreso =substr($ingreso,0,2).substr($ingreso,3,2).substr($ingreso,6,2);
 			$infoSalida  =substr($salida,0,2).substr($salida,3,2).substr($salida,6,2);
 
