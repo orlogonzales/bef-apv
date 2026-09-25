@@ -5,7 +5,7 @@
 	$fecha      =infoTiempo('fecha');
 	$hora       =infoTiempo('hora');
 	$dniUsuario =$_SESSION['dni_apv'];
-	$operacion  =$_POST[operacion];
+	$operacion  =$_POST['operacion'];
 	$usuario    =$dniUsuario;
 
 	if($operacion=="CERRAR_SESION"){
@@ -42,13 +42,13 @@
 	}
 	
 	if($operacion=="VERIFICA_ACTIVIDAD_USUARIO"){
-		$usuario=$_POST[usuario];
+		$usuario=$_POST['usuario'];
 		$sesion=verificaEstadoActividad($usuario);
 		$respuesta->sesion =$sesion;
 	}
 
 	if($operacion=="ELIMINA_USUARIO"){
-		$dni     =$_POST[dni];
+		$dni     =$_POST['dni'];
 
 		$sql="DELETE FROM sm_usuarios WHERE dni='$dni'";
 		$rs=mysqli_query($conexion,$sql);
@@ -61,8 +61,8 @@
 	}
 
 	if($operacion=="CAMBIA_CLAVE"){
-		$dni   =$_POST[dni];
-		$clave =md5($_POST[clave]);
+		$dni   =$_POST['dni'];
+		$clave =md5($_POST['clave']);
 		$usuario=$dniUsuario;
 
 		$sql="UPDATE sm_usuarios SET clave='$clave' WHERE dni='$dni'";
@@ -76,8 +76,8 @@
 	}
 
 	if($operacion=="CAMBIA_ESTADO"){
-		$dni     =$_POST[dni];
-		$estado  =$_POST[estado];
+		$dni     =$_POST['dni'];
+		$estado  =$_POST['estado'];
 		$usuario =$dniUsuario;
 
 		if($estado=="DESACTIVA"){
@@ -102,29 +102,29 @@
 	}
 
 	if($operacion=="VERIFICA_DNI"){
-		$dni       =$_POST[dni];
+		$dni       =$_POST['dni'];
 		$existeDNI =datoUsuario($dni,'verificaDNI');
 		if($existeDNI==$dni){ $respuesta->mensaje ="DNI_EXISTE"; }else{ $respuesta->mensaje ="DNI_NO_EXISTE"; }
 	}
 
 	if($operacion=="VERIFICA_USER"){
-		$usuario       =$_POST[usuario];
+		$usuario       =$_POST['usuario'];
 		$existeUSER    =datoUsuario($usuario,'verificaUSER');
 		if($existeUSER==$usuario){ $respuesta->mensaje="EXISTE_USER"; }else{  $respuesta->mensaje="NO_EXISTE_USER"; }
 	}
 
 	if($operacion=="REGISTRA_USUARIO"){
-		$dni           =$_POST[UsuarioDNI];
-		$nombre        =utf8_decode($_POST[usuarioNombre]);
-		$paterno       =utf8_decode($_POST[usuarioPaterno]);
-		$materno       =utf8_decode($_POST[usuarioMaterno]);
+		$dni           =$_POST['UsuarioDNI'];
+		$nombre        =utf8_decode($_POST['usuarioNombre']);
+		$paterno       =utf8_decode($_POST['usuarioPaterno']);
+		$materno       =utf8_decode($_POST['usuarioMaterno']);
 		$foto          ="";
-		$genero        =$_POST[usuarioGenero];
-		$email         =$_POST[usuarioEmail];
-		$telefono      =$_POST[usuarioTelefono];
-		$rol           =$_POST[usuarioRol];
-		$usuario       =$_POST[usuarioLogin];
-		$clave         =md5($_POST[usuarioClave]);
+		$genero        =$_POST['usuarioGenero'];
+		$email         =$_POST['usuarioEmail'];
+		$telefono      =$_POST['usuarioTelefono'];
+		$rol           =$_POST['usuarioRol'];
+		$usuario       =$_POST['usuarioLogin'];
+		$clave         =md5($_POST['usuarioClave']);
 		$estado        ='ACT';
 		$fechaRegistro =$fecha;
 		
@@ -139,14 +139,14 @@
 	}
 
 	if($operacion=="MODIFICA_USUARIO"){
-		$dni           =$_POST[UsuarioDNI];
-		$nombre        =utf8_decode($_POST[usuarioNombre]);
-		$paterno       =utf8_decode($_POST[usuarioPaterno]);
-		$materno       =utf8_decode($_POST[usuarioMaterno]);
-		$genero        =$_POST[usuarioGenero];
-		$email         =$_POST[usuarioEmail];
-		$telefono      =$_POST[usuarioTelefono];
-		$rol           =$_POST[usuarioRol];
+		$dni           =$_POST['UsuarioDNI'];
+		$nombre        =utf8_decode($_POST['usuarioNombre']);
+		$paterno       =utf8_decode($_POST['usuarioPaterno']);
+		$materno       =utf8_decode($_POST['usuarioMaterno']);
+		$genero        =$_POST['usuarioGenero'];
+		$email         =$_POST['usuarioEmail'];
+		$telefono      =$_POST['usuarioTelefono'];
+		$rol           =$_POST['usuarioRol'];
 		$fechaRegistro =$fecha;
 
 		$sql="UPDATE sm_usuarios SET nombre='$nombre', paterno='$paterno', materno='$materno', genero='$genero', email='$email', telefono='$telefono', rol='$rol' WHERE dni='$dni'";
@@ -159,8 +159,8 @@
 		$respuesta->mensaje ="USUARIO_MODIFICADO";
 	}
 	
-	if($_GET[operacion]=="ACTUALIZA_FOTO"){
-		$dni        =$_GET[dni];
+	if($_GET['operacion']=="ACTUALIZA_FOTO"){
+		$dni        =$_GET['dni'];
 		$foto       =$_FILES['fotoUsuario']['name'];
 		$permitidos =array("image/jpg", "image/jpeg");
 		$limite_kb  =200;
@@ -189,7 +189,7 @@
 	}
 
 	if($operacion=="AGREGA_CATEGORIA_NOTA"){
-		$categoria =$_POST[categoria];
+		$categoria =$_POST['categoria'];
 
 		$sql="INSERT INTO sm_notas_categorias(categoria, fecha, hora, usuario) VALUES('$categoria', '$fecha', '$hora', '$dniUsuario')";
 		$rs=mysqli_query($conexion,$sql);
@@ -202,7 +202,7 @@
 	}
 
 	if($operacion=="ELIMINAR_CATEGORIA_NOTA"){
-		$id=$_POST[id];
+		$id=$_POST['id'];
 		
 		$sql="DELETE FROM sm_notas_categorias WHERE id='$id'";
 		$rs=mysqli_query($conexion,$sql);
@@ -215,8 +215,8 @@
 	}
 
 	if($operacion=="AGREGA_NOTA"){
-		$observacion =$_POST[observacion];
-		$idCategoria =$_POST[idCategoria];
+		$observacion =$_POST['observacion'];
+		$idCategoria =$_POST['idCategoria'];
 		
 		$sql="INSERT INTO sm_notas(idCategoria, observacion, fecha, hora, usuario) VALUES('$idCategoria','$observacion', '$fecha', '$hora', '$dniUsuario')";
 		$rs=mysqli_query($conexion,$sql);
@@ -229,8 +229,8 @@
 	}
 
 	if($operacion=="EDITA_NOTA"){
-		$id          =$_POST[id];
-		$observacion =$_POST[observacion];
+		$id          =$_POST['id'];
+		$observacion =$_POST['observacion'];
 		
 		$sql="UPDATE sm_notas SET observacion='$observacion' WHERE id='$id'";
 		$rs=mysqli_query($conexion,$sql);
@@ -243,8 +243,8 @@
 	}
 
 	if($operacion=="ELIMINAR_NOTA"){
-		$codigoSocio =$_POST[codigoSocio];
-		$observacion =$_POST[observacion];
+		$codigoSocio =$_POST['codigoSocio'];
+		$observacion =$_POST['observacion'];
 		$nombre      =infoSocios($codigoSocio,'nombreCorto');
 		
 		$sql="DELETE FROM sm_notas WHERE id='$observacion'";
