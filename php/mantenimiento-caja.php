@@ -7,6 +7,7 @@
 	$dniUsuario    =$_SESSION['dni_apv'];
 	$operacion     =$_POST['operacion'];
 	$tipoActividad =$_POST['tipoActividad'];
+	$respuesta     =new \stdClass();
 
 	if($operacion=="REGISTRA_GASTOS_PARTIDA"){
 		$concepto        =$_POST['concepto'];
