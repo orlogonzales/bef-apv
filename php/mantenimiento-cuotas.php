@@ -5,19 +5,19 @@
 	$fecha       =infoTiempo('fecha');
 	$hora        =infoTiempo('hora');
 	$dniUsuario  =$_SESSION['dni_apv'];
-	$operacion   =$_POST[operacion];
+	$operacion   =$_POST['operacion'];
 
 	if($operacion=="REGISTRA_CUOTA"){
-		$conceptoCuota =utf8_decode($_POST[conceptoCuota]);
-		$montoCuota    =$_POST[montoCuota];
-		$idJuntaDirectiva = $_POST[idJuntaDirectiva];
-		$codigoCuenta     = $_POST[codigoCuenta];
-		$fechaPago     =fechaSQL($_POST[fechaPago]);
-		$observacion   =utf8_decode($_POST[observacion]);
+		$conceptoCuota =utf8_decode($_POST['conceptoCuota']);
+		$montoCuota    =$_POST['montoCuota'];
+		$idJuntaDirectiva = $_POST['idJuntaDirectiva'];
+		$codigoCuenta     = $_POST['codigoCuenta'];
+		$fechaPago     =fechaSQL($_POST['fechaPago']);
+		$observacion   =utf8_decode($_POST['observacion']);
 		$fecha         =$fecha;
 		$hora          =$hora;
 		$usuario       =$dniUsuario;
-		$codigoCuota   =codCuota($_POST[fechaPago],$usuario);
+		$codigoCuota   =codCuota($_POST['fechaPago'],$usuario);
 
 		///////////////////////////////////////////////////
 		/// INSERTAR DATOS EN TABLA DE CUOTAS
@@ -33,7 +33,7 @@
 			$rs=mysqli_query($conexion,$sql);
 			$i=1;
 			while($n=mysqli_fetch_array($rs)){
-				$codigoSocio =$n[codigoSocio];
+				$codigoSocio =$n['codigoSocio'];
 				$lotes       =infoSocios($codigoSocio,'cantidadLotes');
 				$montoPago   =$lotes*$montoCuota;
 				$estadoPago  ="NP";
@@ -70,12 +70,12 @@
 	}
 
 	if($operacion=="EDITA_CUOTA"){
-		$codigoCuota   =$_POST[codigoCuota];
-		$conceptoCuota =utf8_decode($_POST[conceptoCuota]);
-		$montoCuota    =$_POST[montoCuota];
-		$codigoCuenta  =$_POST[codigoCuenta];
-		$fechaPago     =fechaSQL($_POST[fechaPago]);
-		$observacion   =utf8_decode($_POST[observacion]);
+		$codigoCuota   =$_POST['codigoCuota'];
+		$conceptoCuota =utf8_decode($_POST['conceptoCuota']);
+		$montoCuota    =$_POST['montoCuota'];
+		$codigoCuenta  =$_POST['codigoCuenta'];
+		$fechaPago     =fechaSQL($_POST['fechaPago']);
+		$observacion   =utf8_decode($_POST['observacion']);
 		$fecha         =$fecha;
 		$hora          =$hora;
 		$usuario       =$dniUsuario;
@@ -103,7 +103,7 @@
 	}
 
 	if($operacion=="ELIMINAR_CUOTA"){
-		$codigoCuota   =$_POST[codigoCuota];
+		$codigoCuota   =$_POST['codigoCuota'];
 		$fecha         =$fecha;
 		$hora          =$hora;
 		$usuario       =$dniUsuario;
@@ -126,7 +126,7 @@
 		$rs=mysqli_query($conexion,$sql);
 		$i=1;
 		while($n=mysqli_fetch_array($rs)){
-			$codigoSocio =$n[codigoSocio];
+			$codigoSocio =$n['codigoSocio'];
 			$lotes       =infoSocios($codigoSocio,'cantidadLotes');
 			$totalCuota  =$montoCuota*$lotes;
 			$proceso     ="ELIMINADO DE CUOTA - <strong>".$conceptoCuota."</strong> | <strong>MONTO:</strong> S/. ".moneda($montoCuota)." | <strong>LOTES:</strong> ".ceros($lotes,2)." | <strong>TOTAL CUOTA:</strong> S/. ".moneda($totalCuota);
@@ -148,7 +148,7 @@
 	}
 
 	if($operacion=="ELIMINAR_CUOTA_EMERGENCIA"){
-		$codigoCuota   =$_POST[codigoCuota];
+		$codigoCuota   =$_POST['codigoCuota'];
 		$fecha         =$fecha;
 		$hora          =$hora;
 		$usuario       =$dniUsuario;
@@ -197,7 +197,7 @@
 
 	
 	if($operacion=="ACTUALIZA_SOCIOS_CUOTA"){
-		$codigoCuota   =$_POST[codigoCuota];
+		$codigoCuota   =$_POST['codigoCuota'];
 
 		///////////////////////////////////////////////////
 		/// INSERTAR DATOS EN TABLA DE CUOTAS
@@ -206,7 +206,7 @@
 		$rs=mysqli_query($conexion,$sql);
 		$i=1;
 		while($n=mysqli_fetch_array($rs)){
-			$codigoSocio   =$n[codigoSocio];
+			$codigoSocio   =$n['codigoSocio'];
 			$lotes         =infoSocios($codigoSocio,'cantidadLotes');
 			$montoCuota    =infoCuota($idJuntaDirectiva,$codigoCuota,'montoCuota');
 			$montoPago     =$lotes*$montoCuota;
