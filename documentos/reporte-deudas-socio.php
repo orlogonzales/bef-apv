@@ -29,6 +29,7 @@
 		$etiquetaLotes='LOTES';
 	}
 	$l=1;
+	$infoLotes='';
 
 	while ($datos = $rs->fetch_assoc()) {
 		$codigoLote = $datos['codigoLote'];
@@ -218,6 +219,7 @@
 					}
 			}else{ $deudaASA=0; }
 
+			$b=0;
 			if($cantidadRegistrosFAE>0){
 				if($b>0){
 					$b=$a;
