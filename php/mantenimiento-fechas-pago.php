@@ -5,51 +5,51 @@
 	$fecha          =infoTiempo('fecha');
 	$hora           =infoTiempo('hora');
 	$dniUsuario     =$_SESSION['dni_apv'];
-	$cuotasPago     =$_POST[cuotasPago];
-	$codigoSocio    =$_POST[codigoSocio];
-	$conceptoPago   =$_POST[conceptoPago];
-	$codigoConcepto =$_POST[codigoConcepto];
-	$operacion      =$_POST[operacion];
+	$cuotasPago     =$_POST['cuotasPago'];
+	$codigoSocio    =$_POST['codigoSocio'];
+	$conceptoPago   =$_POST['conceptoPago'];
+	$codigoConcepto =$_POST['codigoConcepto'];
+	$operacion      =$_POST['operacion'];
 	$lotes          =infoSocios($codigoSocio,'cantidadLotes');
 
 	if($cuotasPago==2){
-		$montoCuota_1 =$_POST[montoCuota1];
-		$montoCuota_2 =$_POST[montoCuota2];
-		$fechaPago_1  =fechaSQL($_POST[fechaPago1]);
-		$fechaPago_2  =fechaSQL($_POST[fechaPago2]);
+		$montoCuota_1 =$_POST['montoCuota1'];
+		$montoCuota_2 =$_POST['montoCuota2'];
+		$fechaPago_1  =fechaSQL($_POST['fechaPago1']);
+		$fechaPago_2  =fechaSQL($_POST['fechaPago2']);
 	}
 
 	if($cuotasPago==3){
-		$montoCuota_1 =$_POST[montoCuota1];
-		$montoCuota_2 =$_POST[montoCuota2];
-		$montoCuota_3 =$_POST[montoCuota3];
-		$fechaPago_1  =fechaSQL($_POST[fechaPago1]);
-		$fechaPago_2  =fechaSQL($_POST[fechaPago2]);
-		$fechaPago_3  =fechaSQL($_POST[fechaPago3]);
+		$montoCuota_1 =$_POST['montoCuota1'];
+		$montoCuota_2 =$_POST['montoCuota2'];
+		$montoCuota_3 =$_POST['montoCuota3'];
+		$fechaPago_1  =fechaSQL($_POST['fechaPago1']);
+		$fechaPago_2  =fechaSQL($_POST['fechaPago2']);
+		$fechaPago_3  =fechaSQL($_POST['fechaPago3']);
 	}
 
 	if($cuotasPago==4){
-		$montoCuota_1 =$_POST[montoCuota1];
-		$montoCuota_2 =$_POST[montoCuota2];
-		$montoCuota_3 =$_POST[montoCuota3];
-		$montoCuota_4 =$_POST[montoCuota4];
-		$fechaPago_1  =fechaSQL($_POST[fechaPago1]);
-		$fechaPago_2  =fechaSQL($_POST[fechaPago2]);
-		$fechaPago_3  =fechaSQL($_POST[fechaPago3]);
-		$fechaPago_4  =fechaSQL($_POST[fechaPago4]);
+		$montoCuota_1 =$_POST['montoCuota1'];
+		$montoCuota_2 =$_POST['montoCuota2'];
+		$montoCuota_3 =$_POST['montoCuota3'];
+		$montoCuota_4 =$_POST['montoCuota4'];
+		$fechaPago_1  =fechaSQL($_POST['fechaPago1']);
+		$fechaPago_2  =fechaSQL($_POST['fechaPago2']);
+		$fechaPago_3  =fechaSQL($_POST['fechaPago3']);
+		$fechaPago_4  =fechaSQL($_POST['fechaPago4']);
 	}
 
 	if($cuotasPago==5){
-		$montoCuota_1 =$_POST[montoCuota1];
-		$montoCuota_2 =$_POST[montoCuota2];
-		$montoCuota_3 =$_POST[montoCuota3];
-		$montoCuota_4 =$_POST[montoCuota4];
-		$montoCuota_5 =$_POST[montoCuota5];
-		$fechaPago_1  =fechaSQL($_POST[fechaPago1]);
-		$fechaPago_2  =fechaSQL($_POST[fechaPago2]);
-		$fechaPago_3  =fechaSQL($_POST[fechaPago3]);
-		$fechaPago_4  =fechaSQL($_POST[fechaPago4]);
-		$fechaPago_5  =fechaSQL($_POST[fechaPago5]);
+		$montoCuota_1 =$_POST['montoCuota1'];
+		$montoCuota_2 =$_POST['montoCuota2'];
+		$montoCuota_3 =$_POST['montoCuota3'];
+		$montoCuota_4 =$_POST['montoCuota4'];
+		$montoCuota_5 =$_POST['montoCuota5'];
+		$fechaPago_1  =fechaSQL($_POST['fechaPago1']);
+		$fechaPago_2  =fechaSQL($_POST['fechaPago2']);
+		$fechaPago_3  =fechaSQL($_POST['fechaPago3']);
+		$fechaPago_4  =fechaSQL($_POST['fechaPago4']);
+		$fechaPago_5  =fechaSQL($_POST['fechaPago5']);
 	}
 
 	if($conceptoPago=="CUO"){
@@ -58,7 +58,7 @@
 	}
 
 	if(($conceptoPago=="ASA") or ($conceptoPago=="FAE")){
-		$razon     =$_POST[razon];
+		$razon     =$_POST['razon'];
 		$totalPago =infoPago($codigoSocio,$codigoConcepto,'','montoMultaSocio');
 
 		if($razon=="TARDE"){
@@ -88,8 +88,8 @@
 		
 		while($cuota<=$cuotasPago){
 			$cuota           =$cuota;
-			$fechaProgramada =fechaSQL($_POST[fechaPago.$cuota]);
-			$montoPago       =$_POST[montoCuota.$cuota];
+			$fechaProgramada =fechaSQL($_POST['fechaPago'.$cuota]);
+			$montoPago       =$_POST['montoCuota'.$cuota];
 			$documentoCodigo =$cuota.'-'.$codigoSocio;
 			$codigoOperacion =generaCodigo(12,$documentoCodigo);
 
