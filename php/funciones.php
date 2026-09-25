@@ -555,7 +555,7 @@
 		if($info=="verificaUSER"){ $sql="SELECT usuario FROM sm_usuarios WHERE usuario='$dni'"; }
 		$row=mysqli_query($conexion,$sql);
 		$dato=mysqli_fetch_array($row);
-		$info=$dato[0];
+		$info=is_array($dato) ? $dato[0] : '';
 		cerrarDB();
 		return $info;
 	}
@@ -784,7 +784,7 @@
 		if($informacion=="observaciones"){ $sql="SELECT COUNT(codigoSocio) FROM sm_socios_observacion WHERE codigoSocio='$codigoSocio'"; }
 		$row=mysqli_query($conexion,$sql);
 		$dato=mysqli_fetch_array($row);
-		$info=$dato[0];
+		$info=is_array($dato) ? $dato[0] : '';
 		cerrarDB();
 		return $info;
 	}
@@ -1170,7 +1170,7 @@
 		$sql="SELECT detalle FROM sm_a_doc_pago WHERE id='$tipo'";
 		$row=mysqli_query($conexion,$sql);
 		$dato=mysqli_fetch_array($row);
-		$info=$dato[0];
+		$info=is_array($dato) ? $dato[0] : '';
 		cerrarDB();
 		return $info;
 	}
