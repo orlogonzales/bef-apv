@@ -7,6 +7,7 @@
 	$dniUsuario =$_SESSION['dni_apv'];
 	$operacion  =$_POST['operacion'];
 	$usuario    =$dniUsuario;
+	$respuesta  =new \stdClass();
 
 	if($operacion=="CERRAR_SESION"){
 		session_start();
