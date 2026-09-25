@@ -23,8 +23,9 @@
 	$totalSaldo     =infoPagoFechas($codigoSocio,$codigoConcepto,'totalFechasSaldo');
 	$hoy            =fechaSQL(infoTiempo('fechaHoy'));
 	$hora           =infoTiempo('hora');
-	$dniUsuario     =$_SESSION['dni_apv'];
-	$programadoPor  =infoPagoFechas($codigoSocio,$codigoConcepto,'programadoPor');
+	$dniUsuario       =$_SESSION['dni_apv'];
+	$idJuntaDirectiva =$_SESSION['idJDActual'] ?? '';
+	$programadoPor    =infoPagoFechas($codigoSocio,$codigoConcepto,'programadoPor');
 	$impresoPor     ='<span class="infoImpresion textoMayuscula"> Impreso por:'.datoUsuario($dniUsuario,'nombreFull').' - '.infoFecha($hoy,'larga').' - '.horacorta($hora).'</span>';
 	$totales        ='<td colspan="7" class="totales textoCen"><strong>TOTAL PAGADO:</strong>&nbsp;S/. '.moneda($totalpagado).'&nbsp;&nbsp;|&nbsp;&nbsp;<strong>TOTAL SALDO:</strong>&nbsp;S/. '.moneda($totalSaldo).'</td>';
 	$infoCodigo     ='<small>CODIGO: '.$codigoConcepto.'</small>';
@@ -52,9 +53,6 @@
 		$detalleConcepto =$multaPor.$actividad.infoActividad($idJuntaDirectiva,$codigoConcepto,'','temaActividad');
 		$titulo="CRONOGRAMA DE PAGOS";
 	}
-
-	if($usuarioConsulta=="ALL"){ $consultaUsuario=""; }
-	if($usuarioConsulta!="ALL"){ $consultaUsuario=" AND usuario='$usuarioConsulta'"; }
 
 	$reporte='
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
