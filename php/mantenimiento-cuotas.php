@@ -5,6 +5,7 @@
 	$fecha       =infoTiempo('fecha');
 	$hora        =infoTiempo('hora');
 	$dniUsuario  =$_SESSION['dni_apv'];
+	$respuesta   =new \stdClass();
 	$operacion   =$_POST['operacion'];
 
 	if($operacion=="REGISTRA_CUOTA"){
