@@ -21,8 +21,10 @@
 	$lotesSocio      =infoSocios($codigoSocio,'cantidadLotes');
 	$hoy             =fechaSQL(infoTiempo('fechaHoy'));
 	$hora            =infoTiempo('hora');
-	$dniUsuario      =$_SESSION['dni_apv'];
-	$rutaCB          ='../assets/images/codigo-barra/';
+	$dniUsuario       =$_SESSION['dni_apv'];
+	$idJuntaDirectiva =$_SESSION['idJDActual'] ?? '';
+	$detalles         ='';
+	$rutaCB           ='../assets/images/codigo-barra/';
 	$fileCB          =$codigoSocio.'.png';
 	$codBar          =$rutaCB.$fileCB;
 	$impresoPor      ='<span class="infoImpresion textoMayuscula"> Impreso por:'.datoUsuario($dniUsuario,'nombreFull').' - '.infoFecha($hoy,'larga').' - '.horacorta($hora).'</span>';
