@@ -24,8 +24,6 @@
 	$fechaFin         = $_GET['fechaFin'] ?? '';
 
 	$idJuntaDirectiva = $conexion->real_escape_string($idJuntaDirectiva);
-	$codigoCuota = $conexion->real_escape_string($codigoCuota);
-	$estadoPago = $conexion->real_escape_string($estadoPago);
 
 	$hoy = fechaSQL(infoTiempo('fechaHoy'));
 	$hora = infoTiempo('hora');
@@ -95,6 +93,7 @@
 	$sql="SELECT idJuntaDirectiva, movimiento, fechaOperacion, tipoActividad, codigoSocio, codigoConcepto, codigoCuenta, monto, detalleConcepto, fecha, hora, usuario FROM sm_mod_caja WHERE idJuntaDirectiva = '$idJuntaDirectiva' AND movimiento='$movimiento' AND tipoActividad='$tipoActividad' $cCodigoConcepto $cCodigoConcepto AND fechaOperacion BETWEEN '$fechaInicio' AND '$fechaFin' ORDER BY fechaOperacion ASC";
 	$consulta = $conexion->query($sql);
 	$totalConsulta = 0;
+	$i = 1;
 	// Iterate over the query results
 	while ($dato = $consulta->fetch_assoc()) {
 	   $idJuntaDirectiva   = $dato['idJuntaDirectiva'];
