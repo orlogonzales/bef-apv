@@ -5,20 +5,20 @@
 	$fecha         =infoTiempo('fecha');
 	$hora          =infoTiempo('hora');
 	$dniUsuario    =$_SESSION['dni_apv'];
-	$operacion     =$_POST[operacion];
-	$tipoActividad =$_POST[tipoActividad];
+	$operacion     =$_POST['operacion'];
+	$tipoActividad =$_POST['tipoActividad'];
 
 	if($operacion=="REGISTRA_GASTOS_PARTIDA"){
-		$concepto        =$_POST[concepto];
-		$codigoPartida   =$_POST[codigoPartida];
-		$movimiento      =$_POST[movimiento];
-		$codigoConcepto  =$_POST[codigoConcepto];
-		$detalleConcepto =utf8_decode($_POST[detalleConcepto]);
-		$fechaOperacion  =fechaSQL($_POST[fechaOperacion]);
-		$monto           =$_POST[monto];
-		$tipoDocumento   =$_POST[tipoDocumento];
-		$nroDocumento    =$_POST[nroDocumento];
-		$observaciones   =utf8_decode($_POST[observaciones]);
+		$concepto        =$_POST['concepto'];
+		$codigoPartida   =$_POST['codigoPartida'];
+		$movimiento      =$_POST['movimiento'];
+		$codigoConcepto  =$_POST['codigoConcepto'];
+		$detalleConcepto =utf8_decode($_POST['detalleConcepto']);
+		$fechaOperacion  =fechaSQL($_POST['fechaOperacion']);
+		$monto           =$_POST['monto'];
+		$tipoDocumento   =$_POST['tipoDocumento'];
+		$nroDocumento    =$_POST['nroDocumento'];
+		$observaciones   =utf8_decode($_POST['observaciones']);
 		$usuario         =$dniUsuario;
 		$codigoSocio     =$dniUsuario;
 		$codigoOperacion =codOperacion($concepto,$fecha,$hora,$usuario);
@@ -62,16 +62,16 @@
 	}
 
 	if($operacion=="REGISTRA_CIERRE_PARTIDA"){
-		$concepto        =$_POST[concepto];
-		$codigoPartida   =$_POST[codigoPartida];
-		$movimiento      =$_POST[movimiento];
-		$codigoConcepto  =$_POST[codigoConcepto];
-		$detalleConcepto =utf8_decode($_POST[detalleConcepto]);
-		$fechaOperacion  =fechaSQL($_POST[fechaOperacion]);
-		$monto           =$_POST[monto];
-		$tipoDocumento   =$_POST[tipoDocumento];
-		$nroDocumento    =$_POST[nroDocumento];
-		$observaciones   =utf8_decode($_POST[observaciones]);
+		$concepto        =$_POST['concepto'];
+		$codigoPartida   =$_POST['codigoPartida'];
+		$movimiento      =$_POST['movimiento'];
+		$codigoConcepto  =$_POST['codigoConcepto'];
+		$detalleConcepto =utf8_decode($_POST['detalleConcepto']);
+		$fechaOperacion  =fechaSQL($_POST['fechaOperacion']);
+		$monto           =$_POST['monto'];
+		$tipoDocumento   =$_POST['tipoDocumento'];
+		$nroDocumento    =$_POST['nroDocumento'];
+		$observaciones   =utf8_decode($_POST['observaciones']);
 		$usuario         =$dniUsuario;
 		$codigoSocio     =$dniUsuario;
 		$codigoOperacion =codOperacion($concepto,$fecha,$hora,$usuario);
@@ -106,16 +106,16 @@
 	}
 	
 	if($operacion=="REGISTRA_SALIDA_CAJA"){
-		$movimiento      =$_POST[movimiento];
-		$tipoResposanble =$_POST[tipoResposanble];
-		$responsableSAL  =$_POST[responsableSAL];
-		$concepto        =$_POST[concepto];
-		$detalleConcepto =utf8_decode($_POST[detalleConcepto]);
-		$fechaOperacion  =fechaSQL($_POST[fechaOperacion]);
-		$monto           =$_POST[monto];
-		$tipoDocumento   =$_POST[tipoDocumento];
-		$nroDocumento    =$_POST[nroDocumento];
-		$observaciones   =utf8_decode($_POST[observaciones]);
+		$movimiento      =$_POST['movimiento'];
+		$tipoResposanble =$_POST['tipoResposanble'];
+		$responsableSAL  =$_POST['responsableSAL'];
+		$concepto        =$_POST['concepto'];
+		$detalleConcepto =utf8_decode($_POST['detalleConcepto']);
+		$fechaOperacion  =fechaSQL($_POST['fechaOperacion']);
+		$monto           =$_POST['monto'];
+		$tipoDocumento   =$_POST['tipoDocumento'];
+		$nroDocumento    =$_POST['nroDocumento'];
+		$observaciones   =utf8_decode($_POST['observaciones']);
 		$usuario         =$dniUsuario;
 		$codigoSocio     =$responsableSAL;
 		$codigoOperacion =codOperacion($movimiento,$fechaOperacion,$hora,$responsableSAL);
