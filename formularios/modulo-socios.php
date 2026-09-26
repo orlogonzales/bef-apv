@@ -114,26 +114,26 @@
 		if($contar>0){
 			$resultado='<hr><div class="form-group"><div class="row"><div class="col-sm-12"><div class="table-responsive"><table class="table tabla table-bordered table-hover"><thead><tr class="success"><th class="text-left">CODIGO SOCIO</th><th class="text-center">LOTES</th><th class="text-left">NOMBRE DE SOCIO</th><th class="text-left">CELULAR</th><th class="text-center"><i class="fa fa-align-justify"></i></th></tr></thead><tbody>';
 			while($dato=mysqli_fetch_array($row)){
-				$codigoSocio     =$dato[codigoSocio];
-				$tratamiento     =$dato[tratamiento];
-				$nombre          =$dato[nombre];
-				$apPaterno       =$dato[apPaterno];
-				$apMaterno       =$dato[apMaterno];
-				$genero          =$dato[genero];
-				$fechaNacimiento =$dato[fechaNacimiento];
-				$fotoSocio       =$dato[fotoSocio];
-				$nacionalidad    =$dato[nacionalidad];
-				$estadoCivil     =$dato[estadoCivil];
-				$direccion       =$dato[direccion];
-				$departamento    =$dato[departamento];
-				$provincia       =$dato[provincia];
-				$distrito        =$dato[distrito];
-				$telefono        =$dato[telefono];
-				$celular         =$dato[celular];
-				$observaciones   =$dato[observaciones];
-				$sincronizado    =$dato[sincronizado];
-				$fecha           =$dato[fecha];
-				$hora            =$dato[hora];
+				$codigoSocio     =$dato['codigoSocio'];
+				$tratamiento     =$dato['tratamiento'];
+				$nombre          =$dato['nombre'];
+				$apPaterno       =$dato['apPaterno'];
+				$apMaterno       =$dato['apMaterno'];
+				$genero          =$dato['genero'];
+				$fechaNacimiento =$dato['fechaNacimiento'];
+				$fotoSocio       =$dato['fotoSocio'];
+				$nacionalidad    =$dato['nacionalidad'];
+				$estadoCivil     =$dato['estadoCivil'];
+				$direccion       =$dato['direccion'];
+				$departamento    =$dato['departamento'];
+				$provincia       =$dato['provincia'];
+				$distrito        =$dato['distrito'];
+				$telefono        =$dato['telefono'];
+				$celular         =$dato['celular'];
+				$observaciones   =$dato['observaciones'];
+				$sincronizado    =$dato['sincronizado'];
+				$fecha           =$dato['fecha'];
+				$hora            =$dato['hora'];
 
 				$query="SELECT COUNT(lotes) AS cantidadLotes FROM sm_lotes_socio WHERE codigoSocio='$codigoSocio'";
 				$rs=mysqli_query($conexion,$query);
