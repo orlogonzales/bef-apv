@@ -2,10 +2,10 @@
 	/////////////////////////////////////////////////////////////////////
 	/// VARIABLES
 	/////////////////////////////////////////////////////////////////////
-	$codigoActividad =$_GET[codigoActividad];
-	$opcion          =$_GET[opcion];
-	$tipoActividad   =$_GET[tipoActividad];
-	$temaActividad   =$_GET[temaActividad];
+	$codigoActividad =$_GET['codigoActividad'];
+	$opcion          =$_GET['opcion'];
+	$tipoActividad   =$_GET['tipoActividad'];
+	$temaActividad   =$_GET['temaActividad'];
 	$ruta            ='../';
 	$documentos      ='../assets/images/docs/';
 
@@ -60,17 +60,17 @@
 			$sql="SELECT codigoActividad, tipoActividad, temaActividad, contenidoActividad, fechaActividad, horaActividad, lugarActividad, mTardanza, mFalta, codigoCuenta, fecha, hora, usuario FROM sm_mod_actividades WHERE codigoActividad='$codigoActividad'";
 			$row=mysqli_query($conexion,$sql);
 			$dato=mysqli_fetch_array($row);
-			$temaActividad            =$dato[temaActividad];
-			$contenidoActividad       =$dato[contenidoActividad];
-			$fechaActividad           =$dato[fechaActividad];
-			$horaActividad            =$dato[horaActividad];
-			$lugarActividad           =$dato[lugarActividad];
-			$mTardanza                =$dato[mTardanza];
-			$mFalta                   =$dato[mFalta];
-			$codigoCuenta             =$dato[codigoCuenta];
-			$fecha                    =$dato[fecha];
-			$hora                     =$dato[hora];
-			$usuario                  =$dato[usuario];
+			$temaActividad            =$dato['temaActividad'];
+			$contenidoActividad       =$dato['contenidoActividad'];
+			$fechaActividad           =$dato['fechaActividad'];
+			$horaActividad            =$dato['horaActividad'];
+			$lugarActividad           =$dato['lugarActividad'];
+			$mTardanza                =$dato['mTardanza'];
+			$mFalta                   =$dato['mFalta'];
+			$codigoCuenta             =$dato['codigoCuenta'];
+			$fecha                    =$dato['fecha'];
+			$hora                     =$dato['hora'];
+			$usuario                  =$dato['usuario'];
 			$aforo                    =infoActividad($idJuntaDirectiva,$codigoActividad,'','aforo');
 			$asistio                  =infoActividad($idJuntaDirectiva,$codigoActividad,'','asistio');
 			$tarde                    =infoActividad($idJuntaDirectiva,$codigoActividad,'','tarde');
@@ -346,10 +346,10 @@
 															$sql="SELECT codigoBanco, codigoCuenta, numeroCuenta, detalle FROM sm_banco_cuentas WHERE estado='ACT'";
 															$rs=mysqli_query($conexion,$sql);
 															while($datos=mysqli_fetch_array($rs)){
-																$codigoBanco  =$datos[codigoBanco];
-																$codCuenta    =$datos[codigoCuenta];
-																$numeroCuenta =$datos[numeroCuenta];
-																$detalle      =$datos[detalle];
+																$codigoBanco  =$datos['codigoBanco'];
+																$codCuenta    =$datos['codigoCuenta'];
+																$numeroCuenta =$datos['numeroCuenta'];
+																$detalle      =$datos['detalle'];
 																$infoCuenta   =infoBancos($codigoBanco,'detalleEntidad').' - '.texto($detalle).' ('.$numeroCuenta.')';
 																if($codCuenta==$codigoCuenta){ 
 																	echo '<option value="'.$codCuenta.'" selected>'.$infoCuenta.'</option>';
@@ -487,9 +487,9 @@
 												$sql="SELECT sm_mod_asistencia.multa, sm_socios.codigoSocio, CONCAT(sm_socios.nombre,' ',sm_socios.apPaterno,' ',sm_socios.apMaterno) as nombre FROM sm_socios, sm_mod_asistencia WHERE sm_socios.codigoSocio=sm_mod_asistencia.codigoSocio AND sm_mod_asistencia.codigoActividad='$codigoActividad' AND (sm_mod_asistencia.asistio='NO' OR (sm_mod_asistencia.asistio='SI' AND sm_mod_asistencia.retraso>0.15)) ORDER BY nombre ASC";
 												$rs=mysqli_query($conexion,$sql);
 												while($datos=mysqli_fetch_array($rs)){
-													$codigoSocio    =$datos[codigoSocio];
-													$multa          =$datos[multa];
-													$nombre         =$datos[nombre];
+													$codigoSocio    =$datos['codigoSocio'];
+													$multa          =$datos['multa'];
+													$nombre         =$datos['nombre'];
 													$infoAsistencia =infoAsistencia($codigoActividad,$codigoSocio);
 													$porcentajePago =porcentajePago($codigoSocio,$codigoActividad,$multa);
 													if($porcentajePago>0){}else{
@@ -568,19 +568,19 @@
 									$rs=mysqli_query($conexion,$sql);
 									$i=1;
 									while($n=mysqli_fetch_array($rs)){
-										$codigoSocio   =$n[codigoSocio];
-										$lotes         =$n[lotes];
+										$codigoSocio   =$n['codigoSocio'];
+										$lotes         =$n['lotes'];
 										$temaActividad =infoActividad($idJuntaDirectiva,$codigoActividad,'','temaActividad');
 										$multaTarde    =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaporTardanza');
 										$multaFalta    =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaPorFalta');
-										$retraso       =$n[retraso];
+										$retraso       =$n['retraso'];
 										$infoAsistencia=infoAsistencia($codigoActividad,$codigoSocio);
-										$multa         =$n[multa];
-										$estadoPago    =$n[estadoPago];
-										$apPaterno     =$n[apPaterno];
-										$apMaterno     =$n[apMaterno];
-										$nombre        =$n[nombre];
-										$dni           =$n[dni];
+										$multa         =$n['multa'];
+										$estadoPago    =$n['estadoPago'];
+										$apPaterno     =$n['apPaterno'];
+										$apMaterno     =$n['apMaterno'];
+										$nombre        =$n['nombre'];
+										$dni           =$n['dni'];
 										$nombre        =texto($apPaterno.' '.$apMaterno.' '.$nombre);
 										$razonBTpago   ='tardanzas';
 										$rotuloCM      ='MULTA TARDANZA A '.$rotActMay;
@@ -647,17 +647,17 @@
 									$rs=mysqli_query($conexion,$sql);
 									$i=1;
 									while($n=mysqli_fetch_array($rs)){
-										$codigoSocio    =$n[codigoSocio];
-										$lotes          =$n[lotes];
+										$codigoSocio    =$n['codigoSocio'];
+										$lotes          =$n['lotes'];
 										$temaActividad  =infoActividad($idJuntaDirectiva,$codigoActividad,'','temaActividad');
 										$multaTarde     =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaporTardanza');
 										$multaFalta     =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaPorFalta');
-										$multa          =$n[multa];
-										$estadoPago     =$n[estadoPago];
-										$apPaterno      =$n[apPaterno];
-										$apMaterno      =$n[apMaterno];
-										$nombre         =$n[nombre];
-										$dni            =$n[dni];
+										$multa          =$n['multa'];
+										$estadoPago     =$n['estadoPago'];
+										$apPaterno      =$n['apPaterno'];
+										$apMaterno      =$n['apMaterno'];
+										$nombre         =$n['nombre'];
+										$dni            =$n['dni'];
 										$nombre         =texto($apPaterno.' '.$apMaterno.' '.$nombre);
 										$porcentajePago =porcentajePago($codigoSocio,$codigoActividad,$multa);
 										$razonBTpago    ='tardanzas';
@@ -821,16 +821,16 @@
 															$sql="SELECT fechaOperacion, concepto, tipoDocumento, nroDocumento, monto, detalleConcepto, codigoOperacion, fecha, hora, usuario FROM sm_mod_caja WHERE codigoSocio='$codigoSocio' AND  codigoConcepto='$codigoActividad'";
 															$infopago=mysqli_query($conexion,$sql);
 															$dato=mysqli_fetch_array($infopago);
-															$fechaOperacion  =$dato[fechaOperacion];
-															$concepto        =$dato[concepto];
-															$tipoDocumento   =$dato[tipoDocumento];
-															$nroDocumento    =$dato[nroDocumento];
-															$monto           =$dato[monto];
-															$detalleConcepto =$dato[detalleConcepto];
-															$codigoOperacion =$dato[codigoOperacion];
-															$fecha           =$dato[fecha];
-															$hora            =$dato[hora];
-															$usuario         =$dato[usuario];
+															$fechaOperacion  =$dato['fechaOperacion'];
+															$concepto        =$dato['concepto'];
+															$tipoDocumento   =$dato['tipoDocumento'];
+															$nroDocumento    =$dato['nroDocumento'];
+															$monto           =$dato['monto'];
+															$detalleConcepto =$dato['detalleConcepto'];
+															$codigoOperacion =$dato['codigoOperacion'];
+															$fecha           =$dato['fecha'];
+															$hora            =$dato['hora'];
+															$usuario         =$dato['usuario'];
 															cerrarDB();
 														?>
 														<div class="row mb-20">
@@ -949,21 +949,21 @@
 									$rs=mysqli_query($conexion,$sql);
 									$i=1;
 									while($n=mysqli_fetch_array($rs)){
-										$codigoSocio    =$n[codigoSocio];
-										$lotes          =$n[lotes];
+										$codigoSocio    =$n['codigoSocio'];
+										$lotes          =$n['lotes'];
 										$temaActividad  =infoActividad($idJuntaDirectiva,$codigoActividad,'','temaActividad');
 										$multaTarde     =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaporTardanza');
 										$multaFalta     =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaPorFalta');
-										$asistio        =$n[asistio];
-										$multa          =$n[multa];
-										$retraso        =$n[retraso];
-										$estadoPago     =$n[estadoPago];
-										$apPaterno      =$n[apPaterno];
-										$apMaterno      =$n[apMaterno];
-										$nombre         =$n[nombre];
-										$dni            =$n[dni];
-										$observacion    =$n[observacion];
-										$documento      =$n[documento];
+										$asistio        =$n['asistio'];
+										$multa          =$n['multa'];
+										$retraso        =$n['retraso'];
+										$estadoPago     =$n['estadoPago'];
+										$apPaterno      =$n['apPaterno'];
+										$apMaterno      =$n['apMaterno'];
+										$nombre         =$n['nombre'];
+										$dni            =$n['dni'];
+										$observacion    =$n['observacion'];
+										$documento      =$n['documento'];
 										$nombre         =texto($apPaterno.' '.$apMaterno.' '.$nombre);
 										$infoAsistencia =infoAsistencia($codigoActividad,$codigoSocio);
 
@@ -1077,17 +1077,17 @@
 									$rs=mysqli_query($conexion,$sql);
 									$i=1;
 									while($n=mysqli_fetch_array($rs)){
-										$codigoSocio    =$n[codigoSocio];
-										$lotes          =$n[lotes];
+										$codigoSocio    =$n['codigoSocio'];
+										$lotes          =$n['lotes'];
 										$temaActividad  =infoActividad($idJuntaDirectiva,$codigoActividad,'','temaActividad');
 										$multaTarde     =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaporTardanza');
 										$multaFalta     =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaPorFalta');
-										$multa          =$n[multa];
-										$estadoPago     =$n[estadoPago];
-										$apPaterno      =$n[apPaterno];
-										$apMaterno      =$n[apMaterno];
-										$nombre         =$n[nombre];
-										$dni            =$n[dni];
+										$multa          =$n['multa'];
+										$estadoPago     =$n['estadoPago'];
+										$apPaterno      =$n['apPaterno'];
+										$apMaterno      =$n['apMaterno'];
+										$nombre         =$n['nombre'];
+										$dni            =$n['dni'];
 										$nombre         =texto($apPaterno.' '.$apMaterno.' '.$nombre);
 										$porcentajePago =porcentajePago($codigoSocio,$codigoActividad,$multa);
 										$razonBTpago    ='inasistencia';
@@ -1281,16 +1281,16 @@
 															$sql="SELECT fechaOperacion, concepto, tipoDocumento, nroDocumento, monto, detalleConcepto, codigoOperacion, fecha, hora, usuario FROM sm_mod_caja WHERE codigoSocio='$codigoSocio' AND  codigoConcepto='$codigoActividad'";
 															$infopago=mysqli_query($conexion,$sql);
 															$dato=mysqli_fetch_array($infopago);
-															$fechaOperacion  =$dato[fechaOperacion];
-															$concepto        =$dato[concepto];
-															$tipoDocumento   =$dato[tipoDocumento];
-															$nroDocumento    =$dato[nroDocumento];
-															$monto           =$dato[monto];
-															$detalleConcepto =$dato[detalleConcepto];
-															$codigoOperacion =$dato[codigoOperacion];
-															$fecha           =$dato[fecha];
-															$hora            =$dato[hora];
-															$usuario         =$dato[usuario];
+															$fechaOperacion  =$dato['fechaOperacion'];
+															$concepto        =$dato['concepto'];
+															$tipoDocumento   =$dato['tipoDocumento'];
+															$nroDocumento    =$dato['nroDocumento'];
+															$monto           =$dato['monto'];
+															$detalleConcepto =$dato['detalleConcepto'];
+															$codigoOperacion =$dato['codigoOperacion'];
+															$fecha           =$dato['fecha'];
+															$hora            =$dato['hora'];
+															$usuario         =$dato['usuario'];
 															cerrarDB();
 														?>
 														<div class="row mb-20">
@@ -1354,11 +1354,11 @@
 									$rs=mysqli_query($conexion,$sql);
 									$i=1;
 									while($n=mysqli_fetch_array($rs)){
-										$codigoSocio=$n[codigoSocio];
-										$proceso=$n[proceso];
-										$fecha=$n[fecha];
-										$hora=$n[hora];
-										$usuario=$n[usuario];
+										$codigoSocio=$n['codigoSocio'];
+										$proceso=$n['proceso'];
+										$fecha=$n['fecha'];
+										$hora=$n['hora'];
+										$usuario=$n['usuario'];
 								?>
 								<tr>
 									<td class="text-center"><?= ceros($i,2) ?></td>
@@ -1384,16 +1384,16 @@
 			$sql="SELECT codigoActividad, tipoActividad, temaActividad, contenidoActividad, fechaActividad, horaActividad, lugarActividad, mTardanza, mFalta, fecha, hora, usuario FROM sm_mod_actividades WHERE codigoActividad='$codigoActividad'";
 			$row=mysqli_query($conexion,$sql);
 			$dato=mysqli_fetch_array($row);
-			$temaActividad       =$dato[temaActividad];
-			$contenidoActividad  =$dato[contenidoActividad];
-			$fechaActividad      =$dato[fechaActividad];
-			$horaActividad       =$dato[horaActividad];
-			$lugarActividad      =$dato[lugarActividad];
-			$mTardanza           =$dato[mTardanza];
-			$mFalta              =$dato[mFalta];
-			$fecha               =$dato[fecha];
-			$hora                =$dato[hora];
-			$usuario             =$dato[usuario];
+			$temaActividad       =$dato['temaActividad'];
+			$contenidoActividad  =$dato['contenidoActividad'];
+			$fechaActividad      =$dato['fechaActividad'];
+			$horaActividad       =$dato['horaActividad'];
+			$lugarActividad      =$dato['lugarActividad'];
+			$mTardanza           =$dato['mTardanza'];
+			$mFalta              =$dato['mFalta'];
+			$fecha               =$dato['fecha'];
+			$hora                =$dato['hora'];
+			$usuario             =$dato['usuario'];
 			$aforo               =infoActividad($idJuntaDirectiva,$codigoActividad,'','aforo');
 			$asistio             =infoActividad($idJuntaDirectiva,$codigoActividad,'','asistio');
 			$tarde               =infoActividad($idJuntaDirectiva,$codigoActividad,'','tarde');
@@ -1555,12 +1555,12 @@
 											$sql="SELECT terminal, socios, archivo, fecha, hora, usuario FROM sm_mod_asistencia_json WHERE codigoActividad='$codigoActividad' ORDER BY terminal ASC";
 											$rs=mysqli_query($conexion,$sql);
 											while($n=mysqli_fetch_array($rs)){
-												$terminal   =$n[terminal];
-												$socios     =$n[socios];
-												$archivo    =$n[archivo];
-												$fecha      =$n[fecha];
-												$hora       =$n[hora];
-												$usuario    =$n[usuario];
+												$terminal   =$n['terminal'];
+												$socios     =$n['socios'];
+												$archivo    =$n['archivo'];
+												$fecha      =$n['fecha'];
+												$hora       =$n['hora'];
+												$usuario    =$n['usuario'];
 												$registro   =registradoPor($usuario,$fecha,$hora,'SI','bg-grey-300');
 												$asistentes =infoTerminal($codigoActividad,'','','totalAsistentes');
 										?>
