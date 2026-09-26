@@ -2,10 +2,10 @@
 	$ruta='../../';
 	include_once $ruta."php/funciones.php";
 	$conexion       =conexionDB();
-	$opcion         =$_GET[opcion];
-	$codigoSocio    =$_GET[codigoSocio];
-	$conceptoPago   =$_GET[conceptoPago];
-	$codigoConcepto =$_GET[codigoConcepto];
+	$opcion         =$_GET['opcion'];
+	$codigoSocio    =$_GET['codigoSocio'];
+	$conceptoPago   =$_GET['conceptoPago'];
+	$codigoConcepto =$_GET['codigoConcepto'];
 	$lotes          =infoSocios($codigoSocio,'cantidadLotes');
 	$fechaHoy       =infoTiempo('fechaHoy');
 	if($conceptoPago=="CUO"){
@@ -13,7 +13,7 @@
 		$estadoPago =infoPago($codigoSocio,$codigoConcepto,'','estadoPagoCuotaSocio');
 	}
 	if(($conceptoPago=="ASA") or ($conceptoPago=="FAE")){
-		$razon      =$_GET[razon];
+		$razon      =$_GET['razon'];
 		$montoPago  =infoPago($codigoSocio,$codigoConcepto,'','totalPagoActividadSocio');
 		$estadoPago =infoPago($codigoSocio,$codigoConcepto,'','estadoPagoActividadSocio');
 	}
@@ -288,7 +288,7 @@
 	</form>
 <?php } ?>
 
-<?php if($opcion=="programar_fechas"){ $cuotasPago=$_GET[cuotasPago]; ?>
+<?php if($opcion=="programar_fechas"){ $cuotasPago=$_GET['cuotasPago']; ?>
 	<hr>
 	<script type="text/javascript">
 		$(document).ready(function(){
@@ -581,14 +581,14 @@
 		$sql="SELECT cuota, fechaProgramada, montoPago, tipoDocumento, nroDocumento, fechaPago, estadoPago, codigoOperacion FROM sm_mod_cuentas WHERE codigoSocio='$codigoSocio' AND codigoConcepto='$codigoConcepto' ORDER BY cuota ASC";
 		$rs=mysqli_query($conexion,$sql);
 		while($n=mysqli_fetch_array($rs)){
-			$cuota           =$n[cuota];
-			$fechaProgramada =$n[fechaProgramada];
-			$montoPago       =$n[montoPago];
-			$tipoDocumento   =$n[tipoDocumento];
-			$nroDocumento    =$n[nroDocumento];
-			$fechaPago       =$n[fechaPago];
-			$estadoPago      =$n[estadoPago];
-			$codigoOperacion =$n[codigoOperacion];
+			$cuota           =$n['cuota'];
+			$fechaProgramada =$n['fechaProgramada'];
+			$montoPago       =$n['montoPago'];
+			$tipoDocumento   =$n['tipoDocumento'];
+			$nroDocumento    =$n['nroDocumento'];
+			$fechaPago       =$n['fechaPago'];
+			$estadoPago      =$n['estadoPago'];
+			$codigoOperacion =$n['codigoOperacion'];
 			if($estadoPago=="PEN"){ $boton='<button type="button" id="'.$cuota.'" class="btn btn-lg btn-icon bg-brown bt_pagar_cuota_fecha"><i class=" icon-coin-dollar"></i></button>'; }else{ $boton='<button type="button" id="bt_pagar_cuota_fecha_'.$cuota.'" class="btn btn-lg btn-icon bg-brown disabled"><i class=" icon-coin-dollar"></i></button>'; }
 	?>
 		<script type="text/javascript">
@@ -702,14 +702,14 @@
 					$sql="SELECT cuota, fechaProgramada, montoPago, tipoDocumento, nroDocumento, fechaPago, estadoPago, codigoOperacion FROM sm_mod_cuentas WHERE codigoSocio='$codigoSocio' AND codigoConcepto='$codigoConcepto' AND estadoPago='PGD' ORDER BY cuota ASC";
 					$rs=mysqli_query($conexion,$sql);
 					while($n=mysqli_fetch_array($rs)){
-						$cuota           =$n[cuota];
-						$fechaProgramada =$n[fechaProgramada];
-						$montoPago       =$n[montoPago];
-						$tipoDocumento   =$n[tipoDocumento];
-						$nroDocumento    =$n[nroDocumento];
-						$fechaPago       =$n[fechaPago];
-						$estadoPago      =$n[estadoPago];
-						$codigoOperacion =$n[codigoOperacion];
+						$cuota           =$n['cuota'];
+						$fechaProgramada =$n['fechaProgramada'];
+						$montoPago       =$n['montoPago'];
+						$tipoDocumento   =$n['tipoDocumento'];
+						$nroDocumento    =$n['nroDocumento'];
+						$fechaPago       =$n['fechaPago'];
+						$estadoPago      =$n['estadoPago'];
+						$codigoOperacion =$n['codigoOperacion'];
 						if($estadoPago=="PEN"){
 							$boton='<button type="button" id="bt_pagar_cuota_fecha_'.$cuota.'" class="btn btn-lg btn-icon bg-brown"><i class=" icon-coin-dollar"></i></button>';
 							$infoEstado='<span class="label bg-warning-400">PENDIENTE</span>';
