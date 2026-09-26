@@ -7,6 +7,7 @@
 	$usuario       =$_SESSION['dni_apv'];
 	$operacion     =$_POST['operacion'];
 	mysqli_set_charset($conexion, "utf8");
+	$respuesta     =new \stdClass();
 
 	if($operacion=="REGISTRA_CHEQUE"){
 		$movimiento          ="SAL";
