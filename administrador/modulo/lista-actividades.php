@@ -2,7 +2,7 @@
 	$ruta='../../';
 	include_once $ruta."php/funciones.php";
 	$conexion      =conexionDB();
-	$tipoActividad =$_GET[tipoActividad];
+	$tipoActividad =$_GET['tipoActividad'];
 
 	if($tipoActividad=="ASA"){
 		$titulotabla="LISTA DE ASAMBLEAS";
@@ -181,30 +181,30 @@
 						$rs=mysqli_query($conexion,$sql);
 						$i=1;
 						while($n=mysqli_fetch_array($rs)){
-							$codigoActividad      = $n[codigoActividad];
-							$tipoActividad        = $n[tipoActividad];
-							$temaActividad        = $n[temaActividad];
-							$formaActividad       = $n[formaActividad];
-							$formaControl         = $n[formaControl];
-							$fechaActividad       = $n[fechaActividad];
-							$horaActividad        = $n[horaActividad];
-							$lugarActividad       = $n[lugarActividad];
-							$idJuntaDirectiva     = $n[idJuntaDirectiva];
-							$codigoCuenta         = $n[codigoCuenta];
-							$mPenalidad           = $n[mPenalidad];
-							$fechaInicioPenalidad = $n[fechaInicioPenalidad];
+							$codigoActividad      = $n['codigoActividad'];
+							$tipoActividad        = $n['tipoActividad'];
+							$temaActividad        = $n['temaActividad'];
+							$formaActividad       = $n['formaActividad'];
+							$formaControl         = $n['formaControl'];
+							$fechaActividad       = $n['fechaActividad'];
+							$horaActividad        = $n['horaActividad'];
+							$lugarActividad       = $n['lugarActividad'];
+							$idJuntaDirectiva     = $n['idJuntaDirectiva'];
+							$codigoCuenta         = $n['codigoCuenta'];
+							$mPenalidad           = $n['mPenalidad'];
+							$fechaInicioPenalidad = $n['fechaInicioPenalidad'];
 
 							$query = "SELECT sm_junta_directiva.fechaPeriodo, sm_junta_directiva_vigencia.vigenciaJunta, sm_junta_directiva.fechaFinPeriodo FROM sm_junta_directiva INNER JOIN sm_junta_directiva_vigencia ON sm_junta_directiva.idVigencia = sm_junta_directiva_vigencia.idVigencia WHERE idJuntaDirectiva = '$idJuntaDirectiva'";
 							$row=mysqli_query($conexion,$query);
 							$dato=mysqli_fetch_array($row);
-							$fechaPeriodo = $dato[fechaPeriodo];
-							$vigenciaJunta = $dato[vigenciaJunta];
-							$fechaFinPeriodo=$dato[fechaFinPeriodo];
+							$fechaPeriodo = $dato['fechaPeriodo'];
+							$vigenciaJunta = $dato['vigenciaJunta'];
+							$fechaFinPeriodo=$dato['fechaFinPeriodo'];
 
 							$query="SELECT CONCAT(sm_socios.nombre, ' ',sm_socios.apPaterno) AS nombrePresidente FROM sm_junta_directiva_integrantes INNER JOIN sm_socios ON sm_junta_directiva_integrantes.codigoSocio = sm_socios.codigoSocio WHERE idJuntaDirectiva = '$idJuntaDirectiva' AND idCargoJunta = '1'";
 							$row=mysqli_query($conexion,$query);
 							$dato=mysqli_fetch_array($row);
-							$nombrePresidente=$dato[nombrePresidente];
+							$nombrePresidente=$dato['nombrePresidente'];
 
 							$periodoInicio=infoFecha($fechaPeriodo,'year');
 							$periodoFin=infoFecha($fechaFinPeriodo,'year');
@@ -218,9 +218,9 @@
 							$query="SELECT sm_bancos.entidad, sm_banco_cuentas.numeroCuenta, sm_banco_cuentas.detalle FROM sm_banco_cuentas INNER JOIN sm_bancos ON sm_banco_cuentas.codigoBanco = sm_bancos.codigoBanco WHERE codigoCuenta = '$codigoCuenta'";
 							$row=mysqli_query($conexion,$query);
 							$dato=mysqli_fetch_array($row);
-							$entidad=$dato[entidad];
-							$numeroCuenta=$dato[numeroCuenta];
-							$detalle=$dato[detalle];
+							$entidad=$dato['entidad'];
+							$numeroCuenta=$dato['numeroCuenta'];
+							$detalle=$dato['detalle'];
 
 							if(strlen($idJuntaDirectiva)>0){
 								$infoCuentaJuntaDirectiva=$entidad." | ".$numeroCuenta;
