@@ -11,6 +11,7 @@
 	$codigoConcepto =$_POST['codigoConcepto'];
 	$operacion      =$_POST['operacion'];
 	$lotes          =infoSocios($codigoSocio,'cantidadLotes');
+	$respuesta      =new \stdClass();
 
 	if($cuotasPago==2){
 		$montoCuota_1 =$_POST['montoCuota1'];
