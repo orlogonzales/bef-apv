@@ -5,22 +5,22 @@
 	$fecha         =infoTiempo('fecha');
 	$hora          =infoTiempo('hora');
 	$dniUsuario    =$_SESSION['dni_apv'];
-	$operacion     =$_POST[operacion];
+	$operacion     =$_POST['operacion'];
 	mysqli_set_charset($conexion, "utf8");
 
 	if($operacion=="REGISTRA_PARTIDA"){
 		$movimiento      ="PAR";
 		$tipoCheque      ="PAR";
-		$usuarioPartida  =$_POST[usuarioPartida];
-		$concepto        =mysqli_real_escape_string($conexion,$_POST[conceptoPartida]);
-		$monto           =$_POST[montoPartida];
-		$codigoChequera  =$_POST[codigoChequera];
+		$usuarioPartida  =$_POST['usuarioPartida'];
+		$concepto        =mysqli_real_escape_string($conexion,$_POST['conceptoPartida']);
+		$monto           =$_POST['montoPartida'];
+		$codigoChequera  =$_POST['codigoChequera'];
 		$codigoBanco     =infoChequeras($codigoChequera,'','','entidadBancaria');
 		$detalleChequera =infoBancos($codigoBanco,'detalleEntidad').' - '.infoChequeras($codigoChequera,'','','detalleChequera');
 		$codigoCuenta    =infoChequeras($codigoChequera,'','','codigoCuenta');
-		$nroCheque       =$_POST[nroCheque];		
-		$fechaPartida    =fechaSQL($_POST[fechaPartida]);
-		$observaciones   =mysqli_real_escape_string($conexion,$_POST[observaciones]);
+		$nroCheque       =$_POST['nroCheque'];
+		$fechaPartida    =fechaSQL($_POST['fechaPartida']);
+		$observaciones   =mysqli_real_escape_string($conexion,$_POST['observaciones']);
 		$fechaCierre     ="";
 		$estado          ="OPN";
 		$fecha           =$fecha;
@@ -31,7 +31,7 @@
 		$tipoActividad   ="";
 		$codigoSocio     =$usuarioPartida;
 		$beneficiario    =$codigoSocio;
-		$tipoBeneficiario=mysqli_real_escape_string($conexion,$_POST[tipoResposanble]);
+		$tipoBeneficiario=mysqli_real_escape_string($conexion,$_POST['tipoResposanble']);
 		$codigoConcepto  =$codigoPartida;
 		$tipoDocumento   ="CHB";
 		$nroDocumento    =$nroCheque;
@@ -107,13 +107,13 @@
 	}
 
 	if($operacion=="EDITAR_PARTIDA"){
-		$codigoPartida   =$_POST[codigoPartida];
-		$usuarioPartida  =$_POST[usuarioPartida];
-		$concepto        =utf8_decode($_POST[conceptoPartida]);
-		$monto           =$_POST[monto];
-		$fechaPartida    =fechaSQL($_POST[fechaPartida]);
+		$codigoPartida   =$_POST['codigoPartida'];
+		$usuarioPartida  =$_POST['usuarioPartida'];
+		$concepto        =utf8_decode($_POST['conceptoPartida']);
+		$monto           =$_POST['monto'];
+		$fechaPartida    =fechaSQL($_POST['fechaPartida']);
 		$fechaCierre     ="";
-		$estado          =$_POST[estado];
+		$estado          =$_POST['estado'];
 		$fecha           =$fecha;
 		$hora            =$hora;
 		$usuario         =$dniUsuario;
@@ -142,7 +142,7 @@
 	}
 
 	if($operacion=="ELIMINAR_PARTIDA"){
-		$codigoPartida   =$_POST[codigoPartida];
+		$codigoPartida   =$_POST['codigoPartida'];
 		$fecha           =$fecha;
 		$hora            =$hora;
 		$usuario         =$dniUsuario;
