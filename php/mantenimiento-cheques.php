@@ -5,19 +5,19 @@
 	$fecha         =infoTiempo('fecha');
 	$hora          =infoTiempo('hora');
 	$usuario       =$_SESSION['dni_apv'];
-	$operacion     =$_POST[operacion];
+	$operacion     =$_POST['operacion'];
 	mysqli_set_charset($conexion, "utf8");
 
 	if($operacion=="REGISTRA_CHEQUE"){
 		$movimiento          ="SAL";
 		$tipoCheque          ="VAR";
-		$fechaOperacion      =fechaSQL(mysqli_real_escape_string($conexion, $_POST[RC_fechaEmision]));
+		$fechaOperacion      =fechaSQL(mysqli_real_escape_string($conexion, $_POST['RC_fechaEmision']));
 		$tipoActividad       ="";
 		$concepto            ="";
-		$tipoBeneficiario    =mysqli_real_escape_string($conexion, $_POST[RC_tipoBeneficiario]);
-		$usuarioBeneficiario =mysqli_real_escape_string($conexion, $_POST[RC_usuarioBeneficiario]);
-		$dniBeneficiario     =mysqli_real_escape_string($conexion, $_POST[RC_dniBeneficiario]);
-		$nombreBeneficiario  =mysqli_real_escape_string($conexion, $_POST[RC_nombreBeneficiario]);
+		$tipoBeneficiario    =mysqli_real_escape_string($conexion, $_POST['RC_tipoBeneficiario']);
+		$usuarioBeneficiario =mysqli_real_escape_string($conexion, $_POST['RC_usuarioBeneficiario']);
+		$dniBeneficiario     =mysqli_real_escape_string($conexion, $_POST['RC_dniBeneficiario']);
+		$nombreBeneficiario  =mysqli_real_escape_string($conexion, $_POST['RC_nombreBeneficiario']);
 
 		if($tipoBeneficiario =="NOR"){
 			$codigoSocio =$dniBeneficiario;
@@ -48,14 +48,14 @@
 
 		$codigoConcepto      ="";
 		$tipoDocumento       ="CHB";
-		$codigoChequera      =mysqli_real_escape_string($conexion, $_POST[RC_codigoChequera]);
+		$codigoChequera      =mysqli_real_escape_string($conexion, $_POST['RC_codigoChequera']);
 		$codigoBanco         =infoChequeras($codigoChequera,'','','entidadBancaria');
 		$detalleChequera     =infoBancos($codigoBanco,'detalleEntidad').' - '.infoChequeras($codigoChequera,'','','detalleChequera');
 		$codigoCuenta        =infoChequeras($codigoChequera,'','','codigoCuenta');
-		$nroDocumento        =mysqli_real_escape_string($conexion, $_POST[RC_nroCheque]);
-		$monto               =mysqli_real_escape_string($conexion, $_POST[RC_montoEmitido]);
-		$detalleConcepto     =mysqli_real_escape_string($conexion, $_POST[RC_conceptoCheque]);
-		$observaciones       =mysqli_real_escape_string($conexion,$_POST[RC_observaciones]);
+		$nroDocumento        =mysqli_real_escape_string($conexion, $_POST['RC_nroCheque']);
+		$monto               =mysqli_real_escape_string($conexion, $_POST['RC_montoEmitido']);
+		$detalleConcepto     =mysqli_real_escape_string($conexion, $_POST['RC_conceptoCheque']);
+		$observaciones       =mysqli_real_escape_string($conexion,$_POST['RC_observaciones']);
 		$respaldo            =$movimiento.round($monto);
 		$codigoOperacion     =generaCodigo(19,$respaldo);
 		$codigoCheque        =$codigoChequera.'-'.$nroDocumento;
@@ -103,7 +103,7 @@
 	}
 
 	if($operacion=="NOMBRE_BENEFICIARIO"){
-		$dniBeneficiario=mysqli_real_escape_string($conexion, $_POST[dniBeneficiario]);
+		$dniBeneficiario=mysqli_real_escape_string($conexion, $_POST['dniBeneficiario']);
 		$verficaBeneficiario=infocheque('','','','','','',$dniBeneficiario,'verficaBeneficiario');
 		if($dniBeneficiario==$verficaBeneficiario){
 			$nombreBeneficiario=infocheque('','','','','','',$dniBeneficiario,'nombreBeneficiario');
@@ -114,13 +114,13 @@
 	}
 
 	if($operacion=="ELIMINA_CHEQUE"){
-		$codigoBanco     =mysqli_real_escape_string($conexion, $_POST[codigoBanco]);
-		$codigoCuenta    =mysqli_real_escape_string($conexion, $_POST[codigoCuenta]);
-		$codigoChequera  =mysqli_real_escape_string($conexion, $_POST[codigoChequera]);
-		$nroCheque       =mysqli_real_escape_string($conexion, $_POST[nroCheque]);
-		$beneficiario    =mysqli_real_escape_string($conexion, $_POST[beneficiario]);
-		$monto           =mysqli_real_escape_string($conexion, $_POST[monto]);
-		$codigoOperacion =mysqli_real_escape_string($conexion, $_POST[codigoOperacion]);
+		$codigoBanco     =mysqli_real_escape_string($conexion, $_POST['codigoBanco']);
+		$codigoCuenta    =mysqli_real_escape_string($conexion, $_POST['codigoCuenta']);
+		$codigoChequera  =mysqli_real_escape_string($conexion, $_POST['codigoChequera']);
+		$nroCheque       =mysqli_real_escape_string($conexion, $_POST['nroCheque']);
+		$beneficiario    =mysqli_real_escape_string($conexion, $_POST['beneficiario']);
+		$monto           =mysqli_real_escape_string($conexion, $_POST['monto']);
+		$codigoOperacion =mysqli_real_escape_string($conexion, $_POST['codigoOperacion']);
 		$detalleChequera =infoBancos($codigoBanco,'detalleEntidad').' - '.infoChequeras($codigoChequera,'','','detalleChequera');
 		$nombre          =infocheque('','','','','','',$beneficiario,'nombreBeneficiario');
 		$proceso         ="<strong>CHEQUE ELIMINADO #".$nroCheque."</strong>, EMITIDO A <strong>".$nombre."</strong>, POR: <strong> S/. ".moneda($monto)."</strong> DE CHEQUERA <strong>".$detalleChequera."</strong>";
