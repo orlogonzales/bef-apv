@@ -1,22 +1,22 @@
 <?php 
-	$codigoPartida   =$_GET[codigoPartida];
+	$codigoPartida   =$_GET['codigoPartida'];
 	$verificaPartida =infoPartida($codigoPartida,'verificaPartida');
 	if($codigoPartida==$verificaPartida){
 		$sql="SELECT usuarioPartida, concepto, monto, codigoChequera, nroCheque, observaciones, fechaPartida, fechaCierre, estado, fecha, hora, usuario  FROM sm_partidas WHERE codigoPartida='$codigoPartida'";
 		$row=mysqli_query($conexion,$sql);
 		$n=mysqli_fetch_array($row);
-		$usuarioPartida  =$n[usuarioPartida];
-		$concepto        =texto($n[concepto]);
-		$monto           =$n[monto];
-		$codigoChequera  =$n[codigoChequera];
-		$nroCheque       =$n[nroCheque];
-		$observaciones   =texto($n[observaciones]);
-		$fechaPartida    =$n[fechaPartida];
-		$fechaCierre     =$n[fechaCierre];
-		$estado          =$n[estado];
-		$fecha           =$n[fecha];
-		$hora            =$n[hora];
-		$usuario         =$n[usuario];
+		$usuarioPartida  =$n['usuarioPartida'];
+		$concepto        =texto($n['concepto']);
+		$monto           =$n['monto'];
+		$codigoChequera  =$n['codigoChequera'];
+		$nroCheque       =$n['nroCheque'];
+		$observaciones   =texto($n['observaciones']);
+		$fechaPartida    =$n['fechaPartida'];
+		$fechaCierre     =$n['fechaCierre'];
+		$estado          =$n['estado'];
+		$fecha           =$n['fecha'];
+		$hora            =$n['hora'];
+		$usuario         =$n['usuario'];
 		$entidadBancaria =infoBancos(infoChequeras($codigoChequera,'','','entidadBancaria'),'detalleEntidad');
 		$detalleChequera =texto(infoChequeras($codigoChequera,'','','detalleChequera'));
 		$infoChequera    =$entidadBancaria.' - '.$detalleChequera;
@@ -261,17 +261,17 @@
 							$rs=mysqli_query($conexion,$sql);
 							$i=1;
 							while($n=mysqli_fetch_array($rs)){
-								$movimiento      =$n[movimiento];
-								$fechaOperacion  =$n[fechaOperacion];
-								$tipoDocumento   =$n[tipoDocumento];
-								$nroDocumento    =$n[nroDocumento];
-								$monto           =$n[monto];
-								$detalleConcepto =$n[detalleConcepto];
-								$observaciones   =$n[observaciones];
-								$codigoOperacion =$n[codigoOperacion];
-								$fecha           =$n[fecha];
-								$hora            =$n[hora];
-								$usuario         =$n[usuario];
+								$movimiento      =$n['movimiento'];
+								$fechaOperacion  =$n['fechaOperacion'];
+								$tipoDocumento   =$n['tipoDocumento'];
+								$nroDocumento    =$n['nroDocumento'];
+								$monto           =$n['monto'];
+								$detalleConcepto =$n['detalleConcepto'];
+								$observaciones   =$n['observaciones'];
+								$codigoOperacion =$n['codigoOperacion'];
+								$fecha           =$n['fecha'];
+								$hora            =$n['hora'];
+								$usuario         =$n['usuario'];
 								$infoRegistro    ='<span class="label label-default">'.datoUsuario($usuario,'nombre').'&nbsp|&nbsp'.infoFecha($fecha,'info').'&nbsp|&nbsp'.horaCorta($hora).'</span>';
 								if($observaciones!=""){ $boton='<a href="#infoObserva'.$codigoOperacion.'" class="btn btn-xs btn-icon bg-grey" data-toggle="modal" data-popup="tooltip" data-placement="left" title="Observaciones"><i class="icon-file-text2"></i></a>'; }else{ $boton="";}
 						?>
@@ -339,12 +339,12 @@
 							$rs=mysqli_query($conexion,$sql);
 							$i=1;
 							while($n=mysqli_fetch_array($rs)){
-								$codigoPartida =$n[codigoPartida];
-								$proceso       =$n[proceso];
-								$monto         =$n[monto];
-								$fecha         =$n[fecha];
-								$hora          =$n[hora];
-								$usuario       =$n[usuario];
+								$codigoPartida =$n['codigoPartida'];
+								$proceso       =$n['proceso'];
+								$monto         =$n['monto'];
+								$fecha         =$n['fecha'];
+								$hora          =$n['hora'];
+								$usuario       =$n['usuario'];
 						?>
 						<tr>
 							<td class="text-center"><?= ceros($i,2) ?></td>
