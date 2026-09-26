@@ -2,6 +2,7 @@
 	session_start();
 	include ('funciones.php');
 	$conexion        =conexionDB();
+	$respuesta       =new \stdClass();
 	$nroDocumento    =$_POST['documentoPago'];
 	$verificaDOCPago =verificaDOC($nroDocumento,'VOU');
 	if($verificaDOCPago=='EXISTE'){ $respuesta->mensaje ="EXISTE"; }
