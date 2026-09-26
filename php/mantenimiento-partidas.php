@@ -6,6 +6,7 @@
 	$hora          =infoTiempo('hora');
 	$dniUsuario    =$_SESSION['dni_apv'];
 	$operacion     =$_POST['operacion'];
+	$respuesta     =new \stdClass();
 	mysqli_set_charset($conexion, "utf8");
 
 	if($operacion=="REGISTRA_PARTIDA"){
