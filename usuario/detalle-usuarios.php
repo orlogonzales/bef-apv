@@ -4,8 +4,8 @@
 	/////////////////////////////////////////////////////////////////////
 	session_start();
 	$dniUsuario =$_SESSION['dni_apv'];
-	$opcion     =$_GET[opcion];
-	$dni        =$_GET[dni];
+	$opcion     =$_GET['opcion'];
+	$dni        =$_GET['dni'];
 	$ruta       ='../';
 	$rutaFoto   =$ruta.'assets/images/user/';
 	$sinFoto    =$ruta.'assets/images/user/no-user.png';
@@ -118,19 +118,19 @@
 								$rs=mysqli_query($conexion,$sql);
 								$i=1;
 								while($n=mysqli_fetch_array($rs)){
-									$dni           =$n[dni];
-									$nombre        =$n[nombre];
-									$paterno       =$n[paterno];
-									$materno       =$n[materno];
-									$foto          =$n[foto];
-									$genero        =$n[genero];
-									$email         =$n[email];
-									$telefono      =$n[telefono];
-									$rol           =$n[rol];
-									$usuario       =$n[usuario];
-									$clave         =$n[clave];
-									$estado        =$n[estado];
-									$fechaRegistro =$n[fechaRegistro];
+									$dni           =$n['dni'];
+									$nombre        =$n['nombre'];
+									$paterno       =$n['paterno'];
+									$materno       =$n['materno'];
+									$foto          =$n['foto'];
+									$genero        =$n['genero'];
+									$email         =$n['email'];
+									$telefono      =$n['telefono'];
+									$rol           =$n['rol'];
+									$usuario       =$n['usuario'];
+									$clave         =$n['clave'];
+									$estado        =$n['estado'];
+									$fechaRegistro =$n['fechaRegistro'];
 									$horaRegistro  ="00:00:00";
 									$haceTiempo    =haceTiempo($fechaRegistro.$horaRegistro);
 
@@ -624,17 +624,17 @@
 		$sql="SELECT dni, nombre, paterno, materno, foto, genero, email, telefono, rol, usuario, clave FROM sm_usuarios WHERE dni='$dni'";
 		$row=mysqli_query($conexion,$sql);
 		$n=mysqli_fetch_array($row);
-		$dni      =$n[dni];
-		$nombre   =$n[nombre];
-		$paterno  =$n[paterno];
-		$materno  =$n[materno];
-		$foto     =$n[foto];
-		$genero   =$n[genero];
-		$email    =$n[email];
-		$telefono =$n[telefono];
-		$rol      =$n[rol];
-		$usuario  =$n[usuario];
-		$clave    =$n[clave];
+		$dni      =$n['dni'];
+		$nombre   =$n['nombre'];
+		$paterno  =$n['paterno'];
+		$materno  =$n['materno'];
+		$foto     =$n['foto'];
+		$genero   =$n['genero'];
+		$email    =$n['email'];
+		$telefono =$n['telefono'];
+		$rol      =$n['rol'];
+		$usuario  =$n['usuario'];
+		$clave    =$n['clave'];
 	?>
 	
 	<div class="panel">
@@ -794,18 +794,18 @@
 		$sql="SELECT nombre, paterno, materno, foto, genero, email, telefono, rol, usuario, clave, estado, fechaRegistro FROM sm_usuarios WHERE dni='$dni'";
 		$row=mysqli_query($conexion,$sql);
 		$dato=mysqli_fetch_array($row);
-		$nombre=utf8_encode($dato[nombre]);
-		$paterno=utf8_encode($dato[paterno]);
-		$materno=utf8_encode($dato[materno]);
-		$foto          =$dato[foto];
-		$genero        =$dato[genero];
-		$email         =$dato[email];
-		$telefono      =$dato[telefono];
-		$rol           =$dato[rol];
-		$usuario       =$dato[usuario];
-		$clave         =$dato[clave];
-		$estado        =$dato[estado];
-		$fechaRegistro =$dato[fechaRegistro];
+		$nombre=utf8_encode($dato['nombre']);
+		$paterno=utf8_encode($dato['paterno']);
+		$materno=utf8_encode($dato['materno']);
+		$foto          =$dato['foto'];
+		$genero        =$dato['genero'];
+		$email         =$dato['email'];
+		$telefono      =$dato['telefono'];
+		$rol           =$dato['rol'];
+		$usuario       =$dato['usuario'];
+		$clave         =$dato['clave'];
+		$estado        =$dato['estado'];
+		$fechaRegistro =$dato['fechaRegistro'];
 		if($foto){ $fotografia=$rutaFoto.$foto; }else{ $fotografia=$sinFoto; }
 		if($estado=="ACT"){ $estadoUsuario='<span class="label label-success">ACTIVO</span>'; }
 		if($estado=="INC"){ $estadoUsuario='<span class="label label-danger">INACTIVO</span>'; }
@@ -904,11 +904,11 @@
 						$rs=mysqli_query($conexion,$sql);
 						$i=1;
 						while($n=mysqli_fetch_array($rs)){
-							$dni     =$n[dni];
-							$proceso =$n[proceso];
-							$fecha   =$n[fecha];
-							$hora    =$n[hora];
-							$usuario =$n[usuario];
+							$dni     =$n['dni'];
+							$proceso =$n['proceso'];
+							$fecha   =$n['fecha'];
+							$hora    =$n['hora'];
+							$usuario =$n['usuario'];
 							$nombre  =datoUsuario($dni,'nombreFull');
 					?>
 					<tr>
@@ -947,11 +947,11 @@
 						$rs=mysqli_query($conexion,$sql);
 						$i=1;
 						while($n=mysqli_fetch_array($rs)){
-							$dni     =$n[dni];
-							$proceso =$n[proceso];
-							$fecha   =$n[fecha];
-							$hora    =$n[hora];
-							$usuario =$n[usuario];
+							$dni     =$n['dni'];
+							$proceso =$n['proceso'];
+							$fecha   =$n['fecha'];
+							$hora    =$n['hora'];
+							$usuario =$n['usuario'];
 							$nombre  =datoUsuario($dni,'nombreFull');
 					?>
 					<tr>
