@@ -5,11 +5,11 @@
 	$fecha         =infoTiempo('fecha');
 	$hora          =infoTiempo('hora');
 	$usuario       =$_SESSION['dni_apv'];
-	$operacion     =$_POST[operacion];
+	$operacion     =$_POST['operacion'];
 	mysqli_set_charset($conexion, "utf8");
 
 	if($operacion=="REGISTRA_BANCO"){
-		$entidad     =mysqli_real_escape_string($conexion, $_POST[entidad]);
+		$entidad     =mysqli_real_escape_string($conexion, $_POST['entidad']);
 		$codigoBanco =codigoBanco();
 
 		///////////////////////////////////////////////////
@@ -35,7 +35,7 @@
 	}
 
 	if($operacion=="ELIMINAR_BANCO"){
-		$codigoBanco =$_POST[codigoBanco];
+		$codigoBanco =$_POST['codigoBanco'];
 		$entidad=infoBancos($codigoBanco,'detalleEntidad');
 
 		///////////////////////////////////////////////////
@@ -61,10 +61,10 @@
 	}
 
 	if($operacion=="REGISTRA_CUENTA"){
-		$codigoBanco    =$_POST[codigoBanco];
-		$numeroCuenta   =$_POST[numeroCuenta];
+		$codigoBanco    =$_POST['codigoBanco'];
+		$numeroCuenta   =$_POST['numeroCuenta'];
 
-		$detalle        =mysqli_real_escape_string($conexion, $_POST[detalle]);
+		$detalle        =mysqli_real_escape_string($conexion, $_POST['detalle']);
 		$nroCTAS        =infoCuentas('','','cuentasRegistradas')+1;
 		$codigoCuenta   ="CTA".ceros($nroCTAS,3)."-".$codigoBanco;
 		$estado         ="ACT";
@@ -107,8 +107,8 @@
 	}
 
 	if($operacion=="ELIMINAR_CUENTA"){
-		$codigoBanco  =$_POST[codigoBanco];
-		$codigoCuenta =$_POST[codigoCuenta];
+		$codigoBanco  =$_POST['codigoBanco'];
+		$codigoCuenta =$_POST['codigoCuenta'];
 		$cuenta       =infoCuentas($codigoCuenta,'','detalleCuenta');
 		$entidad      =infoBancos($codigoBanco,'detalleEntidad');
 
@@ -143,9 +143,9 @@
 	}
 
 	if($operacion=="CAMBIAR_ESTADO_CUENTA"){
-		$codigoBanco   =$_POST[codigoBanco];
-		$codigoCuenta  =$_POST[codigoCuenta];
-		$estado        =$_POST[estado];
+		$codigoBanco   =$_POST['codigoBanco'];
+		$codigoCuenta  =$_POST['codigoCuenta'];
+		$estado        =$_POST['estado'];
 		$entidad       =infoBancos($codigoBanco,'detalleEntidad');
 		$detalleCuenta =infoCuentas($codigoCuenta,'','detalleCuenta');
 		$numeroCuenta  =infoCuentas($codigoCuenta,'','numeroCuenta');
@@ -186,11 +186,11 @@
 	}
 
 	if($operacion=="REGISTRA_CHEQUERA"){
-		$codigoBanco    =$_POST[codigoBanco];
-		$codigoCuenta   =$_POST[codigoCuenta];
-		$nroChequera    =$_POST[nroChequera];
+		$codigoBanco    =$_POST['codigoBanco'];
+		$codigoCuenta   =$_POST['codigoCuenta'];
+		$nroChequera    =$_POST['nroChequera'];
 		$codigoChequera ="T".ceros($nroChequera,5)."-".$codigoCuenta;
-		$detalle        =mysqli_real_escape_string($conexion, $_POST[detalle]);
+		$detalle        =mysqli_real_escape_string($conexion, $_POST['detalle']);
 		$estado         ="ACT";
 		$detalleEntidad =infoBancos($codigoBanco,'detalleEntidad');
 		$detalleCuenta  =infoCuentas($codigoCuenta,$codigoBanco,'detalleCuenta');
@@ -236,9 +236,9 @@
 	}
 
 	if($operacion=="CAMBIAR_ESTADO_CHEQUERA"){
-		$codigoBanco    =$_POST[codigoBanco];
-		$codigoChequera =$_POST[codigoChequera];
-		$estado         =$_POST[estado];
+		$codigoBanco    =$_POST['codigoBanco'];
+		$codigoChequera =$_POST['codigoChequera'];
+		$estado         =$_POST['estado'];
 		$detalleEntidad =infoBancos($codigoBanco,'detalleEntidad');
 		$infoChequera   =$detalleEntidad." - CHEQUERA ".$codigoChequera;
 
@@ -268,8 +268,8 @@
 	}
 
 	if($operacion=="ELIMINAR_CHEQUERA"){
-		$codigoBanco    =$_POST[codigoBanco];
-		$codigoChequera =$_POST[codigoChequera];
+		$codigoBanco    =$_POST['codigoBanco'];
+		$codigoChequera =$_POST['codigoChequera'];
 		$detalleEntidad =infoBancos($codigoBanco,'detalleEntidad');
 		$detalleChquera =infoChequeras($codigoChequera,'','','detalleChequera');
 		$infoChequera   =$detalleEntidad." - CHEQUERA ".$detalleChquera." / ".$codigoChequera;
