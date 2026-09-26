@@ -77,8 +77,8 @@
 									$sql="SELECT codigoBanco, entidad FROM sm_bancos ORDER BY entidad ASC";
 									$rs=mysqli_query($conexion,$sql);
 									while($datos=mysqli_fetch_array($rs)){
-										$codigoBanco =$datos[codigoBanco];
-										$entidad     =$datos[entidad];
+										$codigoBanco =$datos['codigoBanco'];
+										$entidad     =$datos['entidad'];
 										echo '<option value="'.$codigoBanco.'">'.texto($entidad).'</option>';
 									}
 								?>
@@ -194,14 +194,14 @@
 							$rs=mysqli_query($conexion,$sql);
 							$i=1;
 							while($n=mysqli_fetch_array($rs)){
-								$codigoCuenta    =$n[codigoCuenta];
-								$codigoBanco     =$n[codigoBanco];
-								$numeroCuenta    =$n[numeroCuenta];
-								$detalle         =$n[detalle];
-								$fecha           =$n[fecha];
-								$hora            =$n[hora];
-								$usuario         =$n[usuario];
-								$estado          =$n[estado];
+								$codigoCuenta    =$n['codigoCuenta'];
+								$codigoBanco     =$n['codigoBanco'];
+								$numeroCuenta    =$n['numeroCuenta'];
+								$detalle         =$n['detalle'];
+								$fecha           =$n['fecha'];
+								$hora            =$n['hora'];
+								$usuario         =$n['usuario'];
+								$estado          =$n['estado'];
 								$banco           =infoBancos($codigoBanco,'detalleEntidad');
 								$chequerasCTA    =infoCuentas($codigoCuenta,$codigoBanco,'chequerasEmitidasCTA');
 								$chequesEmitidos =infoCuentas($codigoCuenta,$codigoBanco,'chequesEmitidosCTA');
@@ -269,11 +269,11 @@
 								$rs=mysqli_query($conexion,$sql);
 								$i=1;
 								while($n=mysqli_fetch_array($rs)){
-									$codigoCuenta =$n[codigoCuenta];
-									$proceso =$n[proceso];
-									$fecha   =$n[fecha];
-									$hora    =$n[hora];
-									$usuario =$n[usuario];
+									$codigoCuenta =$n['codigoCuenta'];
+									$proceso =$n['proceso'];
+									$fecha   =$n['fecha'];
+									$hora    =$n['hora'];
+									$usuario =$n['usuario'];
 							?>					
 							<tr>
 								<td class="text-center"><?= ceros($i,2) ?></td>
