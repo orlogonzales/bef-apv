@@ -5,20 +5,20 @@
 	$fecha         =infoTiempo('fecha');
 	$hora          =infoTiempo('hora');
 	$dniUsuario    =$_SESSION['dni_apv'];
-	$operacion     =$_POST[operacion];
-	$tipoActividad =$_POST[tipoActividad];
-	$codigoConcepto =$_POST[codigoConcepto];
+	$operacion     =$_POST['operacion'];
+	$tipoActividad =$_POST['tipoActividad'];
+	$codigoConcepto =$_POST['codigoConcepto'];
 
 	if($tipoActividad=="ASA"){ $codigoCuenta=infoActividad($idJuntaDirectiva,$codigoConcepto,'','cuentaBanco'); }
 	if($tipoActividad=="FAE"){ $codigoCuenta=infoActividad($idJuntaDirectiva,$codigoConcepto,'','cuentaBanco'); }
 	if($tipoActividad=="CUO"){ $codigoCuenta=infoCuota($idJuntaDirectiva,$codigoConcepto,'cuentaBanco'); }
 
 	if($operacion=="PAGO_MONTO_COMPLETO"){
-		$idJuntaDirectiva = $_POST[idJuntaDirectiva];
-		$codigoSocio      = $_POST[codigoSocio];
-		$documentoPago    = $_POST[documentoPago];
-		$montoPago        = $_POST[montoPago];
-		$fechaPago        = fechaSQL($_POST[fechaPago]);
+		$idJuntaDirectiva = $_POST['idJuntaDirectiva'];
+		$codigoSocio      = $_POST['codigoSocio'];
+		$documentoPago    = $_POST['documentoPago'];
+		$montoPago        = $_POST['montoPago'];
+		$fechaPago        = fechaSQL($_POST['fechaPago']);
 		$fecha            = $fecha;
 		$hora             = $hora;
 		$usuario          = $dniUsuario;
@@ -27,7 +27,7 @@
 		if($tipoActividad=="FAE"){ $concepto="MCF"; }
 
 		if(($tipoActividad=="ASA") or ($tipoActividad=="FAE")){
-			$razon     =$_POST[razon];
+			$razon     =$_POST['razon'];
 
 			if($razon=="TARDE"){
 				$multaPor="TARDANZA";
@@ -124,12 +124,12 @@
 	}
 
 	if($operacion=="PAGO_MONTO_FECHA"){
-		$idJuntaDirectiva = $_POST[idJuntaDirectiva];
-		$nroCuota         = $_POST[nroCuota];
-		$fechaPago        = fechaSQL($_POST[fechaPago]);
-		$documentoPago    = $_POST[documentoPago];
-		$codigoSocio      = $_POST[codigoSocio];
-		$montoPago        = $_POST[montoPago];
+		$idJuntaDirectiva = $_POST['idJuntaDirectiva'];
+		$nroCuota         = $_POST['nroCuota'];
+		$fechaPago        = fechaSQL($_POST['fechaPago']);
+		$documentoPago    = $_POST['documentoPago'];
+		$codigoSocio      = $_POST['codigoSocio'];
+		$montoPago        = $_POST['montoPago'];
 		$totalCuotas      = infoPagoFechas($codigoSocio,$codigoConcepto,'FPSocioConcepto');
 		$totalPagado      = infoPagoFechas($codigoSocio,$codigoConcepto,'totalFechasPagadas')+$montoPago;
 		$lotes            = infoSocios($codigoSocio,'cantidadLotes');
@@ -157,7 +157,7 @@
 		}
 
 		if(($tipoActividad=="ASA") or ($tipoActividad=="FAE")){
-			$razon              =$_POST[razon];
+			$razon              =$_POST['razon'];
 			$totalPago          =infoPago($codigoSocio,$codigoConcepto,'','montoMultaSocio');
 			$totalFechasPagadas =infoPagoFechas($codigoSocio,$codigoConcepto,'totalFechasPagadas');
 
