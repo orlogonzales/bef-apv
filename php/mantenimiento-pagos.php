@@ -8,6 +8,7 @@
 	$operacion     =$_POST['operacion'];
 	$tipoActividad =$_POST['tipoActividad'];
 	$codigoConcepto =$_POST['codigoConcepto'];
+	$respuesta     =new \stdClass();
 
 	if($tipoActividad=="ASA"){ $codigoCuenta=infoActividad($idJuntaDirectiva,$codigoConcepto,'','cuentaBanco'); }
 	if($tipoActividad=="FAE"){ $codigoCuenta=infoActividad($idJuntaDirectiva,$codigoConcepto,'','cuentaBanco'); }
