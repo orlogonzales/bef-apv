@@ -173,10 +173,10 @@
 									$sql="SELECT codigoChequera, codigoBanco, codigoCuenta, detalle FROM sm_chequera WHERE estado='ACT'";
 									$rs=mysqli_query($conexion,$sql);
 									while($datos=mysqli_fetch_array($rs)){
-										$codigoChequera =$datos[codigoChequera];
-										$codigoBanco    =$datos[codigoBanco];
-										$codigoCuenta   =$datos[codigoCuenta];
-										$detalle        =$datos[detalle];
+										$codigoChequera =$datos['codigoChequera'];
+										$codigoBanco    =$datos['codigoBanco'];
+										$codigoCuenta   =$datos['codigoCuenta'];
+										$detalle        =$datos['detalle'];
 										$detalleCTA     =infoCuentas($codigoCuenta,'','detalleCuenta');
 										$numeroCuenta   =infoCuentas($codigoCuenta,'','numeroCuenta');
 										$infoChequera   =infoBancos($codigoBanco,'detalleEntidad').' - '.$detalleCTA.' ('.$numeroCuenta.') - '.texto($detalle);
