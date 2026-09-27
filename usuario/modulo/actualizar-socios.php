@@ -2,8 +2,8 @@
 	$ruta='../../';
 	include_once $ruta."php/funciones.php";
 	$conexion       =conexionDB();
-	$opcion         =$_GET[opcion];
-	$codigoConcepto =$_GET[codigoConcepto];
+	$opcion         =$_GET['opcion'];
+	$codigoConcepto =$_GET['codigoConcepto'];
 ?>
 
 <?php if($opcion=="cuota"){ ?>
