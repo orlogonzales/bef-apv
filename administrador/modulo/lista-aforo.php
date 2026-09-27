@@ -2,8 +2,8 @@
 	$ruta='../../';
 	include_once $ruta."php/funciones.php";
 	$conexion=conexionDB();
-	$codigoActividad=$_GET[codigoActividad];
-	$tipoActividad=$_GET[tipoActividad];
+	$codigoActividad=$_GET['codigoActividad'];
+	$tipoActividad=$_GET['tipoActividad'];
 	if($tipoActividad=="ASA"){ $titulo="ASAMBLEA"; }
 	if($tipoActividad=="FAE"){ $titulo="FAENA"; }
 ?>
@@ -89,12 +89,12 @@
 						$rs=mysqli_query($conexion,$sql);
 						$i=1;
 						while($n=mysqli_fetch_array($rs)){
-							$codigoSocio =$n[codigoSocio];
-							$asistio     =$n[asistio];
+							$codigoSocio =$n['codigoSocio'];
+							$asistio     =$n['asistio'];
 							$dni         =infoSocios($codigoSocio,'dni');
 							$nombre      =infoSocios($codigoSocio,'nombre');
-							$lotes       =$n[lotes];
-							$observacion =$n[observacion];
+							$lotes       =$n['lotes'];
+							$observacion =$n['observacion'];
 
 							if($asistio=="IN"){ $estado='<span class="label label-info">INVITADO</span>'; }
 							if($asistio=="SI"){ $estado='<span class="label label-success">ASISTIO</span>'; }
