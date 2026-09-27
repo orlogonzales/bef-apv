@@ -134,16 +134,16 @@
 						$rs=mysqli_query($conexion,$sql);
 						$i=1;
 						while($n=mysqli_fetch_array($rs)){
-							$codigoPartida  =$n[codigoPartida];
-							$usuarioPartida =$n[usuarioPartida];
-							$concepto       =texto($n[concepto]);
-							$monto          =$n[monto];
-							$fechaPartida   =$n[fechaPartida];
-							$fechaCierre    =$n[fechaCierre];
-							$estado         =$n[estado];
-							$fecha          =$n[fecha];
-							$hora           =$n[hora];
-							$usuario        =$n[usuario];
+							$codigoPartida  =$n['codigoPartida'];
+							$usuarioPartida =$n['usuarioPartida'];
+							$concepto       =texto($n['concepto']);
+							$monto          =$n['monto'];
+							$fechaPartida   =$n['fechaPartida'];
+							$fechaCierre    =$n['fechaCierre'];
+							$estado         =$n['estado'];
+							$fecha          =$n['fecha'];
+							$hora           =$n['hora'];
+							$usuario        =$n['usuario'];
 							$nombreUP       =texto(datoUsuario($usuarioPartida,'nombreCorto'));
 							if($nombreUP==""){
 								$nombreUP=texto(infoSocios($usuarioPartida,'nombre'));
