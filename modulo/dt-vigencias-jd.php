@@ -7,14 +7,14 @@
 	$vigenciasJuntaDirectiva = $conexion->query($sql);
 
 	while ($vigencia = $vigenciasJuntaDirectiva->fetch_assoc()) {
-		$idVigencia=$vigencia[idVigencia];
-		$vigenciaJunta=$vigencia[vigenciaJunta];
-		$activo=$vigencia[activo];
+		$idVigencia=$vigencia['idVigencia'];
+		$vigenciaJunta=$vigencia['vigenciaJunta'];
+		$activo=$vigencia['activo'];
 		
 		$query = "SELECT COUNT(sm_junta_directiva.id) vigenciaAsignada FROM sm_junta_directiva WHERE sm_junta_directiva.idVigencia = '$idVigencia'";
 		$consulta = $conexion->query($query);
 		$resultado = $consulta->fetch_assoc();
-		$vigenciaAsignada = $resultado[vigenciaAsignada];
+		$vigenciaAsignada = $resultado['vigenciaAsignada'];
 		
 		if($vigenciaAsignada>0){
 			$infoAsignados='<span class="badge badge-success">'.ceros($vigenciaAsignada,2).'VECES</span>';
