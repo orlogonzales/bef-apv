@@ -11,18 +11,18 @@
 	$i=1;
 
 	while ($junta = $juntaDirectiva->fetch_assoc()) {
-		$codigoSocio     = $junta[codigoSocio];
-		$idCargoJunta    = $junta[idCargoJunta];
-		$cargoJunta      = $junta[cargoJunta];
-		$renunciaJunta   = $junta[renunciaJunta];
-		$nombreSocio     = $junta[nombreSocio];
+		$codigoSocio     = $junta['codigoSocio'];
+		$idCargoJunta    = $junta['idCargoJunta'];
+		$cargoJunta      = $junta['cargoJunta'];
+		$renunciaJunta   = $junta['renunciaJunta'];
+		$nombreSocio     = $junta['nombreSocio'];
 		$infoCodigoSocio = $codigoSocio;
 
 		if($renunciaJunta==1){
 			$query = "SELECT COUNT(id) AS cambios FROM sm_junta_directiva_renuncia_integrantes WHERE idJuntaDirectiva='$idJuntaDirectiva' AND idCargoJunta='$idCargoJunta'";
 			$consulta = $conexion->query($query);
 			$resultado = $consulta->fetch_assoc();
-			$cambios = $resultado[cambios];
+			$cambios = $resultado['cambios'];
 
 			if($cambios>1){
 				$infoRenuncia='<span class="badge badge-danger">'.ceros($cambios,2).' VECES</span>';
