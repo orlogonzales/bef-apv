@@ -131,12 +131,12 @@
 						$rs=mysqli_query($conexion,$sql);
 						$i=1;
 						while($n=mysqli_fetch_array($rs)){
-							$codigoCuota      = $n[codigoCuota];
-							$conceptoCuota    = utf8_encode($n[conceptoCuota]);
-							$montoCuota       = $n[montoCuota];
-							$idJuntaDirectiva = $n[idJuntaDirectiva];
-							$codigoCuenta     = $n[codigoCuenta];
-							$fechaPago        = $n[fechaPago];
+							$codigoCuota      = $n['codigoCuota'];
+							$conceptoCuota    = utf8_encode($n['conceptoCuota']);
+							$montoCuota       = $n['montoCuota'];
+							$idJuntaDirectiva = $n['idJuntaDirectiva'];
+							$codigoCuenta     = $n['codigoCuenta'];
+							$fechaPago        = $n['fechaPago'];
 							$aforo            = infoCuota($idJuntaDirectiva,$codigoCuota,'aforo');
 							$totalPagados     = infoCuota($idJuntaDirectiva,$codigoCuota,'totalPagados');
 							$pagaron          = infoCuota($idJuntaDirectiva,$codigoCuota,'pagaron');
@@ -145,14 +145,14 @@
 							$query = "SELECT sm_junta_directiva.fechaPeriodo, sm_junta_directiva_vigencia.vigenciaJunta, sm_junta_directiva.fechaFinPeriodo FROM sm_junta_directiva INNER JOIN sm_junta_directiva_vigencia ON sm_junta_directiva.idVigencia = sm_junta_directiva_vigencia.idVigencia WHERE idJuntaDirectiva = '$idJuntaDirectiva'";
 							$row=mysqli_query($conexion,$query);
 							$dato=mysqli_fetch_array($row);
-							$fechaPeriodo = $dato[fechaPeriodo];
-							$vigenciaJunta = $dato[vigenciaJunta];
-							$fechaFinPeriodo=$dato[fechaFinPeriodo];
+							$fechaPeriodo = $dato['fechaPeriodo'];
+							$vigenciaJunta = $dato['vigenciaJunta'];
+							$fechaFinPeriodo=$dato['fechaFinPeriodo'];
 
 							$query="SELECT CONCAT(sm_socios.nombre, ' ',sm_socios.apPaterno) AS nombrePresidente FROM sm_junta_directiva_integrantes INNER JOIN sm_socios ON sm_junta_directiva_integrantes.codigoSocio = sm_socios.codigoSocio WHERE idJuntaDirectiva = '$idJuntaDirectiva' AND idCargoJunta = '1'";
 							$row=mysqli_query($conexion,$query);
 							$dato=mysqli_fetch_array($row);
-							$nombrePresidente=$dato[nombrePresidente];
+							$nombrePresidente=$dato['nombrePresidente'];
 
 							$periodoInicio=infoFecha($fechaPeriodo,'year');
 							$periodoFin=infoFecha($fechaFinPeriodo,'year');
@@ -160,9 +160,9 @@
 							$query="SELECT sm_bancos.entidad, sm_banco_cuentas.numeroCuenta, sm_banco_cuentas.detalle FROM sm_banco_cuentas INNER JOIN sm_bancos ON sm_banco_cuentas.codigoBanco = sm_bancos.codigoBanco WHERE codigoCuenta = '$codigoCuenta'";
 							$row=mysqli_query($conexion,$query);
 							$dato=mysqli_fetch_array($row);
-							$entidad=$dato[entidad];
-							$numeroCuenta=$dato[numeroCuenta];
-							$detalle=$dato[detalle];
+							$entidad=$dato['entidad'];
+							$numeroCuenta=$dato['numeroCuenta'];
+							$detalle=$dato['detalle'];
 
 							if(strlen($nombrePresidente)>0){
 								$infoJuntaDirectiva =$nombrePresidente.', '.$periodoInicio.' - '.$periodoFin;
