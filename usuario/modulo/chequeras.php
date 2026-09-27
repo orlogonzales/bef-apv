@@ -105,8 +105,8 @@
 								$sql="SELECT codigoBanco, entidad FROM sm_bancos ORDER BY entidad ASC";
 								$rs=mysqli_query($conexion,$sql);
 								while($datos=mysqli_fetch_array($rs)){
-									$codigoBanco =$datos[codigoBanco];
-									$entidad     =$datos[entidad];
+									$codigoBanco =$datos['codigoBanco'];
+									$entidad     =$datos['entidad'];
 									echo '<option value="'.$codigoBanco.'">'.texto($entidad).'</option>';
 								}
 							?>
@@ -222,13 +222,13 @@
 							$rs=mysqli_query($conexion,$sql);
 							$i=1;
 							while($n=mysqli_fetch_array($rs)){
-								$codigoChequera =$n[codigoChequera];
-								$codigoBanco    =$n[codigoBanco];
-								$detalle        =$n[detalle];
-								$fecha          =$n[fecha];
-								$hora           =$n[hora];
-								$usuario        =$n[usuario];
-								$estado         =$n[estado];
+								$codigoChequera =$n['codigoChequera'];
+								$codigoBanco    =$n['codigoBanco'];
+								$detalle        =$n['detalle'];
+								$fecha          =$n['fecha'];
+								$hora           =$n['hora'];
+								$usuario        =$n['usuario'];
+								$estado         =$n['estado'];
 								$banco          =infoBancos($codigoBanco,'detalleEntidad');
 								$infoUsuario    =registradoPor($usuario,$fecha,$hora,'SI','label-default');
 								$chequesEmitidos=infoChequeras($codigoChequera,'','','emitidosChequera');
@@ -297,11 +297,11 @@
 								$rs=mysqli_query($conexion,$sql);
 								$i=1;
 								while($n=mysqli_fetch_array($rs)){
-									$codigoChequera =$n[codigoChequera];
-									$proceso =$n[proceso];
-									$fecha   =$n[fecha];
-									$hora    =$n[hora];
-									$usuario =$n[usuario];
+									$codigoChequera =$n['codigoChequera'];
+									$proceso =$n['proceso'];
+									$fecha   =$n['fecha'];
+									$hora    =$n['hora'];
+									$usuario =$n['usuario'];
 							?>					
 							<tr>
 								<td class="text-center"><?= ceros($i,2) ?></td>
