@@ -18,14 +18,14 @@
 	$cargosJuntaDirectiva = $conexion->query($sql);
 
 	while ($cargos = $cargosJuntaDirectiva->fetch_assoc()) {
-		$idCargoJunta=$cargos[idCargoJunta];
-		$cargoJunta=$cargos[cargoJunta];
+		$idCargoJunta=$cargos['idCargoJunta'];
+		$cargoJunta=$cargos['cargoJunta'];
 
 		$codigoSocio = $_SESSION['crearJD']['cargosSocios'][$j];
 		$query = "SELECT CONCAT(sm_socios.nombre,' ',sm_socios.apPaterno,' ',sm_socios.apMaterno) AS nombreSocio FROM sm_socios WHERE sm_socios.codigoSocio = '$codigoSocio'";
 		$consulta = $conexion->query($query);
 		$resultado = $consulta->fetch_assoc();
-		$nombreSocio = $resultado[nombreSocio];
+		$nombreSocio = $resultado['nombreSocio'];
 
 		if(strlen($codigoSocio)>0){
 			$menuOpciones='<button type="button" class="btn btn-xs btn-danger quitaCargoJunta" data-id="'.$idCargoJunta.'">ELIMINA</button>';
