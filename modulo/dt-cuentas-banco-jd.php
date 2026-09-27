@@ -9,15 +9,15 @@
 	$cuentasJuntaDirectiva = $conexion->query($sql);
 
 	while ($cuenta = $cuentasJuntaDirectiva->fetch_assoc()) {
-		$codigoCuenta=$cuenta[codigoCuenta];
-		$entidad=$cuenta[entidad];
-		$numeroCuenta=$cuenta[numeroCuenta];
-		$detalleCuenta=$cuenta[detalle];
+		$codigoCuenta=$cuenta['codigoCuenta'];
+		$entidad=$cuenta['entidad'];
+		$numeroCuenta=$cuenta['numeroCuenta'];
+		$detalleCuenta=$cuenta['detalle'];
 		
 		$query = "SELECT COUNT(sm_mod_caja.codigoCuenta) AS cuentaUsadas FROM sm_mod_caja WHERE sm_mod_caja.codigoCuenta = '$codigoCuenta'";
 		$consulta = $conexion->query($query);
 		$resultado = $consulta->fetch_assoc();
-		$cuentaUsadas = $resultado[cuentaUsadas];
+		$cuentaUsadas = $resultado['cuentaUsadas'];
 		
 		if($cuentaUsadas>0){
 			$desactiva="disabled";
