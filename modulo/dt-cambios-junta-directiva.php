@@ -11,18 +11,18 @@
 	$i=1;
 
 	while ($junta = $juntaDirectiva->fetch_assoc()) {
-		$idRenunciante     = $junta[idRenunciante];
-		$idCargoJunta      = $junta[idCargoJunta];
-		$cargoJunta        = $junta[cargoJunta];
-		$codigoSocio       = $junta[codigoSocio];
-		$nombreSocio       = $junta[nombreSocio];
-		$motivoRenuncia    = $junta[motivoRenuncia];
-		$fechaRenuncia     = $junta[fechaRenuncia];
+		$idRenunciante     = $junta['idRenunciante'];
+		$idCargoJunta      = $junta['idCargoJunta'];
+		$cargoJunta        = $junta['cargoJunta'];
+		$codigoSocio       = $junta['codigoSocio'];
+		$nombreSocio       = $junta['nombreSocio'];
+		$motivoRenuncia    = $junta['motivoRenuncia'];
+		$fechaRenuncia     = $junta['fechaRenuncia'];
 
 		$query = "SELECT CONCAT(sm_socios.nombre,' ',sm_socios.apPaterno,' ',sm_socios.apMaterno) AS nombreSocio FROM sm_socios WHERE sm_socios.codigoSocio='$codigoSocio'";
 		$consulta = $conexion->query($query);
 		$resultado = $consulta->fetch_assoc();
-		$nombreSocio = $resultado[nombreSocio];
+		$nombreSocio = $resultado['nombreSocio'];
 
 		$infoCodigoSocio   = '<span class="badge bg-pink-100">'.$codigoSocio.'</span>';
 		$infoFechaRenuncia = infoFecha($fechaRenuncia,'larga');
