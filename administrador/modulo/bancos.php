@@ -129,11 +129,11 @@
 						$rs=mysqli_query($conexion,$sql);
 						$i=1;
 						while($n=mysqli_fetch_array($rs)){
-							$codigoBanco     =$n[codigoBanco];
-							$entidad         =$n[entidad];
-							$fecha           =$n[fecha];
-							$hora            =$n[hora];
-							$usuario         =$n[usuario];
+							$codigoBanco     =$n['codigoBanco'];
+							$entidad         =$n['entidad'];
+							$fecha           =$n['fecha'];
+							$hora            =$n['hora'];
+							$usuario         =$n['usuario'];
 							$cuentasenBanco  =infoBancos($codigoBanco,'cuentasenBanco');
 							$infoChequeras   =infoBancos($codigoBanco,'chequerasEmitidosBanco');
 							$infoCheques     =infoBancos($codigoBanco,'chequesEmitidosBanco');
@@ -199,10 +199,10 @@
 							$rs=mysqli_query($conexion,$sql);
 							$i=1;
 							while($n=mysqli_fetch_array($rs)){
-								$proceso =$n[proceso];
-								$fecha   =$n[fecha];
-								$hora    =$n[hora];
-								$usuario =$n[usuario];
+								$proceso =$n['proceso'];
+								$fecha   =$n['fecha'];
+								$hora    =$n['hora'];
+								$usuario =$n['usuario'];
 						?>
 						<tr>
 							<td class="text-center"><?= ceros($i,2) ?></td>
