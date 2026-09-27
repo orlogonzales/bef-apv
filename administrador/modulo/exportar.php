@@ -4,7 +4,7 @@
 	$json        ='generados/';
 	$archivoJSON ='socios.json';
 	$JSON        =$ruta.$json.$archivoJSON;
-	$opcion      =$_GET[opcion];
+	$opcion      =$_GET['opcion'];
 	if (file_exists($JSON)){ $proceso="descargar"; }else{ $proceso="generar"; }
 ?>
 <?php if($opcion=="GENERA_JSON"){ ?>
