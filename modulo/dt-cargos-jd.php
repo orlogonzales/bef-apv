@@ -8,13 +8,13 @@
 	$cargosJuntaDirectiva = $conexion->query($sql);
 
 	while ($cargos = $cargosJuntaDirectiva->fetch_assoc()) {
-		$idCargoJunta=$cargos[idCargoJunta];
-		$cargoJunta=$cargos[cargoJunta];
+		$idCargoJunta=$cargos['idCargoJunta'];
+		$cargoJunta=$cargos['cargoJunta'];
 		
 		$query = "SELECT COUNT(codigoSocio) AS cargoAsignado FROM sm_junta_directiva_integrantes WHERE idCargoJunta = '$idCargoJunta'";
 		$consulta = $conexion->query($query);
 		$resultado = $consulta->fetch_assoc();
-		$cargoAsignado = $resultado[cargoAsignado];
+		$cargoAsignado = $resultado['cargoAsignado'];
 		
 		if($cargoAsignado>0){
 			$infoAsignados='<span class="badge badge-success">'.ceros($cargoAsignado,2).'VECES</span>';
