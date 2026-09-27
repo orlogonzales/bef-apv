@@ -37,11 +37,11 @@
 				<?php
 					$i=1;
 					while($n=mysqli_fetch_array($rs)){
-						$id           =$n[id];
-						$categoria    =$n[categoria];
-						$fecha        =$n[fecha];
-						$hora         =$n[hora];
-						$usuario      =$n[usuario];
+						$id           =$n['id'];
+						$categoria    =$n['categoria'];
+						$fecha        =$n['fecha'];
+						$hora         =$n['hora'];
+						$usuario      =$n['usuario'];
 						$infoRegistro =registradoPor($usuario,$fecha,$hora,'NO','');
 				?>
 				<tr>
