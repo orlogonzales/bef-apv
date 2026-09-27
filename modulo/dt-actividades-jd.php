@@ -25,27 +25,27 @@
 		$query = "SELECT COUNT(id) AS perteneceJD FROM sm_mod_actividades WHERE idJuntaDirectiva = '$idJuntaDirectiva'";
 		$info = $conexion->query($query);
 		$resultado = $info->fetch_assoc();
-		$perteneceJD = $resultado[perteneceJD];
+		$perteneceJD = $resultado['perteneceJD'];
 
 		if($perteneceJD>0){
 			if(!empty($_POST['idJuntaDirectiva'])){
-				$idJuntaDirectiva=$dato[idJuntaDirectiva];
+				$idJuntaDirectiva=$dato['idJuntaDirectiva'];
 			}
 			
 			if(!empty($_POST['codigoActividad'])){
-				$codigoActividad=$dato[codigoActividad];
+				$codigoActividad=$dato['codigoActividad'];
 			}
 
 			if(!empty($_POST['tipoActividad'])){
-				$tipoActividad=$dato[tipoActividad];
+				$tipoActividad=$dato['tipoActividad'];
 			}
 
-			$codigoSocio=$dato[codigoSocio];
-			$dni=$dato[dni];
-			$nombreSocio=$dato[nombreSocio];
-			$asistio=$dato[asistio];
-			$multa=$dato[multa];
-			$estadoPago=$dato[estadoPago];
+			$codigoSocio=$dato['codigoSocio'];
+			$dni=$dato['dni'];
+			$nombreSocio=$dato['nombreSocio'];
+			$asistio=$dato['asistio'];
+			$multa=$dato['multa'];
+			$estadoPago=$dato['estadoPago'];
 			$infoCodigoActividad='<span class="badge bg-gray-5">'.$codigoActividad.'</span>';
 
 			if($tipoActividad=='FAE'){
@@ -65,20 +65,20 @@
 			$query = "SELECT COUNT(id) AS lotesSocio FROM sm_lotes_socio WHERE codigoSocio='$codigoSocio'";
 			$info = $conexion->query($query);
 			$resultado = $info->fetch_assoc();
-			$lotesSocio = $resultado[lotesSocio];
+			$lotesSocio = $resultado['lotesSocio'];
 
 			$query = "SELECT temaActividad, fechaActividad FROM sm_mod_actividades WHERE idJuntaDirectiva = '$idJuntaDirectiva' AND tipoActividad = '$tipoActividad' AND codigoActividad = '$codigoActividad'";
 			$info = $conexion->query($query);
 			$resultado = $info->fetch_assoc();
-			$nombreActividad = $resultado[temaActividad];
-			$fechaActividad = $resultado[fechaActividad];
+			$nombreActividad = $resultado['temaActividad'];
+			$fechaActividad = $resultado['fechaActividad'];
 			$infoFechaActividad=infoFecha($fechaActividad,'normal');
 
 			$query = "SELECT monto, fechaOperacion FROM sm_mod_caja WHERE movimiento='ING' AND idJuntaDirectiva='$idJuntaDirectiva' AND codigoSocio='$codigoSocio' AND codigoConcepto ='$codigoActividad'";
 			$info = $conexion->query($query);
 			$resultado = $info->fetch_assoc();
-			$monto = $resultado[monto];
-			$fechaOperacion = $resultado[fechaOperacion];
+			$monto = $resultado['monto'];
+			$fechaOperacion = $resultado['fechaOperacion'];
 			
 			if($estadoPago=='SP' && $monto==$multa){
 				$infoPago = '<span class="badge badge-success">S/P</span>';
