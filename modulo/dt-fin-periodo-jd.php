@@ -7,7 +7,7 @@
 	$tiempoRatificacion = $conexion->query($sql);
 
 	while ($finPeriodo = $tiempoRatificacion->fetch_assoc()) {
-		$tiempo=$finPeriodo[tiempo];
+		$tiempo=$finPeriodo['tiempo'];
 
 		if($tiempo>1){
 			$infoTiempo = '<span class="text-danger">'.ceros($tiempo,2).' MESES DE TIEMPO DE PRORROGA</span> PARA RATIFICAR JUNTA DIRECTIVA';
