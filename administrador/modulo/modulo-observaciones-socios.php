@@ -2,8 +2,8 @@
 	$ruta             ='../../';
 	include_once $ruta."php/funciones.php";
 	$conexion         =conexionDB();
-	$opcion           =$_GET[opcion];
-	$codigoSocio      =$_GET[codigoSocio];
+	$opcion           =$_GET['opcion'];
+	$codigoSocio      =$_GET['codigoSocio'];
 	$dni              =infoSocios($codigoSocio,'dni');
 	$nombreSocio      =infoSocios($codigoSocio,'nombre');
 	$nroObservaciones =infoSocios($codigoSocio,'observaciones');
@@ -145,11 +145,11 @@
 						$rs=mysqli_query($conexion,$sql);
 						$i=1;
 						while($n=mysqli_fetch_array($rs)){
-							$id          =$n[id];
-							$observacion =$n[observacion];
-							$fecha       =$n[fecha];
-							$hora        =$n[hora];
-							$usuario     =$n[usuario];
+							$id          =$n['id'];
+							$observacion =$n['observacion'];
+							$fecha       =$n['fecha'];
+							$hora        =$n['hora'];
+							$usuario     =$n['usuario'];
 							$infoRegistro=registradoPor($usuario,$fecha,$hora,'NO','');
 					?>
 					<tr>
