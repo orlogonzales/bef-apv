@@ -10,40 +10,40 @@
 	$juntaDirectiva = $conexion->query($sql);
 
 	while ($junta = $juntaDirectiva->fetch_assoc()) {
-		$idJuntaDirectiva        = $junta[idJuntaDirectiva];
-		$ratificaJunta           = $junta[ratificaJunta];
-		$fechaPeriodo            = $junta[fechaPeriodo];
-		$idVigencia              = $junta[idVigencia];
-		$fechaFinPeriodo         = $junta[fechaFinPeriodo];
-		$extensionJuntaDirectiva = $junta[extensionJuntaDirectiva];
+		$idJuntaDirectiva        = $junta['idJuntaDirectiva'];
+		$ratificaJunta           = $junta['ratificaJunta'];
+		$fechaPeriodo            = $junta['fechaPeriodo'];
+		$idVigencia              = $junta['idVigencia'];
+		$fechaFinPeriodo         = $junta['fechaFinPeriodo'];
+		$extensionJuntaDirectiva = $junta['extensionJuntaDirectiva'];
 
 		$query = "SELECT vigenciaJunta FROM sm_junta_directiva_vigencia WHERE idVigencia = '$idVigencia'";
 		$consulta = $conexion->query($query);
 		$resultado = $consulta->fetch_assoc();
-		$vigenciaJunta = $resultado[vigenciaJunta];
+		$vigenciaJunta = $resultado['vigenciaJunta'];
 		$infoPeriodo = $vigenciaJunta/12;
 		
 		$query="SELECT CONCAT(sm_socios.nombre,' ',sm_socios.apPaterno,' ',sm_socios.apMaterno) AS nombrePresidente FROM sm_junta_directiva_integrantes INNER JOIN sm_socios ON sm_junta_directiva_integrantes.codigoSocio = sm_socios.codigoSocio WHERE sm_junta_directiva_integrantes.idJuntaDirectiva = '$idJuntaDirectiva' AND sm_junta_directiva_integrantes.idCargoJunta = 1";
 		$consulta = $conexion->query($query);
 		$resultado = $consulta->fetch_assoc();
-		$nombrePresidente=$resultado[nombrePresidente];
+		$nombrePresidente=$resultado['nombrePresidente'];
 
 		$query="SELECT sm_junta_directiva_fin_periodo.tiempo FROM sm_junta_directiva_fin_periodo WHERE id='1'";
 		$consulta = $conexion->query($query);
 		$resultado = $consulta->fetch_assoc();
-		$tiempo=$resultado[tiempo];
+		$tiempo=$resultado['tiempo'];
 
 		$query="SELECT sm_bancos.entidad, sm_banco_cuentas.numeroCuenta FROM sm_junta_directiva_cuenta_banco INNER JOIN sm_banco_cuentas ON sm_junta_directiva_cuenta_banco.codigoCuenta = sm_banco_cuentas.codigoCuenta INNER JOIN sm_bancos ON sm_banco_cuentas.codigoBanco = sm_bancos.codigoBanco WHERE sm_junta_directiva_cuenta_banco.idJuntaDirectiva = '$idJuntaDirectiva'";
 		$consulta = $conexion->query($query);
 		$resultado = $consulta->fetch_assoc();
-		$entidad=$resultado[entidad];
-		$numeroCuenta=$resultado[numeroCuenta];
+		$entidad=$resultado['entidad'];
+		$numeroCuenta=$resultado['numeroCuenta'];
 		$infoCuenta=$entidad.' | '.$numeroCuenta;
 
 		$query="SELECT COUNT(idJuntaDirectiva) AS nroCuentas FROM sm_junta_directiva_cuenta_banco WHERE idJuntaDirectiva='$idJuntaDirectiva'";
 		$consulta = $conexion->query($query);
 		$resultado = $consulta->fetch_assoc();
-		$nroCuentas = $resultado[nroCuentas];
+		$nroCuentas = $resultado['nroCuentas'];
 
 		if($nroCuentas>0){
 			if($nroCuentas>1){
