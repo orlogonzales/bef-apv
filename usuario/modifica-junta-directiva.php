@@ -21,17 +21,17 @@
 	$sql="SELECT sm_junta_directiva.fechaPeriodo, sm_junta_directiva_vigencia.vigenciaJunta, sm_junta_directiva.fechaFinPeriodo, sm_junta_directiva.fechaRegistro, sm_junta_directiva.horaRegistro, sm_junta_directiva.usuario FROM sm_junta_directiva INNER JOIN sm_junta_directiva_vigencia ON sm_junta_directiva.idVigencia = sm_junta_directiva_vigencia.idVigencia WHERE sm_junta_directiva.idJuntaDirectiva = '$idJuntaDirectiva'";
 	$consulta = $conexion->query($sql);
 	$resultado = $consulta->fetch_assoc();
-	$fechaPeriodo=$resultado[fechaPeriodo];
-	$vigenciaJunta=$resultado[vigenciaJunta];
-	$fechaFinPeriodo=$resultado[fechaFinPeriodo];
-	$fechaRegistro=$resultado[fechaRegistro];
-	$horaRegistro=$resultado[horaRegistro];
-	$usuario=$resultado[usuario];
+	$fechaPeriodo=$resultado['fechaPeriodo'];
+	$vigenciaJunta=$resultado['vigenciaJunta'];
+	$fechaFinPeriodo=$resultado['fechaFinPeriodo'];
+	$fechaRegistro=$resultado['fechaRegistro'];
+	$horaRegistro=$resultado['horaRegistro'];
+	$usuario=$resultado['usuario'];
 
 	$sql="SELECT CONCAT(sm_socios.nombre,' ',sm_socios.apPaterno,' ',sm_socios.apMaterno) AS nombrePresidente FROM sm_junta_directiva_integrantes INNER JOIN sm_socios ON sm_junta_directiva_integrantes.codigoSocio = sm_socios.codigoSocio WHERE idJuntaDirectiva = '$idJuntaDirectiva' AND idCargoJunta = '1'";
 	$consulta = $conexion->query($sql);
 	$resultado = $consulta->fetch_assoc();
-	$nombrePresidente=$resultado[nombrePresidente];
+	$nombrePresidente=$resultado['nombrePresidente'];
 
 	$infoFechaInicio= infoFecha($fechaPeriodo, 'muycorta');
 	$infoFechaFin= infoFecha($fechaFinPeriodo, 'muycorta');
@@ -40,7 +40,7 @@
 	$sql="SELECT CONCAT(sm_usuarios.nombre,' ',sm_usuarios.paterno) AS nombreUsuario FROM sm_usuarios WHERE sm_usuarios.dni = '$usuario'";
 	$consulta = $conexion->query($sql);
 	$resultado = $consulta->fetch_assoc();
-	$nombreUsuario=$resultado[nombreUsuario];
+	$nombreUsuario=$resultado['nombreUsuario'];
 ?>
 <div class="panel">
 	<div class="panel-heading bg-teal">
