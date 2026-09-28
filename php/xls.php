@@ -12,6 +12,9 @@
 		if (PHP_SAPI == 'cli')
 			die('Este archivo solo se puede ver desde un navegador web');
 
+		if (!file_exists('../PHPExcel/PHPExcel.php')) {
+			die('Modulo de exportacion no disponible');
+		}
 		require_once '../PHPExcel/PHPExcel.php';
 
 		$objPHPExcel = new PHPExcel();
@@ -49,23 +52,23 @@
 		
 		$i = 2;
 		while($n=mysqli_fetch_array($row)){
-			$codigoSocio     =$n[codigoSocio];
+			$codigoSocio     =$n['codigoSocio'];
 			$lotes           =ceros(infoSocios($codigoSocio,'cantidadLotes'),2);
-			$dni             =$n[dni];
-			$nombre          =$n[nombre];
-			$apPaterno       =$n[apPaterno];
-			$apMaterno       =$n[apMaterno];
-			$genero          =infoGenero($n[genero]);
-			$fechaNacimiento =infoFecha($n[fechaNacimiento],'resultados');
-			$edad            =calculaEdad($n[fechaNacimiento]);
+			$dni             =$n['dni'];
+			$nombre          =$n['nombre'];
+			$apPaterno       =$n['apPaterno'];
+			$apMaterno       =$n['apMaterno'];
+			$genero          =infoGenero($n['genero']);
+			$fechaNacimiento =infoFecha($n['fechaNacimiento'],'resultados');
+			$edad            =calculaEdad($n['fechaNacimiento']);
 			$fotoSocio       =$codigoSocio.".jpg";
-			$estadoCivil     =estadoCivil($n[estadoCivil]);
-			$direccion       =$n[direccion];
-			$departamento    =infoDepartamento($n[departamento]);
-			$provincia       =$n[provincia];
-			$distrito        =$n[distrito];
-			$fechaAdjudica   =$n[fechaAdjudica];
-			$recibo          =$n[recibo];
+			$estadoCivil     =estadoCivil($n['estadoCivil']);
+			$direccion       =$n['direccion'];
+			$departamento    =infoDepartamento($n['departamento']);
+			$provincia       =$n['provincia'];
+			$distrito        =$n['distrito'];
+			$fechaAdjudica   =$n['fechaAdjudica'];
+			$recibo          =$n['recibo'];
 			$cosocio         =infoSocios($codigoSocio,'cosocio');
 			$relacion        =infoRelacion($cosocio);
 
