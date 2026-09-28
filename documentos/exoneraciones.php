@@ -14,10 +14,14 @@
 	use Dompdf\Dompdf;
 
 	$conexion        =conexionDB();
-	$codigoSocio     =$_GET[codigoSocio];
-	$actividad       =$_GET[actividad];
-	$codigoActividad =$_GET[codigoActividad];
-	$operacion       =$_GET[operacion];
+	$codigoSocio     =$_GET['codigoSocio'] ?? '';
+	$actividad       =$_GET['actividad'] ?? '';
+	$codigoActividad =$_GET['codigoActividad'] ?? '';
+	$operacion       =$_GET['operacion'] ?? '';
+	$idJuntaDirectiva= $_SESSION['idJDActual'] ?? '';
+	$detalles        = '';
+	$reporte         = '';
+	$nombreArchivo   = 'info-exoneracion-' . ($codigoSocio ?: 'socio');
 	$nombreSocio     =infoSocios($codigoSocio,'nombre');
 	$lotesSocio      =infoSocios($codigoSocio,'cantidadLotes');
 	$hoy             =fechaSQL(infoTiempo('fechaHoy'));
@@ -33,29 +37,29 @@
 		$infopago=mysqli_query($conexion,$sql);
 		$dato=mysqli_fetch_array($infopago);
 
-		$tipoActividad   =$dato[tipoActividad];
-		$fechaOperacion  =$dato[fechaOperacion];
-		$concepto        =$dato[concepto];
-		$codigoConcepto  =$dato[codigoConcepto];
-		$tipoDocumento   =$dato[tipoDocumento];
-		$nroDocumento    =$dato[nroDocumento];
-		$monto           =$dato[monto];
-		$detalleConcepto =$dato[detalleConcepto];
-		$codigoOperacion =$dato[codigoOperacion];
+		$tipoActividad   =$dato['tipoActividad'] ?? '';
+		$fechaOperacion  =$dato['fechaOperacion'] ?? '';
+		$concepto        =$dato['concepto'] ?? '';
+		$codigoConcepto  =$dato['codigoConcepto'] ?? '';
+		$tipoDocumento   =$dato['tipoDocumento'] ?? '';
+		$nroDocumento    =$dato['nroDocumento'] ?? '';
+		$monto           =$dato['monto'] ?? 0;
+		$detalleConcepto =$dato['detalleConcepto'] ?? '';
+		$codigoOperacion =$dato['codigoOperacion'] ?? '';
 
 		$sql="SELECT deuda, porcentaje, exonerado, totalPago, observacion, codigoExoneracion, fecha, hora, usuario FROM sm_mod_exoneracion WHERE codigoSocio='$codigoSocio' AND tipoActividad='$actividad' AND codigoActividad='$codigoActividad'";
 		$infopago=mysqli_query($conexion,$sql);
 		$dato=mysqli_fetch_array($infopago);
 
-		$deuda             =$dato[deuda];
-		$porcentaje        =$dato[porcentaje];
-		$exonerado         =$dato[exonerado];
-		$totalPago         =$dato[totalPago];
-		$observacion       =$dato[observacion];
-		$codigoExoneracion =$dato[codigoExoneracion];
-		$fecha             =$dato[fecha];
-		$hora              =$dato[hora];
-		$usuario           =$dato[usuario];
+		$deuda             =$dato['deuda'] ?? 0;
+		$porcentaje        =$dato['porcentaje'] ?? 0;
+		$exonerado         =$dato['exonerado'] ?? 0;
+		$totalPago         =$dato['totalPago'] ?? 0;
+		$observacion       =$dato['observacion'] ?? '';
+		$codigoExoneracion =$dato['codigoExoneracion'] ?? '';
+		$fecha             =$dato['fecha'] ?? '';
+		$hora              =$dato['hora'] ?? '';
+		$usuario           =$dato['usuario'] ?? '';
 
 		if($porcentaje<100){
 			$conceptoEXO='EXONERACION PARCIAL DE DEUDA';
@@ -188,7 +192,7 @@
 
 	$dompdf = new Dompdf();
 	$dompdf->loadHtml($reporte);
-	$dompdf->setPaper('A4', 'portait');
+	$dompdf->setPaper('A4', 'portrait');
 	$dompdf->render();
 	$dompdf->stream($nombreArchivo.".pdf");
 ?>

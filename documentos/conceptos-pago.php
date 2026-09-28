@@ -14,7 +14,14 @@
 	use Dompdf\Dompdf;
 	
 	$conexion =conexionDB();
-	$concepto =$_GET[concepto];
+	$concepto =$_GET['concepto'] ?? '';
+	$idJuntaDirectiva = $_SESSION['idJDActual'] ?? '';
+	$codigoActividad = '';
+	$codigoCuota = '';
+	$fechaInicio = '';
+	$fechaFin = '';
+	$rotuloTitulo = '';
+	$totales = '';
 
 	if($concepto=="ASA"){
 		$rotuloTitulo       ="ASAMBLEAS";
@@ -176,12 +183,12 @@
 			$rs=mysqli_query($conexion,$sql);
 			$i=1;
 			while($n=mysqli_fetch_array($rs)){
-				$codigoActividad          =$n[codigoActividad];
-				$tipoActividad            =$n[tipoActividad];
-				$temaActividad            =$n[temaActividad]; 
-				$fechaActividad           =$n[fechaActividad]; 
-				$horaActividad            =$n[horaActividad]; 
-				$lugarActividad           =$n[lugarActividad]; 
+				$codigoActividad          =$n['codigoActividad'];
+				$tipoActividad            =$n['tipoActividad'];
+				$temaActividad            =$n['temaActividad'];
+				$fechaActividad           =$n['fechaActividad'];
+				$horaActividad            =$n['horaActividad'];
+				$lugarActividad           =$n['lugarActividad'];
 				$aforo                    =infoActividad($idJuntaDirectiva,$codigoActividad,'','aforo');
 				$asistio                  =infoActividad($idJuntaDirectiva,$codigoActividad,'','asistio');
 				$tarde                    =infoActividad($idJuntaDirectiva,$codigoActividad,'','tarde');
@@ -239,12 +246,12 @@
 			$rs=mysqli_query($conexion,$sql);
 			$i=1;
 			while($n=mysqli_fetch_array($rs)){
-				$codigoActividad          =$n[codigoActividad];
-				$tipoActividad            =$n[tipoActividad];
-				$temaActividad            =$n[temaActividad]; 
-				$fechaActividad           =$n[fechaActividad]; 
-				$horaActividad            =$n[horaActividad]; 
-				$lugarActividad           =$n[lugarActividad]; 
+				$codigoActividad          =$n['codigoActividad'];
+				$tipoActividad            =$n['tipoActividad'];
+				$temaActividad            =$n['temaActividad'];
+				$fechaActividad           =$n['fechaActividad'];
+				$horaActividad            =$n['horaActividad'];
+				$lugarActividad           =$n['lugarActividad'];
 				$aforo                    =infoActividad($idJuntaDirectiva,$codigoActividad,'','aforo');
 				$asistio                  =infoActividad($idJuntaDirectiva,$codigoActividad,'','asistio');
 				$tarde                    =infoActividad($idJuntaDirectiva,$codigoActividad,'','tarde');
@@ -302,9 +309,9 @@
 			$rs=mysqli_query($conexion,$sql);
 			$i=1;
 			while($n=mysqli_fetch_array($rs)){
-				$codigoCuota   =$n[codigoCuota];
-				$temaActividad =$n[conceptoCuota];
-				$fechaPago     =$n[fechaPago];
+				$codigoCuota   =$n['codigoCuota'];
+				$temaActividad =$n['conceptoCuota'];
+				$fechaPago     =$n['fechaPago'];
 				$aforo         =infoCuota($idJuntaDirectiva,$codigoCuota,'aforo');
 				$pagaronFP     =infoCuota($idJuntaDirectiva,$codigoCuota,'totalFechasProgramadas');
 				$pagaron       =infoCuota($idJuntaDirectiva,$codigoCuota,'pagaron');
@@ -345,14 +352,16 @@
 		}
 	}
 
-	$reporte.='
+	if((($concepto=="ASA" || $concepto=="FAE") && $cantidadASAFAE>0) || ($concepto=="CUO" && $cantidadCUO>0)){
+		$reporte.='
 				<tr>
 					'.$totales.'
 				</tr>
 			</tbody>
-			</table>
-			'.$impresoPor.'
-		<body>
+			</table>';
+	}
+	$reporte.=$impresoPor.'
+		</body>
 		</html>
 	';
 	
@@ -363,6 +372,7 @@
 	$dompdf->setPaper('A4', 'landscape');
 	$dompdf->render();
 	$canvas = $dompdf->getCanvas();
+	$font = $dompdf->getFontMetrics()->get_font("helvetica", "normal");
 	$canvas->page_text(400, 560, "Página: {PAGE_NUM} de {PAGE_COUNT}", $font, 8, array(0,0,0));
 	$dompdf->stream("reporte-economico-actividades.pdf");
 ?>
