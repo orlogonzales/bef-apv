@@ -14,8 +14,8 @@
 		$urlSocios="https://{$_SERVER['HTTP_HOST']}/apv";
 	}
 
-	$codigoLote=$_GET[codigoLote];
-	$codigoSocio=$_GET[codigoSocio];
+	$codigoLote=$_GET['codigoLote'];
+	$codigoSocio=$_GET['codigoSocio'];
 	$direccion=informacionLote($codigoSocio, $codigoLote, 'direccion');
 ?>
 <div class="modal-body">
