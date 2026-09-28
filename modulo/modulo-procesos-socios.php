@@ -2,8 +2,8 @@
 	$ruta             ='../';
 	include_once $ruta."php/funciones.php";
 	include_once $ruta."php/conexion.php";
-	$proceso          = $_POST[proceso];
-	$codigoSocio      = $_POST[codigoSocio];
+	$proceso          = $_POST['proceso'];
+	$codigoSocio      = $_POST['codigoSocio'];
 	$dni              = infoSocios($codigoSocio,'dni');
 	$nombreSocio      = infoSocios($codigoSocio,'nombre');
 	$nroObservaciones = infoSocios($codigoSocio,'observaciones');
@@ -11,8 +11,8 @@
 ?>
 <?php if($proceso=="AGREGA_NOTA"){ ?>
 	<?php
-		$dataTable     = $_POST[dataTable];
-		$ventanaModal  = $_POST[ventanaModal];
+		$dataTable     = $_POST['dataTable'];
+		$ventanaModal  = $_POST['ventanaModal'];
 	?>
 	<div class="alert alert-styled-left alert-arrow-left alpha-teal text-center textoBig">
 		<div class="visible-lg visible-sm"><strong>SOCIO:</strong> <?= $nombreSocio ?>&nbsp;&nbsp;|&nbsp;&nbsp;<strong>CODIGO SOCIO:</strong> <?= $codigoSocio ?></div>
