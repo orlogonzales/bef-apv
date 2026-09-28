@@ -6,7 +6,7 @@
 	$archivoXLS  ='socios.xls';
 	$JSON        =$ruta.$json.$archivoJSON;
 	$XLS         =$ruta.$json.$archivoXLS;
-	$opcion      =$_GET[opcion];
+	$opcion      =$_GET['opcion'] ?? '';
 ?>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -41,6 +41,6 @@
 <div id="moduloProcesos"></div>
 
 <?php if($opcion=="ELIMINA_JSON"){
-	unlink($JSON);
-	unlink($XLS);
+	if(file_exists($JSON)){ unlink($JSON); }
+	if(file_exists($XLS)){  unlink($XLS); }
 } ?>

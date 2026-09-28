@@ -695,7 +695,7 @@
 		$sql="SELECT codigoSocio FROM sm_socios WHERE dni='$dni'";
 		$row=mysqli_query($conexion,$sql);
 		$dato=mysqli_fetch_array($row);
-		$codigoSocio=$dato[codigoSocio];
+		$codigoSocio=$dato['codigoSocio'] ?? '';
 		
 		if(strlen($codigoSocio)>0){
 			$existe='SI';
