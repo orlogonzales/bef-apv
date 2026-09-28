@@ -140,7 +140,7 @@
 														echo '<option value="ALL">TODOS LOS BENEFICIARIOS O RESPONSABLES</option>';
 													}
 												}
-												$documento =$datos[codigoSocio];
+												$documento =$datos['codigoSocio'];
 												$nombre    =infoSocios($documento,'nombre');
 												if($nombre==""){ $infoNombre=datoUsuario($documento,'nombreFull'); }else{ $infoNombre=$nombre; }
 												if($datos[0]==$usuarioConsulta AND $usuarioConsulta!="ALL"){
@@ -238,10 +238,10 @@
 											$rs=mysqli_query($conexion,$sql);
 											$i=1;
 											while($datos=mysqli_fetch_array($rs)){
-												$codigoBanco  =$datos[codigoBanco];
-												$numeroCuenta =$datos[numeroCuenta];
-												$detalle      =$datos[detalle];
-												$estado       =$datos[estado];
+												$codigoBanco  =$datos['codigoBanco'];
+												$numeroCuenta =$datos['numeroCuenta'];
+												$detalle      =$datos['detalle'];
+												$estado       =$datos['estado'];
 												if($estado=="ACT"){ $infoEstado="ACTIVO"; }else{ $infoEstado="INACTIVO";}
 												$infoCuenta   ='CUENTA '.infoBancos($codigoBanco,'detalleEntidad').' - '.texto($detalle).' ('.$numeroCuenta.') &rarr; ['.$infoEstado.']';
 												
@@ -286,10 +286,10 @@
 													}
 												}
 
-												$estado=$datos[estado];
-												$codigoBanco    =$datos[codigoBanco];
-												$c_codigoCuenta   =$datos[codigoCuenta];
-												$detalle        =$datos[detalle];
+												$estado=$datos['estado'];
+												$codigoBanco    =$datos['codigoBanco'];
+												$c_codigoCuenta   =$datos['codigoCuenta'];
+												$detalle        =$datos['detalle'];
 												$detalleCTA     =infoCuentas($c_codigoCuenta,'','detalleCuenta');
 												$numeroCuenta   =infoCuentas($c_codigoCuenta,'','numeroCuenta');
 												$infoChequera   =infoBancos($codigoBanco,'detalleEntidad').' - '.$detalleCTA.' ('.$numeroCuenta.') - '.texto($detalle);
