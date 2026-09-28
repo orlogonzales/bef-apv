@@ -2,7 +2,7 @@
 	/////////////////////////////////////////////////////////////////////
 	/// VARIABLES
 	/////////////////////////////////////////////////////////////////////
-	$opcion          =$_GET[opcion];
+	$opcion          =isset($_GET['opcion']) ? $_GET['opcion'] : '';
 	$ruta            ='../';
 
 	/////////////////////////////////////////////////////////////////////
@@ -152,12 +152,12 @@
 								$rs=mysqli_query($conexion,$sql);
 								$i=1;
 								while($n=mysqli_fetch_array($rs)){
-									$codigoOperacion =$n[codigoOperacion];
-									$proceso         =$n[proceso];
-									$monto           =$n[monto];
-									$fecha           =$n[fecha];
-									$hora            =$n[hora];
-									$usuario         =$n[usuario];
+									$codigoOperacion =$n['codigoOperacion'];
+									$proceso         =$n['proceso'];
+									$monto           =$n['monto'];
+									$fecha           =$n['fecha'];
+									$hora            =$n['hora'];
+									$usuario         =$n['usuario'];
 									$infoProceso=registradoPor($usuario,$fecha,$hora,'SI','label-default');
 							?>
 							<tr>
@@ -197,12 +197,12 @@
 								$rs=mysqli_query($conexion,$sql);
 								$i=1;
 								while($n=mysqli_fetch_array($rs)){
-									$codigoPartida =$n[codigoPartida];
-									$proceso       =$n[proceso];
-									$monto         =$n[monto];
-									$fecha         =$n[fecha];
-									$hora          =$n[hora];
-									$usuario       =$n[usuario];
+									$codigoPartida =$n['codigoPartida'];
+									$proceso       =$n['proceso'];
+									$monto         =$n['monto'];
+									$fecha         =$n['fecha'];
+									$hora          =$n['hora'];
+									$usuario       =$n['usuario'];
 							?>
 							<tr>
 								<td class="text-center"><?= ceros($i,2) ?></td>
