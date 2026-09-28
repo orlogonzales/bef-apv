@@ -2,8 +2,8 @@
 	/////////////////////////////////////////////////////////////////////
 	/// VARIABLES
 	/////////////////////////////////////////////////////////////////////
-	$codigoSocio =$_GET[codigoSocio];
-	$opcion      =$_GET[opcion];
+	$codigoSocio =$_GET['codigoSocio'];
+	$opcion      =$_GET['opcion'];
 	$ruta        ='../';
 	$rutaFoto    =$ruta.'assets/images/socios/';
 	$sinFoto     =$ruta.'assets/images/socios/no-socio.png';
@@ -27,6 +27,17 @@
 	/// SECCION - RUTA DEL SISTEMA
 	/////////////////////////////////////////////////////////////////////
 	include($ruta.'template/header.tpl');
+
+	if($_SESSION['rol_apv']=='ADM' || $_SESSION['rol_apv']=='ADM'){
+		$idJuntaDirectiva='ALL';
+	}else{
+		if(strlen($_SESSION['idJDActual'])>0){
+			$idJuntaDirectiva=$_SESSION['idJDActual'];
+		}else{
+			$idJuntaDirectiva='ALL';
+		}
+	}
+
 	$existeSocio=infoSocios($codigoSocio,'verifica');
 
 	if($existeSocio){
@@ -38,31 +49,31 @@
 		$sql="SELECT dni, tratamiento, nombre, apPaterno, apMaterno, genero, fechaNacimiento, fotoSocio, nacionalidad, estadoCivil, direccion, departamento, provincia, distrito, telefono, celular, fechaAdjudica, recibo, observaciones, sincronizado, eCardSocio, fecha, hora FROM sm_socios WHERE codigoSocio='$codigoSocio'";
 		$row=mysqli_query($conexion,$sql);
 		$dato=mysqli_fetch_array($row);
-		$dni                =$dato[dni];
-		$tratamiento        =$dato[tratamiento];
-		$nombre             =$dato[nombre];
-		$apPaterno          =$dato[apPaterno];
-		$apMaterno          =$dato[apMaterno];
-		$genero             =$dato[genero];
-		$fechaNacimiento    =$dato[fechaNacimiento];
+		$dni                =$dato['dni'];
+		$tratamiento        =$dato['tratamiento'];
+		$nombre             =$dato['nombre'];
+		$apPaterno          =$dato['apPaterno'];
+		$apMaterno          =$dato['apMaterno'];
+		$genero             =$dato['genero'];
+		$fechaNacimiento    =$dato['fechaNacimiento'];
 		$edad               =calculaEdad($fechaNacimiento);
-		$fotoSocio          =$dato[fotoSocio];
-		$fotoSocioDB        =$dato[fotoSocio];
-		$nacionalidad       =$dato[nacionalidad];
-		$estadoCivil        =$dato[estadoCivil];
-		$direccion          =$dato[direccion];
-		$departamento       =$dato[departamento];
-		$provincia          =$dato[provincia];
-		$distrito           =$dato[distrito];
-		$telefono           =$dato[telefono];
-		$celular            =$dato[celular];
-		$observaciones      =$dato[observaciones];
-		$sincronizado       =$dato[sincronizado];
-		$fecha              =$dato[fecha];
-		$hora               =$dato[hora];
-		$fechaAdjudica      =$dato[fechaAdjudica];
-		$recibo             =$dato[recibo];
-		$eCardSocio         =$dato[eCardSocio];
+		$fotoSocio          =$dato['fotoSocio'];
+		$fotoSocioDB        =$dato['fotoSocio'];
+		$nacionalidad       =$dato['nacionalidad'];
+		$estadoCivil        =$dato['estadoCivil'];
+		$direccion          =$dato['direccion'];
+		$departamento       =$dato['departamento'];
+		$provincia          =$dato['provincia'];
+		$distrito           =$dato['distrito'];
+		$telefono           =$dato['telefono'];
+		$celular            =$dato['celular'];
+		$observaciones      =$dato['observaciones'];
+		$sincronizado       =$dato['sincronizado'];
+		$fecha              =$dato['fecha'];
+		$hora               =$dato['hora'];
+		$fechaAdjudica      =$dato['fechaAdjudica'];
+		$recibo             =$dato['recibo'];
+		$eCardSocio         =$dato['eCardSocio'];
 		$cuentas            =infoSocios($dni,'cuentaDNI');
 		$segundaCuenta      =infoCuentaError($codigoSocio,$dni,'segundaCuenta');
 
@@ -95,22 +106,21 @@
 			$sql="SELECT dni, tratamiento, nombre, apPaterno, apMaterno, genero, fechaNacimiento, nacionalidad, estadoCivil, direccion, departamento, provincia, distrito, telefono, celular FROM sm_relacion_socios WHERE codigoSocio='$codigoSocio'";
 			$row=mysqli_query($conexion,$sql);
 			$dato=mysqli_fetch_array($row);
-			$dniCS             =$dato[dni];
-			$tratamientoCS     =$dato[tratamiento];
-			$nombreCS          =$dato[nombre];
-			$apPaternoCS       =$dato[apPaterno];
-			$apMaternoCS       =$dato[apMaterno];
-			$generoCS          =$dato[genero];
-			$fechaNacimientoCS =$dato[fechaNacimiento];
-			$fotoSocioCS       =$dato[fotoSocio];
-			$nacionalidadCS    =$dato[nacionalidad];
-			$estadoCivilCS     =$dato[estadoCivil];
-			$direccionCS       =$dato[direccion];
-			$departamentoCS    =$dato[departamento];
-			$provinciaCS       =$dato[provincia];
-			$distritoCS        =$dato[distrito];
-			$telefonoCS        =$dato[telefono];
-			$celularCS         =$dato[celular];
+			$dniCS             =$dato['dni'];
+			$tratamientoCS     =$dato['tratamiento'];
+			$nombreCS          =$dato['nombre'];
+			$apPaternoCS       =$dato['apPaterno'];
+			$apMaternoCS       =$dato['apMaterno'];
+			$generoCS          =$dato['genero'];
+			$fechaNacimientoCS =$dato['fechaNacimiento'];
+			$nacionalidadCS    =$dato['nacionalidad'];
+			$estadoCivilCS     =$dato['estadoCivil'];
+			$direccionCS       =$dato['direccion'];
+			$departamentoCS    =$dato['departamento'];
+			$provinciaCS       =$dato['provincia'];
+			$distritoCS        =$dato['distrito'];
+			$telefonoCS        =$dato['telefono'];
+			$celularCS         =$dato['celular'];
 		}
 
 		/////////////////////////////////////////////////////////////////////
@@ -204,7 +214,7 @@
 		curl_setopt($cDatos,CURLOPT_RETURNTRANSFER, TRUE);
 		$dCuenta    = curl_exec($cDatos);
 		$infoCuentas= json_decode($dCuenta,true);
-		$nroCuentas = count($infoCuentas);
+		$nroCuentas = is_countable($infoCuentas) ? count($infoCuentas) : 0;
 
 		if($nroCuentas>0){
 			$codigoCta_1  = $infoCuentas[0]['cuenta_1']['codigoCta'];
@@ -1074,12 +1084,12 @@
 										$contar=mysqli_num_rows($rs);
 										mysqli_set_charset($conexion, "utf8");
 										while($n=mysqli_fetch_array($rs)){
-											$lotes      =$n[lotes];
-											$sector     =$n[sector];
-											$manzana    =$n[manzana];
-											$lote       =$n[lote];
-											$codigoLote =$n[codigoLote];
-											$direccion  =$n[direccion];
+											$lotes      =$n['lotes'];
+											$sector     =$n['sector'];
+											$manzana    =$n['manzana'];
+											$lote       =$n['lote'];
+											$codigoLote =$n['codigoLote'];
+											$direccion  =$n['direccion'];
 									 ?>
 										<tr>
 											<td><?= $l ?></td>
@@ -1153,11 +1163,11 @@
 										$rs=mysqli_query($conexion,$sql);
 										$i=1;
 										while($n=mysqli_fetch_array($rs)){
-											$id          =$n[id];
-											$observacion =$n[observacion];
-											$fecha       =$n[fecha];
-											$hora        =$n[hora];
-											$usuario     =$n[usuario];
+											$id          =$n['id'];
+											$observacion =$n['observacion'];
+											$fecha       =$n['fecha'];
+											$hora        =$n['hora'];
+											$usuario     =$n['usuario'];
 											$infoRegistro=registradoPor($usuario,$fecha,$hora,'NO','');
 									?>
 									<tr>
@@ -1225,10 +1235,10 @@
 										$rs=mysqli_query($conexion,$sql);
 										$i=1;
 										while($n=mysqli_fetch_array($rs)){
-											$proceso =$n[proceso];
-											$fecha   =$n[fecha];
-											$hora    =$n[hora];
-											$usuario =$n[usuario];
+											$proceso =$n['proceso'];
+											$fecha   =$n['fecha'];
+											$hora    =$n['hora'];
+											$usuario =$n['usuario'];
 									?>
 									<tr>
 										<td class="text-center"><?= ceros($i,2) ?></td>
