@@ -2,8 +2,11 @@
 	/////////////////////////////////////////////////////////////////////
 	/// VARIABLES DEL SISTEMA
 	/////////////////////////////////////////////////////////////////////
-	$tipoActividad=$_GET[tipoActividad];
+	$tipoActividad=isset($_GET['tipoActividad']) ? $_GET['tipoActividad'] : '';
 	$operacion="REGISTRA_ACTIVIDAD";
+	$rotuloACTma="";
+	$rotuloACTmi="";
+	$menuActual="";
 	
 	if($tipoActividad=="ASA"){
 		$rotuloACTma="ASAMBLEA";
@@ -121,16 +124,16 @@
 											$sql="SELECT idJuntaDirectiva, fechaPeriodo, fechaFinPeriodo FROM sm_junta_directiva";
 											$rs=mysqli_query($conexion,$sql);
 											while($datos=mysqli_fetch_array($rs)){
-												$idJuntaDirectiva  =$datos[idJuntaDirectiva];
-												$fechaPeriodo    =$datos[fechaPeriodo];
-												$fechaFinPeriodo =$datos[fechaFinPeriodo];
+												$idJuntaDirectiva  =$datos['idJuntaDirectiva'];
+												$fechaPeriodo    =$datos['fechaPeriodo'];
+												$fechaFinPeriodo =$datos['fechaFinPeriodo'];
 												$infoFechaInicio= infoFecha($fechaPeriodo, 'year');
 												$infoFechaFin= infoFecha($fechaFinPeriodo, 'year');
 
 												$query="SELECT CONCAT(sm_socios.nombre,' ',sm_socios.apPaterno,' ',sm_socios.apMaterno) AS nombrePresidente FROM sm_junta_directiva_integrantes INNER JOIN sm_socios ON sm_junta_directiva_integrantes.codigoSocio = sm_socios.codigoSocio WHERE idJuntaDirectiva = '$idJuntaDirectiva' AND idCargoJunta = '1'";
 												$consulta = $conexion->query($query);
 												$resultado = $consulta->fetch_assoc();
-												$nombrePresidente=$resultado[nombrePresidente];
+												$nombrePresidente=isset($resultado['nombrePresidente']) ? $resultado['nombrePresidente'] : '';
 												$infoJuntaDirectiva=$nombrePresidente.'&nbsp;&nbsp;|&nbsp;&nbsp;'.$infoFechaInicio.' - '.$infoFechaFin;
 												
 												echo '<option value="'.$idJuntaDirectiva.'">'.$infoJuntaDirectiva.'</option>';
@@ -284,11 +287,11 @@
 					lugarActividad: { required: true },
 					fechaActividad: { required: true },
 					horaActividad: { required: true },
-		 			mTardanza: { number: true, min: 0 },
-					mFalta: { number: true, min: 0 },
+					mTardanza: { required: true, number: true, min: 0 },
+					mFalta: { required: true, number: true, min: 0 },
 					idJuntaDirectiva:{ required: true },
 					codigoCuenta: { required: true },
-					mPenalidad: { number: true, min: 0 },
+					mPenalidad: { required: true, number: true, min: 0 },
 					fechaInicioPenalidad: { required: true },
 					contenidoActividad: { required: true },
 				},
@@ -299,11 +302,11 @@
 					lugarActividad: { required: "Lugar de <?= $rotuloACTmi ?>", },
 					fechaActividad: { required: "Fecha de <?= $rotuloACTmi ?>", },
 					horaActividad: { required: "Hora de <?= $rotuloACTmi ?>", },
-					mTardanza: { required: "Multa por tardanza", number: "Solo numeros", min: "minimo S/. 10", },
-					mFalta: { required: "Multa por inasistencia", number: "Solo numeros", min: "minimo S/. 10", },
+					mTardanza: { required: "Multa por tardanza", number: "Solo numeros", min: "Mínimo S/. 0", },
+					mFalta: { required: "Multa por inasistencia", number: "Solo numeros", min: "Mínimo S/. 0", },
 					idJuntaDirectiva:{ required: "Seleccione Junta Directiva" },
 					codigoCuenta: { required: "Seleccione Cuenta de banco <?= $rotuloACTmi ?>", },
-					mPenalidad: { required: "Monto de penalidad", number: "Solo numeros", min: "minimo S/. 10", },					
+					mPenalidad: { required: "Monto de penalidad", number: "Solo numeros", min: "Mínimo S/. 0", },
 					fechaInicioPenalidad: { required: "Fecha de inicio de penalidad" },
 					contenidoActividad: { required: "Detalles adicionales...", },
 				}
@@ -311,6 +314,6 @@
 		});
 
 		// VALIDA FORMULARIO SOLO NUMEROS
-		$(function(){ $('#mTardanza, #mFalta').validar('0123456789.'); });
+		$(function(){ $('#mTardanza, #mFalta, #mPenalidad').validar('0123456789.'); });
 	</script>
 <?php include($ruta.'template/footer.tpl'); ?>
