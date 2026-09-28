@@ -13,7 +13,7 @@
 	use Dompdf\Dompdf;
 	
 	$conexion       =conexionDB();
-	$codigoPartida   =$_GET[codigoPartida];
+	$codigoPartida   =$_GET['codigoPartida'] ?? '';
 	$hoy            =fechaSQL(infoTiempo('fechaHoy'));
 	$hora           =infoTiempo('hora');
 	$dniUsuario     =$_SESSION['dni_apv'];
@@ -26,18 +26,18 @@
 	$sql="SELECT usuarioPartida, concepto, monto, codigoChequera, nroCheque, observaciones, fechaPartida, fechaCierre, estado, fecha, hora, usuario  FROM sm_partidas WHERE codigoPartida='$codigoPartida'";
 	$row=mysqli_query($conexion,$sql);
 	$n=mysqli_fetch_array($row);
-	$usuarioPartida  =$n[usuarioPartida];
-	$concepto        =texto($n[concepto]);
-	$monto           =$n[monto];
-	$codigoChequera  =$n[codigoChequera];
-	$nroCheque       =$n[nroCheque];
-	$observaciones   =texto($n[observaciones]);
-	$fechaPartida    =$n[fechaPartida];
-	$fechaCierre     =$n[fechaCierre];
-	$estado          =$n[estado];
-	$fecha           =$n[fecha];
-	$hora            =$n[hora];
-	$usuario         =$n[usuario];
+	$usuarioPartida  =$n['usuarioPartida'] ?? '';
+	$concepto        =texto($n['concepto'] ?? '');
+	$monto           =$n['monto'] ?? 0;
+	$codigoChequera  =$n['codigoChequera'] ?? '';
+	$nroCheque       =$n['nroCheque'] ?? '';
+	$observaciones   =texto($n['observaciones'] ?? '');
+	$fechaPartida    =$n['fechaPartida'] ?? '0000-00-00';
+	$fechaCierre     =$n['fechaCierre'] ?? '0000-00-00';
+	$estado          =$n['estado'] ?? '';
+	$fecha           =$n['fecha'] ?? '';
+	$hora            =$n['hora'] ?? '';
+	$usuario         =$n['usuario'] ?? '';
 	$entidadBancaria =infoBancos(infoChequeras($codigoChequera,'','','entidadBancaria'),'detalleEntidad');
 	$detalleChequera =texto(infoChequeras($codigoChequera,'','','detalleChequera'));
 	$infoChequera    =$entidadBancaria.' - '.$detalleChequera;
@@ -49,6 +49,7 @@
 	$nombreUP     =texto(datoUsuario($usuarioPartida,'nombreCorto'));
 	$infoRegistro =registradoPor($usuario,$fecha,$hora,'NO','');
 
+	$infoEstado='PARTIDA DESCONOCIDA';
 	if($estado=="OPN"){ $infoEstado='PARTIDA ABIERTA'; }
 	if($estado=="CLS"){ $infoEstado='PARTIDA CERRADA'; }
 	if($estado=="USO"){ $infoEstado='PARTIDA EN USO'; }
@@ -126,23 +127,24 @@
 
 	$sql="SELECT movimiento, fechaOperacion, tipoDocumento, nroDocumento, monto, detalleConcepto, observaciones, codigoOperacion, fecha, hora, usuario FROM sm_mod_caja WHERE (movimiento='SAL' OR movimiento='ING') AND codigoConcepto='$codigoPartida' ORDER BY id DESC";
 	$rs=mysqli_query($conexion,$sql);
+	$i=1;
 	while($n=mysqli_fetch_array($rs)){
-	$movimiento      =$n[movimiento];
-	$fechaOperacion  =$n[fechaOperacion];
-	$tipoDocumento   =$n[tipoDocumento];
-	$nroDocumento    =$n[nroDocumento];
-	$monto           =$n[monto];
-	$detalleConcepto =$n[detalleConcepto];
-	$observaciones   =$n[observaciones];
-	$codigoOperacion =$n[codigoOperacion];
-	$fecha           =$n[fecha];
-	$hora            =$n[hora];
-	$usuario         =$n[usuario];
+	$movimiento      =$n['movimiento'];
+	$fechaOperacion  =$n['fechaOperacion'];
+	$tipoDocumento   =$n['tipoDocumento'];
+	$nroDocumento    =$n['nroDocumento'];
+	$monto           =$n['monto'];
+	$detalleConcepto =$n['detalleConcepto'];
+	$observaciones   =$n['observaciones'];
+	$codigoOperacion =$n['codigoOperacion'];
+	$fecha           =$n['fecha'];
+	$hora            =$n['hora'];
+	$usuario         =$n['usuario'];
 	$infoRegistro    =registradoPor($usuario,$fecha,$hora,'NO','');
 
 	$reporte.='
 				<tr>
-					<td class="textoCen">'.ceros($cuota,2).'</td>
+					<td class="textoCen">'.ceros($i,2).'</td>
 					<td class="textoCen">'.$movimiento.'</td>
 					<td class="textoIzq textoMayuscula">'.infoFecha($fechaOperacion,'corta').'</td>
 					<td class="textoIzq">'.texto($detalleConcepto).'</td>
@@ -151,6 +153,7 @@
 					<td width="15%" class="textoCen">'.$infoRegistro.'</span></td>
 				</tr>
 	';
+	$i++;
 }
 
 	$reporte.='

@@ -14,38 +14,42 @@
 	use Dompdf\Dompdf;
 	
 	$conexion               =conexionDB();
-	$fechaInicio            =$_GET[fechaInicio];
-	$fechaFin               =$_GET[fechaFin];
-	$tipoCheque             =$_GET[tipoCheque];
-	$entidadBancaria        =$_GET[entidadBancaria];
-	$codigoCuenta           =$_GET[codigoCuenta];
-	$codigoChequera         =$_GET[codigoChequera];
-	$codigoCuenta           =$_GET[codigoCuenta];
-	$codigoChequera         =$_GET[codigoChequera];
-	$usuarioConsulta        =$_GET[usuarioConsulta];
-	$consultaFechaIni       =fechaSQL($fechaInicio);
-	$consultaFechaFin       =fechaSQL($fechaFin);
+	$fechaInicio            =$_GET['fechaInicio'] ?? '';
+	$fechaFin               =$_GET['fechaFin'] ?? '';
+	$tipoCheque             =$_GET['tipoCheque'] ?? 'ALL';
+	$entidadBancaria        =$_GET['entidadBancaria'] ?? 'ALL';
+	$codigoCuenta           =$_GET['codigoCuenta'] ?? 'ALL';
+	$codigoChequera         =$_GET['codigoChequera'] ?? 'ALL';
+	$usuarioConsulta        =$_GET['usuarioConsulta'] ?? 'ALL';
+	$consultaFechaIni       =str_contains($fechaInicio, '/') ? fechaSQL($fechaInicio) : $fechaInicio;
+	$consultaFechaFin       =str_contains($fechaFin, '/') ? fechaSQL($fechaFin) : $fechaFin;
 	
 	$totalEmitidosFechasPAR =infoCheques($consultaFechaIni,$consultaFechaFin,$entidadBancaria,$codigoCuenta,$codigoChequera,$usuarioConsulta,'totalEmitidosFechasPAR');
 	$totalEmitidosFechasVAR =infoCheques($consultaFechaIni,$consultaFechaFin,$entidadBancaria,$codigoCuenta,$codigoChequera,$usuarioConsulta,'totalEmitidosFechasVAR');
 	$totalEmitidosFechas    =infoCheques($consultaFechaIni,$consultaFechaFin,$entidadBancaria,$codigoCuenta,$codigoChequera,$usuarioConsulta,'totalEmitidosFechas');
 
+	$totalCheques = 'S/. 0.00';
+	$rotuloTitulo = '';
+
 	if($tipoCheque=="VAR"){
 		$nroEmitidosFechasVAR =infoCheques($consultaFechaIni,$consultaFechaFin,$entidadBancaria,$codigoCuenta,$codigoChequera,$usuarioConsulta,'nroEmitidosFechasVAR');
 		$nroEmitidosFechasPAR =0;
 		if($totalEmitidosFechasVAR>0){ $totalCheques='S/. '.moneda($totalEmitidosFechasVAR); }
+		$rotuloTitulo=" POR CONCEPTOS VARIOS";
 	}
 
 	if($tipoCheque=="PAR"){
 		$nroEmitidosFechasPAR =infoCheques($consultaFechaIni,$consultaFechaFin,$entidadBancaria,$codigoCuenta,$codigoChequera,$usuarioConsulta,'nroEmitidosFechasPAR');
 		$nroEmitidosFechasVAR =0;
 		if($totalEmitidosFechasPAR>0){ $totalCheques='S/. '.moneda($totalEmitidosFechasPAR); }
+		$rotuloTitulo=" POR PARTIDAS";
 	}
 
 	if($tipoCheque=="ALL"){
 		$nroEmitidosFechasVAR =infoCheques($consultaFechaIni,$consultaFechaFin,$entidadBancaria,$codigoCuenta,$codigoChequera,$usuarioConsulta,'nroEmitidosFechasVAR');
 		$nroEmitidosFechasPAR =infoCheques($consultaFechaIni,$consultaFechaFin,$entidadBancaria,$codigoCuenta,$codigoChequera,$usuarioConsulta,'nroEmitidosFechasPAR');
 		if($totalEmitidosFechas>0){ $totalCheques='S/. '.moneda($totalEmitidosFechas); }
+		$rotuloTitulo="";
 	}
 
 	$nroCheques             =$nroEmitidosFechasVAR+$nroEmitidosFechasPAR;
@@ -57,14 +61,13 @@
 
 	if($entidadBancaria=="ALL"){ $infoEntidadBancaria="TODAS LAS ENTIDADES"; }else{ $infoEntidadBancaria =texto(infoBancos($entidadBancaria,'detalleEntidad')); }
 	if($usuarioConsulta=="ALL"){ $beneficiarioCheque="TODOS LOS BENEFICIARIOS"; }else{ $beneficiarioCheque=texto(datoUsuario($usuarioConsulta,'nombreFull')); if($beneficiarioCheque==""){ $beneficiarioCheque=infoSocios($usuarioConsulta,'nombre'); }else{ $beneficiarioCheque=$beneficiarioCheque; } }
-	if($tipoCheque=="ALL"){ $rotuloTitulo=""; }
-	if($tipoCheque=="PAR"){ $rotuloTitulo=" POR PARTIDAS"; }
-	if($tipoCheque=="VAR"){ $rotuloTitulo=" POR CONCEPTOS VARIOS"; }
 
 	$titulo  ="REPORTE DE CHEQUES EMITIDOS".$rotuloTitulo;
 	$proceso ="IMPRESION DE <strong>".$titulo."</strong>";
 	$sql     ="INSERT INTO sm_usuarios_operaciones(dni, proceso, fecha, hora, usuario) VALUES('$dniUsuario', '$proceso', '$hoy', '$hora', '$dniUsuario')";
 	$rs      =mysqli_query($conexion,$sql);
+
+	$totales = '<td colspan="8" class="totales textoCen"><strong>TOTAL CHEQUES:</strong>&nbsp;'.ceros($nroCheques,2).'&nbsp;&nbsp;|&nbsp;&nbsp;<strong>MONTO TOTAL:</strong>&nbsp;'.$totalCheques.'</td>';
 
 	$reporte='
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -116,24 +119,24 @@
 	$rs=mysqli_query($conexion,$sql);
 	$i=1;
 	while($n=mysqli_fetch_array($rs)){
-		$tipoCheque       =$n[tipoCheque];
-		$codigoBanco      =$n[codigoBanco];
+		$tipoCheque       =$n['tipoCheque'];
+		$codigoBanco      =$n['codigoBanco'];
 		$entidadBancaria  =infoBancos($codigoBanco,'detalleEntidad');
-		$codigoCuenta     =$n[codigoCuenta];
-		$codigoChequera   =$n[codigoChequera];
-		$nroCheque        =$n[nroCheque];
-		$codigoCheque     =$n[codigoCheque];
-		$fechaEmision     =infoFecha($n[fechaEmision],'normal');
-		$monto            =$n[monto];
-		$tipoBeneficiario =$n[tipoBeneficiario];
-		$beneficiario     =$n[beneficiario];
+		$codigoCuenta     =$n['codigoCuenta'];
+		$codigoChequera   =$n['codigoChequera'];
+		$nroCheque        =$n['nroCheque'];
+		$codigoCheque     =$n['codigoCheque'];
+		$fechaEmision     =infoFecha($n['fechaEmision'],'normal');
+		$monto            =$n['monto'];
+		$tipoBeneficiario =$n['tipoBeneficiario'];
+		$beneficiario     =$n['beneficiario'];
 		$nombre           =infocheque('','','','','','',$beneficiario,'nombreBeneficiario');
-		$concepto         =texto($n[concepto]);
-		$observaciones    =texto($n[observaciones]);
-		$codigoOperacion  =$n[codigoOperacion];
-		$fecha            =$n[fecha];
-		$hora             =$n[hora];
-		$usuario          =$n[usuario];
+		$concepto         =texto($n['concepto']);
+		$observaciones    =texto($n['observaciones']);
+		$codigoOperacion  =$n['codigoOperacion'];
+		$fecha            =$n['fecha'];
+		$hora             =$n['hora'];
+		$usuario          =$n['usuario'];
 		$chequera         =texto($entidadBancaria.' '.infoChequeras($codigoChequera,$codigoBanco,'','detalleChequera'));
 		$registradoPor    =registradoPor($usuario,$fecha,$hora,'SI','label-default');
 		$codigoPartida    =infoPartida($codigoOperacion,'codigoPartida');
@@ -169,6 +172,7 @@ $i++; }
 	$dompdf->setPaper('A4', 'landscape');
 	$dompdf->render();
 	$canvas = $dompdf->getCanvas();
+	$font = $dompdf->getFontMetrics()->get_font("helvetica", "normal");
 	$canvas->page_text(400, 560, "Página: {PAGE_NUM} de {PAGE_COUNT}", $font, 8, array(0,0,0));
 	$dompdf->stream("reporte-cheques-emitidos.pdf");
 ?>
