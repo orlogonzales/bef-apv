@@ -1,7 +1,7 @@
 <?php
 	session_start();
 	set_time_limit(300);
-	ini_set("memory_limit","512M");
+	ini_set("memory_limit","1024M");
 	ini_set("max_execution_time","3000");
     
 	$ruta="../";
@@ -14,12 +14,12 @@
 	use Dompdf\Dompdf;
 	
 	$conexion         =conexionDB();
-	$fechaInicio      =$_GET[fechaInicio];
-	$fechaFin         =$_GET[fechaFin];
-	$usuarioConsulta  =$_GET[usuarioConsulta];
-	$tipoActividad    =$_GET[tipoActividad];
-	$consultaFechaIni =fechaSQL($fechaInicio);
-	$consultaFechaFin =fechaSQL($fechaFin);
+	$fechaInicio      =$_GET['fechaInicio'] ?? '';
+	$fechaFin         =$_GET['fechaFin'] ?? '';
+	$usuarioConsulta  =$_GET['usuarioConsulta'] ?? 'ALL';
+	$tipoActividad    =$_GET['tipoActividad'] ?? 'ALL';
+	$consultaFechaIni =str_contains($fechaInicio, '/') ? fechaSQL($fechaInicio) : $fechaInicio;
+	$consultaFechaFin =str_contains($fechaFin, '/') ? fechaSQL($fechaFin) : $fechaFin;
 	$hoy              =fechaSQL(infoTiempo('fechaHoy'));
 	$hora             =infoTiempo('hora');
 	$simbolo          ="S/. ";
@@ -78,7 +78,8 @@
 	if($usuarioConsulta=="ALL"){ $consultaUsuario=""; }
 	if($usuarioConsulta!="ALL"){ $consultaUsuario=" AND usuario='$usuarioConsulta'"; }
 
-	$sql="INSERT INTO sm_procesos_caja(codigoOperacion, proceso, fecha, hora, usuario) VALUES('$codigoOperacion', '$proceso', '$hoy', '$hora', '$dniUsuario')";
+	$montoAudit = (float)$totalING;
+	$sql="INSERT INTO sm_procesos_caja(codigoOperacion, proceso, monto, fecha, hora, usuario) VALUES('$codigoOperacion', '$proceso', '$montoAudit', '$hoy', '$hora', '$dniUsuario')";
 	$rs=mysqli_query($conexion,$sql);
 
 	$reporte='
@@ -114,19 +115,19 @@
 	$rs=mysqli_query($conexion,$sql);
 	$i=1;
 	while($n=mysqli_fetch_array($rs)){
-		$fechaOperacion  =$n[fechaOperacion];
-		$tipoActividad   =$n[tipoActividad];
-		$concepto        =$n[concepto];
-		$codigoSocio     =$n[codigoSocio];
-		$codigoConcepto  =$n[codigoConcepto];
-		$tipoDocumento   =$n[tipoDocumento];
-		$nroDocumento    =$n[nroDocumento];
-		$monto           =$n[monto];
-		$detalleConcepto =$n[detalleConcepto];
-		$codigoOperacion =$n[codigoOperacion];
-		$fecha           =$n[fecha];
-		$hora            =$n[hora];
-		$usuario         =$n[usuario];
+		$fechaOperacion  =$n['fechaOperacion'];
+		$tipoActividad   =$n['tipoActividad'];
+		$concepto        =$n['concepto'];
+		$codigoSocio     =$n['codigoSocio'];
+		$codigoConcepto  =$n['codigoConcepto'];
+		$tipoDocumento   =$n['tipoDocumento'];
+		$nroDocumento    =$n['nroDocumento'];
+		$monto           =$n['monto'];
+		$detalleConcepto =$n['detalleConcepto'];
+		$codigoOperacion =$n['codigoOperacion'];
+		$fecha           =$n['fecha'];
+		$hora            =$n['hora'];
+		$usuario         =$n['usuario'];
 		$infofecha       =infoFecha($fecha,'normal');
 		$nombreSocio     =texto(infoSocios($codigoSocio,'nombreCorto'));
 		$infoLotes       =ceros(infoSocios($codigoSocio,'cantidadLotes'),2);
@@ -178,6 +179,7 @@
 	$dompdf->setPaper('A4', 'landscape');
 	$dompdf->render();
 	$canvas = $dompdf->getCanvas();
+	$font = $dompdf->getFontMetrics()->get_font("helvetica", "normal");
 	$canvas->page_text(400, 560, "Página: {PAGE_NUM} de {PAGE_COUNT}", $font, 8, array(0,0,0));
 	$dompdf->stream("reporte-ingresos-caja.pdf");
 ?>

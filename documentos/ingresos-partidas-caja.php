@@ -14,10 +14,12 @@
 	use Dompdf\Dompdf;
 	
 	$conexion        =conexionDB();
-	$fechaInicio     =$_GET[fechaInicio];
-	$fechaFin        =$_GET[fechaFin];
-	$usuarioConsulta =$_GET[usuarioConsulta];
-	$tipoActividad   =$_GET[tipoActividad];
+	$fechaInicio     =$_GET['fechaInicio'] ?? '';
+	$fechaFin        =$_GET['fechaFin'] ?? '';
+	$usuarioConsulta =$_GET['usuarioConsulta'] ?? 'ALL';
+	$tipoActividad   =$_GET['tipoActividad'] ?? 'PAR';
+	$consultaFechaIni =str_contains($fechaInicio, '/') ? fechaSQL($fechaInicio) : $fechaInicio;
+	$consultaFechaFin =str_contains($fechaFin, '/') ? fechaSQL($fechaFin) : $fechaFin;
 	$hoy             =fechaSQL(infoTiempo('fechaHoy'));
 	$hora            =infoTiempo('hora');
 	$totalCLS        =infoPartida('','totalPartidasCierre');
@@ -25,7 +27,7 @@
 	$dniUsuario      =$_SESSION['dni_apv'];
 	$impresoPor      ='<span class="infoImpresion textoMayuscula"> Impreso por:'.datoUsuario($dniUsuario,'nombreFull').' - '.infoFecha($hoy,'larga').' - '.horacorta($hora).'</span>';
 	$codigoOperacion ="";
-	$subtitulo       ="RANGO DE FECHAS DEL REPORTE DE <u>[".infoFecha($fechaInicio,'info')."]</u> AL <u>[".infoFecha($fechaFin,'info')."]</u>";
+	$subtitulo       ="RANGO DE FECHAS DEL REPORTE DE <u>[". (str_contains($fechaInicio, '/') ? infoFecha($fechaInicio,'info') : infoFecha($fechaInicio,'normal')) ."]</u> AL <u>[". (str_contains($fechaFin, '/') ? infoFecha($fechaFin,'info') : infoFecha($fechaFin,'normal')) ."]</u>";
 	$titulo          ="REPORTE DE INGRESOS A CAJA POR CONCEPTO DE PARTIDAS";
 	$proceso         ="IMPRESION DE <strong>".$titulo."</strong>";
 	$actividad       ="AND concepto='$tipoActividad'";
@@ -34,7 +36,8 @@
 	if($usuarioConsulta=="ALL"){ $consultaUsuario=""; }
 	if($usuarioConsulta!="ALL"){ $consultaUsuario=" AND usuario='$usuarioConsulta'"; }
 
-	$sql="INSERT INTO sm_procesos_caja(codigoOperacion, proceso, fecha, hora, usuario) VALUES('$codigoOperacion', '$proceso', '$hoy', '$hora', '$dniUsuario')";
+	$montoAudit      =(float)$totalCLS;
+	$sql="INSERT INTO sm_procesos_caja(codigoOperacion, proceso, monto, fecha, hora, usuario) VALUES('$codigoOperacion', '$proceso', '$montoAudit', '$hoy', '$hora', '$dniUsuario')";
 	$rs=mysqli_query($conexion,$sql);
 
 	$reporte='
@@ -66,25 +69,25 @@
 			<tbody>
 	';
 
-	$sql="SELECT fechaOperacion, tipoActividad, concepto, codigoSocio, codigoConcepto, tipoDocumento, nroDocumento, monto, detalleConcepto, codigoOperacion, fecha, hora, usuario FROM sm_mod_caja WHERE movimiento='ING' $actividad AND (fechaOperacion BETWEEN '$fechaInicio' AND '$fechaFin') $consultaUsuario ORDER BY id DESC";
+	$sql="SELECT fechaOperacion, tipoActividad, concepto, codigoSocio, codigoConcepto, tipoDocumento, nroDocumento, monto, detalleConcepto, codigoOperacion, fecha, hora, usuario FROM sm_mod_caja WHERE movimiento='ING' $actividad AND (fechaOperacion BETWEEN '$consultaFechaIni' AND '$consultaFechaFin') $consultaUsuario ORDER BY id DESC";
 	$rs=mysqli_query($conexion,$sql);
 	$i=1;
 	while($n=mysqli_fetch_array($rs)){
-		$fechaOperacion    =$n[fechaOperacion];
-		$tipoActividad     =$n[tipoActividad];
-		$concepto          =$n[concepto];
-		$codigoSocio       =$n[codigoSocio];
-		$codigoConcepto    =$n[codigoConcepto];
-		$tipoDocumento     =$n[tipoDocumento];
-		$nroDocumento      =$n[nroDocumento];
-		$monto             =$n[monto];
-		$detalleConcepto   =$n[detalleConcepto];
-		$codigoOperacion   =$n[codigoOperacion];
-		$fecha             =$n[fecha];
-		$hora              =$n[hora];
-		$usuario           =$n[usuario];
+		$fechaOperacion    =$n['fechaOperacion'];
+		$tipoActividad     =$n['tipoActividad'];
+		$concepto          =$n['concepto'];
+		$codigoSocio       =$n['codigoSocio'];
+		$codigoConcepto    =$n['codigoConcepto'];
+		$tipoDocumento     =$n['tipoDocumento'];
+		$nroDocumento      =$n['nroDocumento'];
+		$monto             =$n['monto'];
+		$detalleConcepto   =$n['detalleConcepto'];
+		$codigoOperacion   =$n['codigoOperacion'];
+		$fecha             =$n['fecha'];
+		$hora              =$n['hora'];
+		$usuario           =$n['usuario'];
 		$infofecha         =infoFecha($fecha,'normal');
-		$nombreSocio       =utf8_encode(infoSocios($codigoSocio,'nombre'));
+		$nombreSocio       =texto(infoSocios($codigoSocio,'nombre'));
 		$infoLotes         =ceros(infoSocios($codigoSocio,'cantidadLotes'),2);
 		$conceptopago      =infoPago('','',$concepto,'conceptoPago');
 		$infoUsuario       =datoUsuario($usuario,'nombre');
@@ -132,6 +135,7 @@
 	$dompdf->setPaper('A4', 'landscape');
 	$dompdf->render();
 	$canvas = $dompdf->getCanvas();
+	$font = $dompdf->getFontMetrics()->get_font("helvetica", "normal");
 	$canvas->page_text(400, 560, "Página: {PAGE_NUM} de {PAGE_COUNT}", $font, 8, array(0,0,0));
 	$dompdf->stream("reporte-ingreso-caja-partida.pdf");
 ?>
