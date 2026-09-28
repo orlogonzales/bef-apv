@@ -67,9 +67,9 @@
 						$rs=mysqli_query($conexion,$sql);
 						$i=1;
 						while($n=mysqli_fetch_array($rs)){
-							$codigoCuota   =$n[codigoCuota];
-							$temaActividad =$n[conceptoCuota];
-							$fechaPago     =$n[fechaPago];
+							$codigoCuota   =$n['codigoCuota'];
+							$temaActividad =$n['conceptoCuota'];
+							$fechaPago     =$n['fechaPago'];
 							$aforo         =infoCuota($idJuntaDirectiva,$codigoCuota,'aforo');
 							$pagaron       =infoCuota($idJuntaDirectiva,$codigoCuota,'pagaron');
 							$pagaronFP      =infoCuota($idJuntaDirectiva,$codigoCuota,'totalFechasProgramadas');
