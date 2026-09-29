@@ -3,20 +3,23 @@
 	date_default_timezone_set("America/Lima");
 	ini_set("memory_limit","1024M");
 	set_time_limit(-1);
-	session_start();
+	if (session_status() === PHP_SESSION_NONE) {
+		session_start();
+	}
 	$conexion        = conexionDB();
 	$conexionBEF     = conexionBEF();
 	$fecha           = infoTiempo('fecha');
 	$hora            = infoTiempo('hora');
-	$dniUsuario      = $_SESSION['dni_apv'];
+	$dniUsuario      = isset($_SESSION['dni_apv']) ? $_SESSION['dni_apv'] : null;
 	$sincronizar     = 'SI';
 	$datosPersonales = 'SI';
+	$respuesta       = new stdClass();
 
 	if(!empty($_SESSION)){
 		$sql="SELECT COUNT(codigoSocio) AS sociosRegistrados FROM sm_socios";
 		$row = mysqli_query($conexion,$sql);
 		$dato = mysqli_fetch_array($row);
-		$sociosINI = $dato[sociosRegistrados];
+		$sociosINI = $dato['sociosRegistrados'];
 
 		$sql="TRUNCATE TABLE sm_lotes_socio";
 		$rs=mysqli_query($conexion,$sql);
@@ -26,7 +29,7 @@
 		$sql="SELECT dni FROM sm_socios";
 		$rs=mysqli_query($conexion,$sql);
 		while($n=mysqli_fetch_array($rs)){
-			$dni=$n[dni];
+			$dni=$n['dni'];
 			array_push($array_dni_socios,$dni);
 		}
 
@@ -34,7 +37,7 @@
 		$sql="SELECT cliente FROM lotes WHERE adjudicado='SI' AND sectorPrincipal='NO' AND manzanaPrincipal='NO' GROUP BY cliente ORDER BY lotes DESC";
 		$rs=mysqli_query($conexionBEF,$sql);
 		while($n=mysqli_fetch_array($rs)){
-			$cliente=$n[cliente];
+			$cliente=$n['cliente'];
 			array_push($array_dni_clientes,$cliente);
 		}
 
@@ -46,7 +49,7 @@
 			$query="SELECT codigoSocio FROM sm_socios WHERE dni='$value'";
 			$row = mysqli_query($conexion,$query);
 			$dato = mysqli_fetch_array($row);
-			$codigoSocio = $dato[codigoSocio];
+			$codigoSocio = $dato['codigoSocio'];
 
 			//ELIMINA RASTROS DE TABLAS
 			$query="DELETE FROM sm_terminal_socios WHERE codigoSocio='$codigoSocio'";
@@ -195,18 +198,18 @@
 			$contar=mysqli_num_rows($rs);
 			mysqli_set_charset($conexion, "utf8");
 			while($n=mysqli_fetch_array($rs)){
-				$socio           =$n[cliente];
-				$coSocio         =$n[cliente2];
+				$socio           =$n['cliente'];
+				$coSocio         =$n['cliente2'];
 				$lotes           =infoSocio($socio,'lotes');
 				$cantidad_lotes  =$lotes;
-				$dni             =$n[cliente];
-				$metraje         =$n[metraje];
+				$dni             =$n['cliente'];
+				$metraje         =$n['metraje'];
 
 				if($cantidad_lotes>0){
 					$query="SELECT codigoSocio FROM sm_socios WHERE dni='$dni'";
 					$row=mysqli_query($conexion,$query);
 					$dato=mysqli_fetch_array($row);
-					$codigoSocio=$dato[codigoSocio];
+					$codigoSocio=$dato['codigoSocio'];
 					
 					if(strlen($codigoSocio)>0){
 						$existe='SI';
@@ -216,7 +219,7 @@
 						$codigoSocio='';
 					}
 					
-					if($existe==SI){
+					if($existe=='SI'){
 						$codigoSocio=$codigoSocio;
 					}else{
 						$codigoSocio     ='CSARP'.$socio.$lotes;
@@ -227,21 +230,21 @@
 						$query           = "SELECT tratamiento, nombre, paterno, materno, genero, nac, nacionalidad, ciudad, civil, direccion, departamento, provincia, distrito, telefono, celular FROM clientes WHERE dni='$dni'";
 						$row             = mysqli_query($conexionBEF,$query);
 						$dato            = mysqli_fetch_array($row);
-						$tratamiento     = $dato[tratamiento];
-						$nombre          = $dato[nombre];
-						$paterno         = $dato[paterno];
-						$materno         = $dato[materno];
-						$genero          = $dato[genero];
-						$fechaNacimiento = $dato[nac];
-						$nacionalidad    = $dato[nacionalidad];
-						$ciudad          = $dato[ciudad];
-						$estadoCivil     = $dato[civil];
-						$direccion       = $dato[direccion];
-						$departamento    = $dato[departamento];
-						$provincia       = $dato[provincia];
-						$distrito        = $dato[distrito];
-						$telefono        = $dato[telefono];
-						$celular         = $dato[celular];
+						$tratamiento     = $dato['tratamiento'];
+						$nombre          = $dato['nombre'];
+						$paterno         = $dato['paterno'];
+						$materno         = $dato['materno'];
+						$genero          = $dato['genero'];
+						$fechaNacimiento = $dato['nac'];
+						$nacionalidad    = $dato['nacionalidad'];
+						$ciudad          = $dato['ciudad'];
+						$estadoCivil     = $dato['civil'];
+						$direccion       = $dato['direccion'];
+						$departamento    = $dato['departamento'];
+						$provincia       = $dato['provincia'];
+						$distrito        = $dato['distrito'];
+						$telefono        = $dato['telefono'];
+						$celular         = $dato['celular'];
 						$tratamiento     = strtoupper($tratamiento);
 						$nombre          = strtoupper($nombre);
 						$apPaterno       = strtoupper($paterno);
@@ -253,38 +256,38 @@
 						$query="SELECT fechaAdjudica FROM adjudicalote WHERE cliente='$dni' LIMIT 1";
 						$row           = mysqli_query($conexionBEF,$query);
 						$dato          = mysqli_fetch_array($row);
-						$fechaAdjudica = $dato[fechaAdjudica];
+						$fechaAdjudica = $dato['fechaAdjudica'];
 
 						$query="SELECT recibo FROM adjudicalote WHERE cliente='$dni' LIMIT 1";
 						$row    = mysqli_query($conexionBEF,$query);
 						$dato   = mysqli_fetch_array($row);
-						$recibo = $dato[recibo];
+						$recibo = $dato['recibo'];
 						
 						$observaciones   ='';
 						$sincronizado    ='OK';
 						$eCardSocio      ='NO';
-						$relacion        =$n[relacion];
+						$relacion        =$n['relacion'];
 
 						if(strlen($coSocio==0)){
 							$dniCS             =$coSocio;
 							$query             = "SELECT tratamiento, nombre, paterno, materno, genero, nac, nacionalidad, ciudad, civil, direccion, departamento, provincia, distrito, telefono, celular FROM clientes WHERE dni='$dniCS'";
 							$row               = mysqli_query($conexionBEF,$query);
 							$dato              = mysqli_fetch_array($row);
-							$tratamientoCS     = $dato[tratamiento];
-							$nombreCS          = $dato[nombre];
-							$apPaternoCS       = $dato[paterno];
-							$apMaternoCS       = $dato[materno];
-							$generoCS          = $dato[genero];
-							$fechaNacimientoCS = $dato[nac];
-							$nacionalidadCS    = $dato[nacionalidad];
-							$ciudad            = $dato[ciudad];
-							$estadoCivilCS     = $dato[civil];
-							$direccionCS       = $dato[direccion];
-							$departamentoCS    = $dato[departamento];
-							$provinciaCS       = $dato[provincia];
-							$distritoCS        = $dato[distrito];
-							$telefonoCS        = $dato[telefono];
-							$celularCS         = $dato[celular];
+							$tratamientoCS     = $dato['tratamiento'];
+							$nombreCS          = $dato['nombre'];
+							$apPaternoCS       = $dato['paterno'];
+							$apMaternoCS       = $dato['materno'];
+							$generoCS          = $dato['genero'];
+							$fechaNacimientoCS = $dato['nac'];
+							$nacionalidadCS    = $dato['nacionalidad'];
+							$ciudad            = $dato['ciudad'];
+							$estadoCivilCS     = $dato['civil'];
+							$direccionCS       = $dato['direccion'];
+							$departamentoCS    = $dato['departamento'];
+							$provinciaCS       = $dato['provincia'];
+							$distritoCS        = $dato['distrito'];
+							$telefonoCS        = $dato['telefono'];
+							$celularCS         = $dato['celular'];
 							$tratamientoCS     = strtoupper($tratamientoCS);
 							$nombreCS          = strtoupper($nombreCS);
 							$apPaternoCS       = strtoupper($apPaternoCS);
@@ -320,21 +323,21 @@
 							$query             = "SELECT tratamiento, nombre, paterno, materno, genero, nac, nacionalidad, ciudad, civil, direccion, departamento, provincia, distrito, telefono, celular FROM clientes WHERE dni='$dniCS'";
 							$row               = mysqli_query($conexionBEF,$query);
 							$dato              = mysqli_fetch_array($row);
-							$tratamientoCS     = $dato[tratamiento];
-							$nombreCS          = $dato[nombre];
-							$apPaternoCS       = $dato[paterno];
-							$apMaternoCS       = $dato[materno];
-							$generoCS          = $dato[genero];
-							$fechaNacimientoCS = $dato[nac];
-							$nacionalidadCS    = $dato[nacionalidad];
-							$ciudad            = $dato[ciudad];
-							$estadoCivilCS     = $dato[civil];
-							$direccionCS       = $dato[direccion];
-							$departamentoCS    = $dato[departamento];
-							$provinciaCS       = $dato[provincia];
-							$distritoCS        = $dato[distrito];
-							$telefonoCS        = $dato[telefono];
-							$celularCS         = $dato[celular];
+							$tratamientoCS     = $dato['tratamiento'];
+							$nombreCS          = $dato['nombre'];
+							$apPaternoCS       = $dato['paterno'];
+							$apMaternoCS       = $dato['materno'];
+							$generoCS          = $dato['genero'];
+							$fechaNacimientoCS = $dato['nac'];
+							$nacionalidadCS    = $dato['nacionalidad'];
+							$ciudad            = $dato['ciudad'];
+							$estadoCivilCS     = $dato['civil'];
+							$direccionCS       = $dato['direccion'];
+							$departamentoCS    = $dato['departamento'];
+							$provinciaCS       = $dato['provincia'];
+							$distritoCS        = $dato['distrito'];
+							$telefonoCS        = $dato['telefono'];
+							$celularCS         = $dato['celular'];
 							$tratamientoCS     = strtoupper($tratamientoCS);
 							$nombreCS          = strtoupper($nombreCS);
 							$apPaternoCS       = strtoupper($apPaternoCS);
@@ -374,10 +377,10 @@
 					$x=1;
 
 					while($info=mysqli_fetch_array($queryConsultaLotes)){
-						$sector     =$info[sector];
-						$manzana    =$info[manzana];
-						$lote       =$info[lote];
-						$codigoLote =$info[codigoLote];
+						$sector     =$info['sector'];
+						$manzana    =$info['manzana'];
+						$lote       =$info['lote'];
+						$codigoLote =$info['codigoLote'];
 						$direccion  ='';
 						
 						$query="INSERT INTO sm_lotes_socio(codigoSocio, lotes, sector, manzana, lote, metraje, codigoLote, direccion) VALUES('$codigoSocio', '$lotes', '$sector', '$manzana', '$lote', '$metraje', '$codigoLote', '$direccion')";
@@ -422,7 +425,7 @@
 			$sql="SELECT COUNT(codigoSocio) AS sociosRegistrados FROM sm_socios";
 			$row = mysqli_query($conexion,$sql);
 			$dato = mysqli_fetch_array($row);
-			$sociosFIN = $dato[sociosRegistrados];
+			$sociosFIN = $dato['sociosRegistrados'];
 
 			$totalSocios = $sociosFIN-$sociosINI;
 			$proceso = "SISTEMA SICRONIZADO CON MATRIZ";

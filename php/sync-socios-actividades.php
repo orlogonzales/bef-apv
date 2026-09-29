@@ -3,11 +3,14 @@
 	date_default_timezone_set("America/Lima");
 	ini_set("memory_limit","1024M");
 	set_time_limit(-1);
-	session_start();
+	if (session_status() === PHP_SESSION_NONE) {
+		session_start();
+	}
 	$conexion     = conexionDB();
-	$dniUsuario   = $_SESSION['dni_apv'];
+	$dniUsuario   = isset($_SESSION['dni_apv']) ? $_SESSION['dni_apv'] : null;
 	$fecha        = infoTiempo('fecha');
 	$hora         = infoTiempo('hora');
+	$respuesta    = new stdClass();
 
 	if(!empty($_SESSION)){
 		$tipoActividad= 'ASA';
@@ -15,7 +18,7 @@
 		$sql="SELECT COUNT(codigoActividad) AS total FROM sm_mod_actividades WHERE tipoActividad='$tipoActividad'";
 		$row = mysqli_query($conexion,$sql);
 		$dato = mysqli_fetch_array($row);
-		$resultados = $dato[total];
+		$resultados = $dato['total'];
 
 		// OBTENER DATOS DE ASAMBLEAS
 		//echo '<hr>'.$tipoACT.' -> '.$resultados.'<hr>';
@@ -27,10 +30,10 @@
 			$rs=mysqli_query($conexion,$sql);
 			$actividades=mysqli_num_rows($rs);
 			while($n=mysqli_fetch_array($rs)){
-				$temaActividad   = $n[temaActividad];
-				$codigoActividad = $n[codigoActividad];
-				$mTardanza       = $n[mTardanza];
-				$mFalta          = $n[mFalta];
+				$temaActividad   = $n['temaActividad'];
+				$codigoActividad = $n['codigoActividad'];
+				$mTardanza       = $n['mTardanza'];
+				$mFalta          = $n['mFalta'];
 
 				if($act<=$actividades){
 					//echo '<hr>'.$act.' -> codigoActividad -> '.$codigoActividad.'<hr>';
@@ -39,21 +42,21 @@
 					$socios=mysqli_query($conexion,$query1);
 					$totalSocios=mysqli_num_rows($socios);
 					while($s=mysqli_fetch_array($socios)){
-						$codigoSocio=$s[codigoSocio];
+						$codigoSocio=$s['codigoSocio'];
 						if($lisSocios>$totalSocios){
 							$lisSocios=1;
 						}else{
 							$query2="SELECT id, lotes, asistio, terminal, ingreso, salida, retraso, multa FROM sm_mod_asistencia WHERE codigoActividad = '$codigoActividad' AND codigoSocio='$codigoSocio'";
 							$row = mysqli_query($conexion,$query2);
 							$dato = mysqli_fetch_array($row);
-							$id       = $dato[id];
-							$lotes    = $dato[lotes];
-							$asistio  = $dato[asistio];
-							$terminal = $dato[terminal];
-							$ingreso  = $dato[ingreso];
-							$salida   = $dato[salida];
-							$retraso  = $dato[retraso];
-							$multa    = $dato[multa];
+							$id       = $dato['id'];
+							$lotes    = $dato['lotes'];
+							$asistio  = $dato['asistio'];
+							$terminal = $dato['terminal'];
+							$ingreso  = $dato['ingreso'];
+							$salida   = $dato['salida'];
+							$retraso  = $dato['retraso'];
+							$multa    = $dato['multa'];
 
 							if($id>0){
 								//echo '<span style="color:green;">'.$lisSocios.' DE '.$totales.' -> SOCIO ASISTIO -> '.$codigoSocio.' -> '.$totalSocios.'</span><br>';
@@ -96,7 +99,7 @@
 		$sql="SELECT COUNT(codigoActividad) AS total FROM sm_mod_actividades WHERE tipoActividad='$tipoActividad'";
 		$row = mysqli_query($conexion,$sql);
 		$dato = mysqli_fetch_array($row);
-		$resultados = $dato[total];
+		$resultados = $dato['total'];
 
 		// OBTENER DATOS DE FAENAS
 		//echo '<hr>'.$tipoACT.' -> '.$resultados.'<hr>';
@@ -108,10 +111,10 @@
 			$rs=mysqli_query($conexion,$sql);
 			$actividades=mysqli_num_rows($rs);
 			while($n=mysqli_fetch_array($rs)){
-				$temaActividad   = $n[temaActividad];
-				$codigoActividad = $n[codigoActividad];
-				$mTardanza       = $n[mTardanza];
-				$mFalta          = $n[mFalta];
+				$temaActividad   = $n['temaActividad'];
+				$codigoActividad = $n['codigoActividad'];
+				$mTardanza       = $n['mTardanza'];
+				$mFalta          = $n['mFalta'];
 
 				if($act<=$actividades){
 					//echo '<hr>'.$act.' -> codigoActividad -> '.$codigoActividad.'<hr>';
@@ -120,21 +123,21 @@
 					$socios=mysqli_query($conexion,$query1);
 					$totalSocios=mysqli_num_rows($socios);
 					while($s=mysqli_fetch_array($socios)){
-						$codigoSocio=$s[codigoSocio];
+						$codigoSocio=$s['codigoSocio'];
 						if($lisSocios>$totalSocios){
 							$lisSocios=1;
 						}else{
 							$query2="SELECT id, lotes, asistio, terminal, ingreso, salida, retraso, multa FROM sm_mod_asistencia WHERE codigoActividad = '$codigoActividad' AND codigoSocio='$codigoSocio'";
 							$row = mysqli_query($conexion,$query2);
 							$dato = mysqli_fetch_array($row);
-							$id       = $dato[id];
-							$lotes    = $dato[lotes];
-							$asistio  = $dato[asistio];
-							$terminal = $dato[terminal];
-							$ingreso  = $dato[ingreso];
-							$salida   = $dato[salida];
-							$retraso  = $dato[retraso];
-							$multa    = $dato[multa];
+							$id       = $dato['id'];
+							$lotes    = $dato['lotes'];
+							$asistio  = $dato['asistio'];
+							$terminal = $dato['terminal'];
+							$ingreso  = $dato['ingreso'];
+							$salida   = $dato['salida'];
+							$retraso  = $dato['retraso'];
+							$multa    = $dato['multa'];
 
 							if($id>0){
 								//echo '<span style="color:green;">'.$lisSocios.' DE '.$totales.' -> SOCIO ASISTIO -> '.$codigoSocio.' -> '.$totalSocios.'</span><br>';

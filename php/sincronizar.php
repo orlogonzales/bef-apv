@@ -86,12 +86,14 @@
 	date_default_timezone_set("America/Lima");
 	ini_set("memory_limit","512M");
 	set_time_limit(900);
-	session_start();
+	if (session_status() === PHP_SESSION_NONE) {
+		session_start();
+	}
 	$conexion    =conexionDB();
 	$conexionBEF =conexionBEF();
 	$fecha       =infoTiempo('fecha');
 	$hora        =infoTiempo('hora');
-	$dniUsuario  =$_SESSION['dni_apv'];
+	$dniUsuario  =isset($_SESSION['dni_apv']) ? $_SESSION['dni_apv'] : null;
 
 	echo '<hr>'.$hora.'<hr>';
 
@@ -106,7 +108,7 @@
 	$rs=mysqli_query($conexionBEF,$sql);
 	$contar=mysqli_num_rows($rs);
 	while($n=mysqli_fetch_array($rs)){
-		$socio           =$n[cliente];
+		$socio           =$n['cliente'];
 		$lotes           =infoSocio($socio,'lotes');
 		$codigoSocio     ='APVRP'.$socio.$lotes;
 		$dni             =$socio;
@@ -130,9 +132,9 @@
 		$observaciones   ='';
 		$sincronizado    ='OK';
 		$eCardSocio      ='NO';
-		$relacion        =$n[relacion];
+		$relacion        =$n['relacion'];
 		if($relacion!=""){
-			$coSocio         =$n[cliente2];
+			$coSocio         =$n['cliente2'];
 			$dniCS            =$coSocio;
 			$tratamientoCS    =strtoupper(infoSocio($coSocio,'tratamiento'));
 			$nombreCS         =strtoupper(infoSocio($coSocio,'nombre'));

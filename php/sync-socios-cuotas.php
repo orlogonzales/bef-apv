@@ -3,16 +3,19 @@
 	date_default_timezone_set("America/Lima");
 	ini_set("memory_limit","1024M");
 	set_time_limit(-1);
-	session_start();
+	if (session_status() === PHP_SESSION_NONE) {
+		session_start();
+	}
 	$conexion     = conexionDB();
-	$dniUsuario   = $_SESSION['dni_apv'];
+	$dniUsuario   = isset($_SESSION['dni_apv']) ? $_SESSION['dni_apv'] : null;
 	$fecha        = infoTiempo('fecha');
 	$hora         = infoTiempo('hora');
+	$respuesta    = new stdClass();
 
 	$sql="SELECT COUNT(codigoCuota) AS total FROM sm_mod_cuotas";
 	$row = mysqli_query($conexion,$sql);
 	$dato = mysqli_fetch_array($row);
-	$resultados = $dato[total];
+	$resultados = $dato['total'];
 
 	// OBTENER DATOS DE CUOTAS
 	//echo '<hr>'.$resultados.'<hr>';
@@ -26,12 +29,12 @@
 			$rs=mysqli_query($conexion,$sql);
 			$nroCuotas=mysqli_num_rows($rs);
 			while($n=mysqli_fetch_array($rs)){
-				$codigoCuota   = $n[codigoCuota];
-				$conceptoCuota = $n[conceptoCuota];
-				$montoCuota    = $n[montoCuota];
-				$codigoCuenta  = $n[codigoCuenta];
-				$fechaPago     = $n[fechaPago];
-				$observacion   = $n[observacion];
+				$codigoCuota   = $n['codigoCuota'];
+				$conceptoCuota = $n['conceptoCuota'];
+				$montoCuota    = $n['montoCuota'];
+				$codigoCuenta  = $n['codigoCuenta'];
+				$fechaPago     = $n['fechaPago'];
+				$observacion   = $n['observacion'];
 
 				if($cuo<=$nroCuotas){
 					//echo '<hr>'.$cuo.' -> codigoCuota -> '.$codigoCuota.'<hr>';
@@ -39,7 +42,7 @@
 					$socios=mysqli_query($conexion,$query1);
 					$totalSocios=mysqli_num_rows($socios);
 					while($s=mysqli_fetch_array($socios)){
-						$codigoSocio=$s[codigoSocio];
+						$codigoSocio=$s['codigoSocio'];
 
 						if($lisSocios>$totalSocios){
 							$lisSocios=1;
@@ -47,19 +50,19 @@
 							$query2="SELECT id, lotes, montoCuota, montoPago, estadoPago, caja, montoPagado, porcentajePago FROM sm_mod_cuotas_socios WHERE codigoCuota = '$codigoCuota' AND codigoSocio = '$codigoSocio'";
 							$row = mysqli_query($conexion,$query2);
 							$dato = mysqli_fetch_array($row);
-							$id             = $dato[id];
-							$lotes          = $dato[lotes];
+							$id             = $dato['id'];
+							$lotes          = $dato['lotes'];
 							//$montoCuota     = $dato[montoCuota];
-							$montoPago      = $dato[montoPago];
-							$estadoPago     = $dato[estadoPago];
-							$caja           = $dato[caja];
-							$montoPagado    = $dato[montoPagado];
+							$montoPago      = $dato['montoPago'];
+							$estadoPago     = $dato['estadoPago'];
+							$caja           = $dato['caja'];
+							$montoPagado    = $dato['montoPagado'];
 							//$porcentajePago = $dato[porcentajePago];
 
 							$query5="SELECT COUNT(id) as total FROM sm_lotes_socio WHERE codigoSocio = '$codigoSocio'";
 							$row = mysqli_query($conexion,$query5);
 							$dato = mysqli_fetch_array($row);
-							$totalLotes = $dato[total];
+							$totalLotes = $dato['total'];
 
 							if($id>0){
 								//echo '<span style="color:green;">'.$totales.' -> '.$lisSocios.' DE '.$totalSocios.' -> REGISTRADO EN CUOTA -> '.$codigoSocio.'</span><br>';
