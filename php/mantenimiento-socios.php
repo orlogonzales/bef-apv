@@ -1,11 +1,12 @@
 <?php
-	session_start();
+	if (session_status() === PHP_SESSION_NONE) { session_start(); }
+	$respuesta   = new stdClass();
 	include ('funciones.php');
 	$conexion    =conexionDB();
 	$conexionBEF =conexionBEF();
-	$codigoSocio =$_POST[codigoSocio];
-	$operacion   =$_POST[operacion];
-	$subir       =$_GET[subir];
+	$codigoSocio = isset($_POST['codigoSocio']) ? $_POST['codigoSocio'] : '';
+	$operacion   = isset($_POST['operacion']) ? $_POST['operacion'] : '';
+	$subir       = isset($_GET['subir']) ? $_GET['subir'] : '';
 	$fecha       =infoTiempo('fecha');
 	$hora        =infoTiempo('hora');
 	$dniUsuario  =$_SESSION['dni_apv'];
@@ -30,8 +31,8 @@
 	}
 
 	if($operacion=="MOVER_DATOS_CUENTA_SOCIO"){
-		$cuenta_01=$_POST[cuenta_01];
-		$cuenta_02=$_POST[cuenta_02];
+		$cuenta_01=$_POST['cuenta_01'];
+		$cuenta_02=$_POST['cuenta_02'];
 
 		$sql="UPDATE sm_socios_observacion SET codigoSocio='$cuenta_02' WHERE codigoSocio='$cuenta_01'";
 		$socios=mysqli_query($conexion,$sql);
@@ -48,20 +49,20 @@
 	}
 
 	if($operacion=="EDITA_DATOS_SOCIO"){
-		$dni             =$_POST[dni];
-		$nombre          =$_POST[nombre];
-		$apPaterno       =$_POST[apPaterno];
-		$apMaterno       =$_POST[apMaterno];
-		$genero          =$_POST[genero];
-		$nacionalidad    =$_POST[nacionalidad];
-		$fechaNacimiento =fechaSQL($_POST[fechaNacimiento]);
-		$estadoCivil     =$_POST[estadoCivil];
-		$direccion       =$_POST[direccion];
-		$departamento    =$_POST[departamento];
-		$provincia       =$_POST[provincia];
-		$distrito        =$_POST[distrito];
-		$telefono        =$_POST[telefono];
-		$celular         =$_POST[celular];
+		$dni             =$_POST['dni'];
+		$nombre          =$_POST['nombre'];
+		$apPaterno       =$_POST['apPaterno'];
+		$apMaterno       =$_POST['apMaterno'];
+		$genero          =$_POST['genero'];
+		$nacionalidad    =$_POST['nacionalidad'];
+		$fechaNacimiento =fechaSQL($_POST['fechaNacimiento']);
+		$estadoCivil     =$_POST['estadoCivil'];
+		$direccion       =$_POST['direccion'];
+		$departamento    =$_POST['departamento'];
+		$provincia       =$_POST['provincia'];
+		$distrito        =$_POST['distrito'];
+		$telefono        =$_POST['telefono'];
+		$celular         =$_POST['celular'];
 
 		$sql="UPDATE sm_socios SET genero='$genero', estadoCivil='$estadoCivil', direccion='$direccion', telefono='$telefono', celular='$celular' WHERE codigoSocio='$codigoSocio'";
 		$rs=mysqli_query($conexion,$sql);
@@ -84,9 +85,9 @@
 	}
 
 	if($operacion=="ACTUALIZA_DIRECCION"){
-		$codigoSocio =$_POST[codigoSocio];
-		$codigoLote =$_POST[codigoLote];
-		$direccion  =$_POST[direccion];
+		$codigoSocio =$_POST['codigoSocio'];
+		$codigoLote =$_POST['codigoLote'];
+		$direccion  =$_POST['direccion'];
 
 		$sql="UPDATE sm_lotes_socio SET direccion='$direccion' WHERE codigoSocio='$codigoSocio' AND codigoLote='$codigoLote'";
 		$rs=mysqli_query($conexion,$sql);
@@ -103,7 +104,7 @@
 	}
 
 	if($subir=="ACTUALIZA_FOTO"){
-		$codigoSocio =$_GET[codigoSocio];
+		$codigoSocio =$_GET['codigoSocio'];
 		$foto        =$_FILES['fotoSocio']['name'];
 		$permitidos  =array("image/jpg", "image/jpeg");
 		$limite_kb   =200;
@@ -135,16 +136,16 @@
 	}
 
 	if($operacion=="EXONERAR_DEUDAS_SOCIO"){
-		$codigoSocio       =$_POST[codigoSocio];
-		$tipoActividad     =$_POST[actividad];
-		$codigoActividad   =$_POST[codigoActividad];
+		$codigoSocio       =$_POST['codigoSocio'];
+		$tipoActividad     =$_POST['actividad'];
+		$codigoActividad   =$_POST['codigoActividad'];
 		$lotes             =infoSocios($codigoSocio,'lotes');
-		$deuda             =$_POST[deuda];
-		$porcentaje        =$_POST[porcentaje];
-		$exonerado         =$_POST[montoAExonerar];
-		$totalPago         =$_POST[totalPago];
-		$nroDocumento      =$_POST[nroDocumento];
-		$observacion       =$_POST[observacion];
+		$deuda             =$_POST['deuda'];
+		$porcentaje        =$_POST['porcentaje'];
+		$exonerado         =$_POST['montoAExonerar'];
+		$totalPago         =$_POST['totalPago'];
+		$nroDocumento      =$_POST['nroDocumento'];
+		$observacion       =$_POST['observacion'];
 		$codigoExoneracion =$codigoSocio.$codigoActividad;
 		$dni               =$usuario;
 		$nombreSocio=infoSocios($codigoSocio,'nombre');
@@ -225,8 +226,8 @@
 	}
 
 	if($operacion=="ELIMINA_EXONERACION_DEUDAS_SOCIO"){
-		$codigoExoneracion =$_POST[codigoExoneracion];
-		$tipoActividad     =$_POST[actividad];
+		$codigoExoneracion =$_POST['codigoExoneracion'];
+		$tipoActividad     =$_POST['actividad'];
 		$codigoActividad   =infoExoneracionesALT($codigoSocio,$codigoExoneracion,'codigoActividad');
 		$codigoConcepto    =$codigoActividad;
 		$lotes             =infoSocios($codigoSocio,'lotes');
@@ -273,14 +274,14 @@
 	}
 
 	if($operacion=="VERIFICAR_VOUCHER_EXONERACION"){
-		$nroDocumento=$_POST[nroDocumento];
+		$nroDocumento=$_POST['nroDocumento'];
 		$verificaDocumento= verificaDOC($nroDocumento,'VOU');
 		$respuesta->mensaje = $verificaDocumento;
 	}
 
 	if($operacion=="AGREGA_OBSERVACION"){
-		$codigoSocio =$_POST[codigoSocio];
-		$observacion =$_POST[observacion];
+		$codigoSocio =$_POST['codigoSocio'];
+		$observacion =$_POST['observacion'];
 		$nombre      =infoSocios($codigoSocio,'nombreCorto');
 
 		$sql="INSERT INTO sm_socios_observacion(codigoSocio, observacion, fecha, hora, usuario) VALUES('$codigoSocio', '$observacion', '$fecha', '$hora', '$dniUsuario')";
@@ -301,9 +302,9 @@
 	}
 
 	if($operacion=="EDITA_OBSERVACION"){
-		$codigoSocio =$_POST[codigoSocio];
-		$id          =$_POST[id];
-		$observacion =$_POST[observacion];
+		$codigoSocio =$_POST['codigoSocio'];
+		$id          =$_POST['id'];
+		$observacion =$_POST['observacion'];
 		$nombre      =infoSocios($codigoSocio,'nombreCorto');
 		
 		$sql="UPDATE sm_socios_observacion SET observacion='$observacion' WHERE id='$id'";
@@ -324,8 +325,8 @@
 	}
 
 	if($operacion=="ELIMINAR_OBSERVACION"){
-		$codigoSocio =$_POST[codigoSocio];
-		$observacion =$_POST[observacion];
+		$codigoSocio =$_POST['codigoSocio'];
+		$observacion =$_POST['observacion'];
 		$nombre      =infoSocios($codigoSocio,'nombreCorto');
 		
 		$sql="DELETE FROM sm_socios_observacion WHERE codigoSocio='$codigoSocio' AND id='$observacion'";
@@ -346,7 +347,7 @@
 	}
 
 	if($operacion=="ENTREGAR_TARJETA"){
-		$codigoSocio =$_POST[codigoSocio];
+		$codigoSocio =$_POST['codigoSocio'];
 		$nombre      =infoSocios($codigoSocio,'nombreCorto');
 		
 		$sql="UPDATE sm_socios SET eCardSocio='SI' WHERE codigoSocio='$codigoSocio'";
@@ -364,7 +365,7 @@
 	}
 
 	if($operacion=="ENTREGAR_DUPLICADO_TARJETA"){
-		$codigoSocio =$_POST[codigoSocio];
+		$codigoSocio =$_POST['codigoSocio'];
 		$nombre      =infoSocios($codigoSocio,'nombreCorto');
 		
 		$sql="UPDATE sm_socios SET eCardSocio='SI' WHERE codigoSocio='$codigoSocio'";
@@ -387,11 +388,11 @@
 		$rs=mysqli_query($conexion,$sql);
 		$socios=array();
 		while($dato=mysqli_fetch_array($rs)){
-			$codigoSocio =$dato[codigoSocio];
-			$nombre      =utf8_encode($dato[nombre]);
-			$apPaterno   =utf8_encode($dato[apPaterno]);
-			$apMaterno   =utf8_encode($dato[apMaterno]);
-			$lotes       =$dato[lotes];
+			$codigoSocio =$dato['codigoSocio'];
+			$nombre      =mb_convert_encoding((string)$dato['nombre'], 'UTF-8', 'ISO-8859-1');
+			$apPaterno   =mb_convert_encoding((string)$dato['apPaterno'], 'UTF-8', 'ISO-8859-1');
+			$apMaterno   =mb_convert_encoding((string)$dato['apMaterno'], 'UTF-8', 'ISO-8859-1');
+			$lotes       =$dato['lotes'];
 			$socios[] =array('codigoSocio'=>$codigoSocio, 'nombre'=>$nombre, 'apPaterno'=>$apPaterno, 'apMaterno'=>$apMaterno, 'lotes'=>$lotes);
 		}
 
