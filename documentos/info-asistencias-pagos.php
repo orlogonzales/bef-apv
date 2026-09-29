@@ -14,7 +14,10 @@
 	use Dompdf\Dompdf;
 	
 	$conexion        =conexionDB();
-	$codigoSocio     =$_GET[codigoSocio];
+	$codigoSocio     =$_GET['codigoSocio'] ?? '';
+	$idJuntaDirectiva= $_SESSION['idJDActual'] ?? '';
+	$detalles        = '';
+	$multa           = 0;
 	$nombreSocio     =infoSocios($codigoSocio,'nombre');
 	$lotesSocio      =infoSocios($codigoSocio,'cantidadLotes');
 	$hoy             =fechaSQL(infoTiempo('fechaHoy'));
@@ -144,12 +147,12 @@
 	$rs=mysqli_query($conexion,$sql);
 	$i=1;
 	while($n=mysqli_fetch_array($rs)){
-		$lotes=$n[lotes];
-		$sector=$n[sector];
-		$manzana=$n[manzana];
-		$lote=$n[lote];
-		$codigoLote=$n[codigoLote];
-		$direccion=$n[direccion];
+		$lotes=$n['lotes'];
+		$sector=$n['sector'];
+		$manzana=$n['manzana'];
+		$lote=$n['lote'];
+		$codigoLote=$n['codigoLote'];
+		$direccion=$n['direccion'];
 
 		if($direccion!=''){ $infoDireccion=$direccion; }else{ $infoDireccion='DIRECCION AUN NO REGISTRADA EN LA BASE DE DATOS'; }
 
@@ -253,19 +256,19 @@
 		$rs=mysqli_query($conexion,$sql);
 		$i=1;
 		while($n=mysqli_fetch_array($rs)){
-			$tipoActividad   =$n[tipoActividad];
-			$codigoActividad =$n[codigoActividad];
+			$tipoActividad   =$n['tipoActividad'];
+			$codigoActividad =$n['codigoActividad'];
 			$temaActividad   =texto(infoActividad($idJuntaDirectiva,$codigoActividad,'','temaActividad'));
 			$fechaActividad  =infoFecha(infoActividad($idJuntaDirectiva,$codigoActividad,$codigoSocio,'fechaActividad'),'muycorta');
 			$multaTarde      =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaporTardanza');
 			$multaFalta      =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaPorFalta');
-			$lotes           =$n[lotes];
-			$asistio         =$n[asistio];
-			$ingreso         =$n[ingreso];
-			$salida          =$n[salida];
-			$retraso         =$n[retraso];
-			$multa           =$n[multa];
-			$estadoPago      =$n[estadoPago];
+			$lotes           =$n['lotes'];
+			$asistio         =$n['asistio'];
+			$ingreso         =$n['ingreso'];
+			$salida          =$n['salida'];
+			$retraso         =$n['retraso'];
+			$multa           =$n['multa'];
+			$estadoPago      =$n['estadoPago'];
 			$conceptoPago    =$tipoActividad;
 			$programado      =conceptoProgramado($codigoSocio,$codigoActividad);
 			$porcentajePago  =porcentajePago($codigoSocio,$codigoActividad,$multa);
@@ -395,19 +398,19 @@
 		$rs=mysqli_query($conexion,$sql);
 		$i=1;
 		while($n=mysqli_fetch_array($rs)){
-			$tipoActividad   =$n[tipoActividad];
-			$codigoActividad =$n[codigoActividad];
+			$tipoActividad   =$n['tipoActividad'];
+			$codigoActividad =$n['codigoActividad'];
 			$temaActividad   =texto(infoActividad($idJuntaDirectiva,$codigoActividad,'','temaActividad'));
 			$fechaActividad  =infoFecha(infoActividad($idJuntaDirectiva,$codigoActividad,$codigoSocio,'fechaActividad'),'muycorta');
 			$multaTarde      =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaporTardanza');
 			$multaFalta      =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaPorFalta');
-			$lotes           =$n[lotes];
-			$asistio         =$n[asistio];
-			$ingreso         =$n[ingreso];
-			$salida          =$n[salida];
-			$retraso         =$n[retraso];
-			$multa           =$n[multa];
-			$estadoPago      =$n[estadoPago];
+			$lotes           =$n['lotes'];
+			$asistio         =$n['asistio'];
+			$ingreso         =$n['ingreso'];
+			$salida          =$n['salida'];
+			$retraso         =$n['retraso'];
+			$multa           =$n['multa'];
+			$estadoPago      =$n['estadoPago'];
 			$conceptoPago    =$tipoActividad;
 			$programado      =conceptoProgramado($codigoSocio,$codigoActividad);
 			$porcentajePago  =porcentajePago($codigoSocio,$codigoActividad,$multa);
@@ -536,11 +539,11 @@
 		$i=1;
 		while($n=mysqli_fetch_array($rs)){
 			$tipoActividad  ='CUO';
-			$codigoCuota    =$n[codigoCuota];
-			$lotes          =$n[lotes];
-			$montoCuota     =$n[montoCuota];
-			$montoPago      =$n[montoPago];
-			$estadoPago     =$n[estadoPago];
+			$codigoCuota    =$n['codigoCuota'];
+			$lotes          =$n['lotes'];
+			$montoCuota     =$n['montoCuota'];
+			$montoPago      =$n['montoPago'];
+			$estadoPago     =$n['estadoPago'];
 			$dni            =infoSocios($codigoSocio,'dni');
 			$conceptoCuota  =texto(infoCuota($idJuntaDirectiva,$codigoCuota,'conceptoCuota'));
 			$conceptoPago   =$tipoActividad;
@@ -611,7 +614,7 @@
 
 	
 	$reporte.=$impresoPor.'
-		<body>
+		</body>
 		</html>
 	';
 
@@ -627,6 +630,7 @@
 	$dompdf->setPaper('A4', 'landscape');
 	$dompdf->render();
 	$canvas = $dompdf->getCanvas();
+	$font = $dompdf->getFontMetrics()->get_font("helvetica", "normal");
 	$canvas->page_text(400, 560, "Página: {PAGE_NUM} de {PAGE_COUNT}", $font, 8, array(0,0,0));
 	$dompdf->stream("informe-socio-deudas-pagos-exoneraciones.pdf");
 ?>

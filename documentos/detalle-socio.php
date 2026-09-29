@@ -14,7 +14,10 @@
 	use Dompdf\Dompdf;
 	
 	$conexion        =conexionDB();
-	$codigoSocio     =$_GET[codigoSocio];
+	$codigoSocio     =$_GET['codigoSocio'] ?? '';
+	$idJuntaDirectiva= $_SESSION['idJDActual'] ?? '';
+	$codigoConcepto  = '';
+	$detalles        = '';
 	$nombreSocio     =infoSocios($codigoSocio,'nombre');
 	$lotesSocio      =infoSocios($codigoSocio,'cantidadLotes');
 	$totalDeudas     =infoPagoFechas($codigoSocio,$codigoConcepto,'totalFechasPagadas');
@@ -161,12 +164,12 @@
 		$rs=mysqli_query($conexion,$sql);
 		$i=1;
 		while($n=mysqli_fetch_array($rs)){
-			$lotes=$n[lotes];
-			$sector=$n[sector];
-			$manzana=$n[manzana];
-			$lote=$n[lote];
-			$codigoLote=$n[codigoLote];
-			$direccion=$n[direccion];
+			$lotes=$n['lotes'];
+			$sector=$n['sector'];
+			$manzana=$n['manzana'];
+			$lote=$n['lote'];
+			$codigoLote=$n['codigoLote'];
+			$direccion=$n['direccion'];
 
 			if($direccion!=''){ $infoDireccion=$direccion; }else{ $infoDireccion='DIRECCION AUN NO REGISTRADA EN LA BASE DE DATOS'; }
 
@@ -214,12 +217,12 @@
 			$rs=mysqli_query($conexion,$sql);
 			$i=1;
 			while($n=mysqli_fetch_array($rs)){
-				$codigoActividad =$n[codigoActividad];
-				$lotes           =$n[lotes];
-				$asistio         =$n[asistio];
-				$retraso         =$n[retraso];
-				$multa           =$n[multa];
-				$estadoPago      =$n[estadoPago];
+				$codigoActividad =$n['codigoActividad'];
+				$lotes           =$n['lotes'];
+				$asistio         =$n['asistio'];
+				$retraso         =$n['retraso'];
+				$multa           =$n['multa'];
+				$estadoPago      =$n['estadoPago'];
 				$actividad       =infoActividad($idJuntaDirectiva,$codigoActividad,'','temaActividad');
 				$mTarde          =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaporTardanza');
 				$mFalta          =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaPorFalta');
@@ -289,12 +292,12 @@
 			$rs=mysqli_query($conexion,$sql);
 			$i=1;
 			while($n=mysqli_fetch_array($rs)){
-				$codigoActividad =$n[codigoActividad];
-				$lotes           =$n[lotes];
-				$asistio         =$n[asistio];
-				$retraso         =$n[retraso];
-				$multa           =$n[multa];
-				$estadoPago      =$n[estadoPago];
+				$codigoActividad =$n['codigoActividad'];
+				$lotes           =$n['lotes'];
+				$asistio         =$n['asistio'];
+				$retraso         =$n['retraso'];
+				$multa           =$n['multa'];
+				$estadoPago      =$n['estadoPago'];
 				$actividad       =infoActividad($idJuntaDirectiva,$codigoActividad,'','temaActividad');
 				$mTarde          =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaporTardanza');
 				$mFalta          =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaPorFalta');
@@ -363,11 +366,11 @@
 			$rs=mysqli_query($conexion,$sql);
 			$i=1;
 			while($n=mysqli_fetch_array($rs)){
-				$codigoCuota =$n[codigoCuota];
-				$lotes       =$n[lotes];
-				$montoCuota  =$n[montoCuota];
-				$montoPago   =$n[montoPago];
-				$estadoPago  =$n[estadoPago];
+				$codigoCuota =$n['codigoCuota'];
+				$lotes       =$n['lotes'];
+				$montoCuota  =$n['montoCuota'];
+				$montoPago   =$n['montoPago'];
+				$estadoPago  =$n['estadoPago'];
 				$cuota       =infoCuota($idJuntaDirectiva,$codigoCuota,'conceptoCuota');
 
 				if($estadoPago=="NP"){ $infoEstado="DEBE"; }
@@ -413,7 +416,7 @@
 	
 	
 	$reporte.=$impresoPor.'
-		<body>
+		</body>
 		</html>
 	';
 	
@@ -429,7 +432,7 @@
 
 	$dompdf = new Dompdf();
 	$dompdf->loadHtml($reporte);
-	$dompdf->setPaper('A4', 'portait');
+	$dompdf->setPaper('A4', 'portrait');
 	$dompdf->render();
 	$dompdf->stream($nombreArchivo.".pdf");
 ?>
