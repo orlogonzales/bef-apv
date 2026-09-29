@@ -1,11 +1,21 @@
 <?php
-	session_start();
+	if (session_status() === PHP_SESSION_NONE) { session_start(); }
 	include('../php/funciones.php');
-	$opcion          =$_GET[opcion];
-	$codigoActividad =$_GET[codigoActividad];
-	$tipoActividad   =infoActividad($idJuntaDirectiva,$codigoActividad,'','tipoActividad');
-	$horaActividad   =infoActividad($idJuntaDirectiva,$codigoActividad,'','horaActividad');
+	$opcion          = isset($_GET['opcion']) ? $_GET['opcion'] : '';
+	$codigoActividad = isset($_GET['codigoActividad']) ? $_GET['codigoActividad'] : '';
+	$idJuntaDirectiva = isset($_SESSION['idJuntaDirectiva']) ? $_SESSION['idJuntaDirectiva'] : '';
+	$tipoActividad   = '';
+	$horaActividad   = '';
+	if (!empty($codigoActividad)) {
+		$conexionTmp = conexionDB();
+		$chkAct = mysqli_query($conexionTmp, "SELECT tipoActividad, horaActividad FROM sm_terminal_actividades WHERE codigoActividad='$codigoActividad'");
+		if ($rowAct = mysqli_fetch_array($chkAct)) {
+			$tipoActividad = $rowAct['tipoActividad'];
+			$horaActividad = $rowAct['horaActividad'];
+		}
+	}
 
+	$actividad = '';
 	if($tipoActividad=="ASA"){ $actividad="ASAMBLEA"; }
 	if($tipoActividad=="FAE"){ $actividad="FAENA"; }
 ?>
@@ -47,14 +57,14 @@
 				$rs=mysqli_query($conexion,$sql);
 				$i=1;
 				while($n=mysqli_fetch_array($rs)){
-					$codigoSocio =$n[codigoSocio];
-					$nombre      =$n[nombre];
-					$apPaterno   =$n[apPaterno];
-					$apMaterno   =$n[apMaterno];
-					$lotes       =$n[lotes];
-					$ingreso     =$n[ingreso];
-					$retraso     =$n[retraso];
-					$salida      =$n[salida];
+					$codigoSocio =$n['codigoSocio'];
+					$nombre      =$n['nombre'];
+					$apPaterno   =$n['apPaterno'];
+					$apMaterno   =$n['apMaterno'];
+					$lotes       =$n['lotes'];
+					$ingreso     =$n['ingreso'];
+					$retraso     =$n['retraso'];
+					$salida      =$n['salida'];
 					$nombreSocio =$apPaterno." ".$apMaterno."".$nombre;
 					$multaTarde  =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaporTardanza');
 

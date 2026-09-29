@@ -1,12 +1,14 @@
 <?php
 	include('funciones.php');
 	$conexion=conexionDB();
-	session_start();
+	if (session_status() === PHP_SESSION_NONE) { session_start(); }
 	$fecha=infoTiempo('fecha');
 	$hora=infoTiempo('hora');
 	date_default_timezone_set("America/Lima");
+	$respuesta = new stdClass();
+	$idJuntaDirectiva = isset($_SESSION['idJuntaDirectiva']) ? $_SESSION['idJuntaDirectiva'] : '';
 
-	if($_GET[operacion]=="SUBIR_ARCHIVO"){
+	if((isset($_GET['operacion']) && $_GET['operacion']=="SUBIR_ARCHIVO") || (isset($_POST['operacion']) && $_POST['operacion']=="SUBIR_ARCHIVO")){
 		$permitidos =array("aplication/octet-stream");
 		$archivoACT =$_FILES['archivo']['name'];
 		$archivo    =explode(".", $_FILES['archivo']['name']);
@@ -14,7 +16,7 @@
 		$nombre     =$_FILES['archivo']['name'];
 		$upload     ='../json/'.$nombre;
 
-		if (file_exists($upload)){ unlink($upload); }
+		if (!empty($nombre) && is_file($upload) && file_exists($upload)){ unlink($upload); }
 
 		if($archivoACT){
 			if ($tipoFile=='json'){
@@ -50,7 +52,7 @@
 		}else{ $respuesta->mensaje = "SINFILE"; }
 	}
 
-	if($_POST[operacion]=="PROCESAR_ACTIVIDAD"){
+	if(isset($_POST['operacion']) && $_POST['operacion']=="PROCESAR_ACTIVIDAD"){
 		$archivo         =$_SESSION['$archivo'];
 		$json            =file_get_contents($archivo);
 		$datos           =json_decode($json);
@@ -77,23 +79,30 @@
 		}
 	}
 
-	if($_POST[operacion]=="REGISTRA_ASISTENCIA"){
-		$codigoSocio     =$_POST[codigoSocio];
+	if(isset($_POST['operacion']) && $_POST['operacion']=="REGISTRA_ASISTENCIA"){
+		$codigoSocio     =$_POST['codigoSocio'];
 		$nombreSocio     =infoSocio($codigoSocio,'nombre');
 		$apPaterno       =infoSocio($codigoSocio,'apPaterno');
 		$apMaterno       =infoSocio($codigoSocio,'apMaterno');
 		$lotes           =infoSocio($codigoSocio,'lotes');
-		$nombre          =texto($nombreSocio." ".$apPaterno." ".$apMaterno);
-		$codigoActividad =$_SESSION['$codigoActividad'];
+		$nombre          =mb_convert_encoding($nombreSocio." ".$apPaterno." ".$apMaterno, 'UTF-8', 'ISO-8859-1');
+		$codigoActividad =isset($_SESSION['$codigoActividad']) ? $_SESSION['$codigoActividad'] : (isset($_POST['codigoActividad']) ? $_POST['codigoActividad'] : '');
 		$actividad       =infoActividad($idJuntaDirectiva,$codigoActividad,'','temaActividad');
 		$mTarde          =infoActividad($idJuntaDirectiva,$codigoActividad,$codigoSocio,'infoMultaporTardanza');
 		$fechaACT        =strtoupper(infoFecha(infoActividad($idJuntaDirectiva,$codigoActividad,'','fechaActividad'),'normal'));
 		$horaACT         =infoHora(infoActividad($idJuntaDirectiva,$codigoActividad,'','horaActividad'));
 		$fecha           =$fechaACT." // ".$horaACT;
-		$ingreso         =infoActividad($idJuntaDirectiva,$codigoActividad,$codigoSocio,'ingreso');
-		$salida          =infoActividad($idJuntaDirectiva,$codigoActividad,$codigoSocio,'salida');
+		$rsCheck         =mysqli_query($conexion, "SELECT ingreso, salida FROM sm_terminal_asistencia WHERE codigoSocio='$codigoSocio' AND codigoActividad='$codigoActividad'");
+		if ($rowCheck = mysqli_fetch_array($rsCheck)) {
+			$ingreso = $rowCheck['ingreso'];
+			$salida  = $rowCheck['salida'];
+		} else {
+			$ingreso = "";
+			$salida  = "";
+		}
 		
 
+		$registra = "";
 		if($ingreso==""){ $registra="INGRESO"; }
 		if($ingreso!="" and $salida=="00:00:00"){ $registra="SALIDA"; }
 
@@ -206,8 +215,8 @@
 		if($ingreso>"00:00:00" and $salida>"00:00:00"){ $respuesta->mensaje = "SOCIO_REGISTRADO"; }
 	}
 
-	if($_POST[operacion]=="TRANSFERIR_ASISTENCIA"){
-		$codigoActividad =$_POST[codigoActividad];
+	if(isset($_POST['operacion']) && $_POST['operacion']=="TRANSFERIR_ASISTENCIA"){
+		$codigoActividad =$_POST['codigoActividad'];
 		$horaActividad   =infoActividad($idJuntaDirectiva,$codigoActividad,'','horaActividad');
 		$fechaActividad  =infoActividad($idJuntaDirectiva,$codigoActividad,'','fechaActividad');
 		$tipoActividad   =infoActividad($idJuntaDirectiva,$codigoActividad,'','tipoActividad');
@@ -227,10 +236,10 @@
 		$asistencia=array();
 		$procesados=1;
 		while($dato=mysqli_fetch_array($rs)){
-			$codigoSocio  =$dato[codigoSocio];
-			$ingreso      =$dato[ingreso];
-			$retraso      =$dato[retraso];
-			$salida       =$dato[salida];
+			$codigoSocio  =$dato['codigoSocio'];
+			$ingreso      =$dato['ingreso'];
+			$retraso      =$dato['retraso'];
+			$salida       =$dato['salida'];
 			$asistencia[] =array('codigoActividad'=>$codigoActividad, 'horaActividad'=>$horaActividad, 'codigoSocio'=>$codigoSocio, 'ingreso'=>$ingreso, 'retraso'=>$retraso, 'salida'=>$salida, 'terminal'=>$terminal);
 			$procesados++;
 		}
@@ -248,8 +257,8 @@
 		}
 	}
 
-	if($_POST[operacion]=="INICIAR_CONTROL_ASISTENCIA"){
-		$codigoActividad =$_POST[codigoActividad];
+	if(isset($_POST['operacion']) && $_POST['operacion']=="INICIAR_CONTROL_ASISTENCIA"){
+		$codigoActividad =$_POST['codigoActividad'];
 		$estadoActividad =infoActividad($idJuntaDirectiva,$codigoActividad,'','estado');
 
 		if($estadoActividad=="INC"){
@@ -262,9 +271,9 @@
 
 	}
 	
-	if($_POST[operacion]=="ACTUALIZAR_HORA"){
-		$codigoActividad =$_POST[codigoActividad];
-		$horaActividad =$_POST[horaActividad];
+	if(isset($_POST['operacion']) && $_POST['operacion']=="ACTUALIZAR_HORA"){
+		$codigoActividad =$_POST['codigoActividad'];
+		$horaActividad =$_POST['horaActividad'];
 		
 		$sql="UPDATE sm_terminal_actividades SET horaActividad='$horaActividad' WHERE codigoActividad='$codigoActividad'";
 		$rs=mysqli_query($conexion,$sql);

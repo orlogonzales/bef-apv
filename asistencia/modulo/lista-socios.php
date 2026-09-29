@@ -30,11 +30,11 @@
 			$rs=mysqli_query($conexion,$sql);
 			$i=1;
 			while($n=mysqli_fetch_array($rs)){
-				$codigoSocio =$n[codigoSocio];
-				$nombre      =utf8_encode($n[nombre]);
-				$apPaterno   =utf8_encode($n[apPaterno]);
-				$apMaterno   =utf8_encode($n[apMaterno]);
-				$lotes       =$n[lotes]; 
+				$codigoSocio =$n['codigoSocio'];
+				$nombre      =mb_convert_encoding((string)$n['nombre'], 'UTF-8', 'ISO-8859-1');
+				$apPaterno   =mb_convert_encoding((string)$n['apPaterno'], 'UTF-8', 'ISO-8859-1');
+				$apMaterno   =mb_convert_encoding((string)$n['apMaterno'], 'UTF-8', 'ISO-8859-1');
+				$lotes       =$n['lotes'];
 				$nombreSocio =$apMaterno.' '.$apMaterno.' '.$nombre;
 		?>
 			<tr>

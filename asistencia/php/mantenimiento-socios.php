@@ -1,17 +1,18 @@
 <?php
 	include('funciones.php');
 	$conexion=conexionDB();
-	session_start();
+	if (session_status() === PHP_SESSION_NONE) { session_start(); }
+	$respuesta = new stdClass();
 
-	if($_GET[operacion]=="SUBIR_ARCHIVO"){
-		$archivoSocios =$_FILES['archivo']['name'];
-		$archivo       =explode(".", $_FILES['archivo']['name']);
-		$tipoFile      =end($archivo);
-		$nombre        =$_FILES['archivo']['name'];
-		$upload        ='../json/'.$nombre;
-		$socios        =infoSocio($codigoSocio,'socios');
+	if((isset($_GET['operacion']) && $_GET['operacion']=="SUBIR_ARCHIVO") || (isset($_POST['operacion']) && $_POST['operacion']=="SUBIR_ARCHIVO")){
+		$archivoSocios = isset($_FILES['archivo']['name']) ? $_FILES['archivo']['name'] : '';
+		$archivo       = explode(".", $archivoSocios);
+		$tipoFile      = end($archivo);
+		$nombre        = $archivoSocios;
+		$upload        = '../json/'.$nombre;
+		$socios        = infoSocio('','socios');
 
-		if (file_exists($upload)){ unlink($upload); }
+		if (!empty($nombre) && is_file($upload) && file_exists($upload)){ unlink($upload); }
 
 		if($archivoSocios){
 			if ($tipoFile=='json'){
