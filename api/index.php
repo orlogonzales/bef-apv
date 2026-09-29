@@ -1,7 +1,9 @@
 <?php
-	session_start();
+	if (session_status() === PHP_SESSION_NONE) {
+		session_start();
+	}
 	date_default_timezone_set("America/Lima");
-	$usuarioActivo=$_SESSION['dni_apv'];
+	$usuarioActivo = isset($_SESSION['dni_apv']) ? $_SESSION['dni_apv'] : null;
 
 	if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'){
 		$urlSistema   = 'https://'.$_SERVER['SERVER_NAME'];
@@ -16,11 +18,12 @@
 	$tiempoRestraso=15; //EN MINUTOS
 	$tiempoFalta=25; //EN MINUTOS
 
-	$operacion = $_POST['operacion'];
+	$operacion = isset($_POST['operacion']) ? $_POST['operacion'] : '';
+	$respuesta = new stdClass();
 
 	if($operacion=='login'){
-		$usuario = $_POST[usuario];
-		$clave   = md5($_POST[clave]);
+		$usuario = $_POST['usuario'];
+		$clave   = md5($_POST['clave']);
 		$login   = login($usuario, $clave);
 		
 		if($login=='NOEXISTE'){
@@ -36,7 +39,9 @@
 	}
 
 	if($operacion=='salirActividades'){
-		session_start();
+		if (session_status() === PHP_SESSION_NONE) {
+			session_start();
+		}
 		session_unset();
 		session_destroy();
 		$respuesta->resultado  = "OK";
@@ -44,9 +49,11 @@
 	
 	if(!empty($_SESSION)){
 		if($operacion=='inicarControl'){
-			$codigoActividad = $_POST[codigoActividad];
-			$formaActividad = $_POST[formaActividad];
-			session_start();
+			$codigoActividad = $_POST['codigoActividad'];
+			$formaActividad = $_POST['formaActividad'];
+			if (session_status() === PHP_SESSION_NONE) {
+				session_start();
+			}
 			$_SESSION['codigoActividad']=$codigoActividad;
 			$_SESSION['estadoActividad']='abierto';
 			$_SESSION['formaActividad']=$formaActividad;
@@ -54,40 +61,42 @@
 		}
 
 		if($operacion=='terminarActividad'){
-			session_start();
+			if (session_status() === PHP_SESSION_NONE) {
+				session_start();
+			}
 			$_SESSION['estadoActividad']='terminado';
 			$respuesta->resultado  = "OK";
 		}
 		
 		if($operacion=='REGISTRA_ASISTENCIA'){
 			$conexion=conexionDB();
-			$codigoSocio     =$_POST[codigoSocio];
+			$codigoSocio     =$_POST['codigoSocio'];
 			if(strlen($codigoSocio)>=14){
 				$sql = "SELECT sm_socios.nombre, sm_socios.apPaterno, sm_socios.apMaterno FROM sm_socios WHERE sm_socios.codigoSocio = '$codigoSocio'";
 				$row=mysqli_query($conexion,$sql);
 				$dato=mysqli_fetch_array($row);
-				$nombre    = $dato[nombre];
-				$apPaterno = $dato[apPaterno];
-				$apMaterno = $dato[apMaterno];
+				$nombre    = $dato['nombre'];
+				$apPaterno = $dato['apPaterno'];
+				$apMaterno = $dato['apMaterno'];
 				$nombreSocio= trim($nombre.' '.$apPaterno.' '.$apMaterno);
 
 				$sql = "SELECT COUNT(sm_lotes_socio.lotes) AS lotes FROM sm_lotes_socio WHERE sm_lotes_socio.codigoSocio = '$codigoSocio'";
 				$row=mysqli_query($conexion,$sql);
 				$dato=mysqli_fetch_array($row);
-				$lotes    = $dato[lotes];
+				$lotes    = $dato['lotes'];
 				
-				$codigoActividad = $_POST[codigoActividad];
+				$codigoActividad = $_POST['codigoActividad'];
 				$sql = "SELECT sm_mod_actividades.tipoActividad, sm_mod_actividades.temaActividad, sm_mod_actividades.formaActividad, sm_mod_actividades.formaControl, sm_mod_actividades.fechaActividad, sm_mod_actividades.horaActividad, sm_mod_actividades.mTardanza, sm_mod_actividades.mFalta FROM sm_mod_actividades WHERE sm_mod_actividades.codigoActividad = '$codigoActividad'";
 				$row=mysqli_query($conexion,$sql);
 				$dato=mysqli_fetch_array($row);
-				$tipoActividad  = $dato[tipoActividad];
-				$temaActividad  = $dato[temaActividad];
-				$formaActividad = $dato[formaActividad];
-				$formaControl   = $dato[formaControl];
-				$fechaActividad = $dato[fechaActividad];
-				$horaActividad  = $dato[horaActividad];
-				$mTardanza      = $dato[mTardanza];
-				$mFalta         = $dato[mFalta];
+				$tipoActividad  = $dato['tipoActividad'];
+				$temaActividad  = $dato['temaActividad'];
+				$formaActividad = $dato['formaActividad'];
+				$formaControl   = $dato['formaControl'];
+				$fechaActividad = $dato['fechaActividad'];
+				$horaActividad  = $dato['horaActividad'];
+				$mTardanza      = $dato['mTardanza'];
+				$mFalta         = $dato['mFalta'];
 
 				$fechaACT       = strtoupper(infoFecha($fechaActividad,'normal'));
 				$horaACT        = infoHora($horaActividad);
@@ -96,9 +105,9 @@
 				$sql = "SELECT asistio, ingreso, salida FROM sm_mod_asistencia WHERE codigoActividad = '$codigoActividad' AND codigoSocio = '$codigoSocio'";
 				$row=mysqli_query($conexion,$sql);
 				$dato=mysqli_fetch_array($row);
-				$asistio  = $dato[asistio];
-				$ingreso  = $dato[ingreso];
-				$salida  = $dato[salida];
+				$asistio  = $dato['asistio'];
+				$ingreso  = $dato['ingreso'];
+				$salida  = $dato['salida'];
 
 				if($formaControl==0){
 					if($asistio=='IN' && $ingreso=='00:00:00'){
@@ -181,7 +190,7 @@
 					$sql = "SELECT ingreso FROM sm_mod_asistencia WHERE codigoActividad = '$codigoActividad' AND codigoSocio = '$codigoSocio'";
 					$row=mysqli_query($conexion,$sql);
 					$dato=mysqli_fetch_array($row);
-					$ingreso  = $dato[ingreso];
+					$ingreso  = $dato['ingreso'];
 
 					if($ingreso!='00:00:00'){
 						$respuesta->estado  = 'ya_registro_ingreso';
@@ -204,39 +213,39 @@
 
 		if($operacion=='REGISTRA_ASISTENCIA_DNI'){
 			$conexion=conexionDB();
-			$DNISocio     =$_POST[DNISocio];
+			$DNISocio     =$_POST['DNISocio'];
 			if(strlen($DNISocio)==8){
 				$sql="SELECT codigoSocio FROM sm_socios WHERE dni = '$DNISocio'";
 				$row=mysqli_query($conexion,$sql);
 				$dato=mysqli_fetch_array($row);
-				$codigoSocio = $dato[codigoSocio];
+				$codigoSocio = $dato['codigoSocio'];
 
 				if(strlen($codigoSocio)>=14){
 					$sql = "SELECT sm_socios.nombre, sm_socios.apPaterno, sm_socios.apMaterno FROM sm_socios WHERE sm_socios.codigoSocio = '$codigoSocio'";
 					$row=mysqli_query($conexion,$sql);
 					$dato=mysqli_fetch_array($row);
-					$nombre    = $dato[nombre];
-					$apPaterno = $dato[apPaterno];
-					$apMaterno = $dato[apMaterno];
+					$nombre    = $dato['nombre'];
+					$apPaterno = $dato['apPaterno'];
+					$apMaterno = $dato['apMaterno'];
 					$nombreSocio= trim($nombre.' '.$apPaterno.' '.$apMaterno);
 
 					$sql = "SELECT COUNT(sm_lotes_socio.lotes) AS lotes FROM sm_lotes_socio WHERE sm_lotes_socio.codigoSocio = '$codigoSocio'";
 					$row=mysqli_query($conexion,$sql);
 					$dato=mysqli_fetch_array($row);
-					$lotes    = $dato[lotes];
+					$lotes    = $dato['lotes'];
 					
-					$codigoActividad = $_POST[codigoActividad];
+					$codigoActividad = $_POST['codigoActividad'];
 					$sql = "SELECT sm_mod_actividades.tipoActividad, sm_mod_actividades.temaActividad, sm_mod_actividades.formaActividad, sm_mod_actividades.formaControl, sm_mod_actividades.fechaActividad, sm_mod_actividades.horaActividad, sm_mod_actividades.mTardanza, sm_mod_actividades.mFalta FROM sm_mod_actividades WHERE sm_mod_actividades.codigoActividad = '$codigoActividad'";
 					$row=mysqli_query($conexion,$sql);
 					$dato=mysqli_fetch_array($row);
-					$tipoActividad  = $dato[tipoActividad];
-					$temaActividad  = $dato[temaActividad];
-					$formaActividad = $dato[formaActividad];
-					$formaControl   = $dato[formaControl];
-					$fechaActividad = $dato[fechaActividad];
-					$horaActividad  = $dato[horaActividad];
-					$mTardanza      = $dato[mTardanza];
-					$mFalta         = $dato[mFalta];
+					$tipoActividad  = $dato['tipoActividad'];
+					$temaActividad  = $dato['temaActividad'];
+					$formaActividad = $dato['formaActividad'];
+					$formaControl   = $dato['formaControl'];
+					$fechaActividad = $dato['fechaActividad'];
+					$horaActividad  = $dato['horaActividad'];
+					$mTardanza      = $dato['mTardanza'];
+					$mFalta         = $dato['mFalta'];
 
 					$fechaACT       = strtoupper(infoFecha($fechaActividad,'normal'));
 					$horaACT        = infoHora($horaActividad);
@@ -245,9 +254,9 @@
 					$sql = "SELECT asistio, ingreso, salida FROM sm_mod_asistencia WHERE codigoActividad = '$codigoActividad' AND codigoSocio = '$codigoSocio'";
 					$row=mysqli_query($conexion,$sql);
 					$dato=mysqli_fetch_array($row);
-					$asistio  = $dato[asistio];
-					$ingreso  = $dato[ingreso];
-					$salida  = $dato[salida];
+					$asistio  = $dato['asistio'];
+					$ingreso  = $dato['ingreso'];
+					$salida  = $dato['salida'];
 
 					if($formaControl==0){
 						if($asistio=='IN' && $ingreso=='00:00:00'){
@@ -330,7 +339,7 @@
 						$sql = "SELECT ingreso FROM sm_mod_asistencia WHERE codigoActividad = '$codigoActividad' AND codigoSocio = '$codigoSocio'";
 						$row=mysqli_query($conexion,$sql);
 						$dato=mysqli_fetch_array($row);
-						$ingreso  = $dato[ingreso];
+						$ingreso  = $dato['ingreso'];
 
 						if($ingreso!='00:00:00'){
 							$respuesta->estado  = 'ya_registro_ingreso';
@@ -355,33 +364,33 @@
 
 		if($operacion=='REGISTRA_SALIDA'){
 			$conexion=conexionDB();
-			$codigoSocio     =$_POST[codigoSocio];
+			$codigoSocio     =$_POST['codigoSocio'];
 			if(strlen($codigoSocio)>=14){
 				$sql = "SELECT sm_socios.nombre, sm_socios.apPaterno, sm_socios.apMaterno FROM sm_socios WHERE sm_socios.codigoSocio = '$codigoSocio'";
 				$row=mysqli_query($conexion,$sql);
 				$dato=mysqli_fetch_array($row);
-				$nombre    = $dato[nombre];
-				$apPaterno = $dato[apPaterno];
-				$apMaterno = $dato[apMaterno];
+				$nombre    = $dato['nombre'];
+				$apPaterno = $dato['apPaterno'];
+				$apMaterno = $dato['apMaterno'];
 				$nombreSocio= trim($nombre.' '.$apPaterno.' '.$apMaterno);
 
 				$sql = "SELECT COUNT(sm_lotes_socio.lotes) AS lotes FROM sm_lotes_socio WHERE sm_lotes_socio.codigoSocio = '$codigoSocio'";
 				$row=mysqli_query($conexion,$sql);
 				$dato=mysqli_fetch_array($row);
-				$lotes    = $dato[lotes];
+				$lotes    = $dato['lotes'];
 				
-				$codigoActividad = $_POST[codigoActividad];
+				$codigoActividad = $_POST['codigoActividad'];
 				$sql = "SELECT sm_mod_actividades.tipoActividad, sm_mod_actividades.temaActividad, sm_mod_actividades.formaActividad, sm_mod_actividades.formaControl, sm_mod_actividades.fechaActividad, sm_mod_actividades.horaActividad, sm_mod_actividades.mTardanza, sm_mod_actividades.mFalta FROM sm_mod_actividades WHERE sm_mod_actividades.codigoActividad = '$codigoActividad'";
 				$row=mysqli_query($conexion,$sql);
 				$dato=mysqli_fetch_array($row);
-				$tipoActividad  = $dato[tipoActividad];
-				$temaActividad  = $dato[temaActividad];
-				$formaActividad = $dato[formaActividad];
-				$formaControl   = $dato[formaControl];
-				$fechaActividad = $dato[fechaActividad];
-				$horaActividad  = $dato[horaActividad];
-				$mTardanza      = $dato[mTardanza];
-				$mFalta         = $dato[mFalta];
+				$tipoActividad  = $dato['tipoActividad'];
+				$temaActividad  = $dato['temaActividad'];
+				$formaActividad = $dato['formaActividad'];
+				$formaControl   = $dato['formaControl'];
+				$fechaActividad = $dato['fechaActividad'];
+				$horaActividad  = $dato['horaActividad'];
+				$mTardanza      = $dato['mTardanza'];
+				$mFalta         = $dato['mFalta'];
 
 				$fechaACT       = strtoupper(infoFecha($fechaActividad,'normal'));
 				$horaACT        = infoHora($horaActividad);
@@ -391,10 +400,10 @@
 					$sql = "SELECT asistio, ingreso, salida, retraso FROM sm_mod_asistencia WHERE codigoActividad = '$codigoActividad' AND codigoSocio = '$codigoSocio'";
 					$row=mysqli_query($conexion,$sql);
 					$dato=mysqli_fetch_array($row);
-					$asistio  = $dato[asistio];
-					$ingreso  = $dato[ingreso];
-					$salida  = $dato[salida];
-					$retraso  = $dato[retraso];
+					$asistio  = $dato['asistio'];
+					$ingreso  = $dato['ingreso'];
+					$salida  = $dato['salida'];
+					$retraso  = $dato['retraso'];
 
 					if($retraso>0){
 						$retraso=$retraso*100;
@@ -421,9 +430,9 @@
 					$sql = "SELECT asistio, ingreso, salida, retraso FROM sm_mod_asistencia WHERE codigoActividad = '$codigoActividad' AND codigoSocio = '$codigoSocio'";
 					$row=mysqli_query($conexion,$sql);
 					$dato=mysqli_fetch_array($row);
-					$asistio  = $dato[asistio];
-					$ingreso  = $dato[ingreso];
-					$salida   = $dato[salida];
+					$asistio  = $dato['asistio'];
+					$ingreso  = $dato['ingreso'];
+					$salida   = $dato['salida'];
 
 					$respuesta->asistio  = $asistio;
 					$respuesta->ingreso  = $ingreso;
@@ -463,40 +472,40 @@
 
 		if($operacion=='REGISTRA_SALIDA_DNI'){
 			$conexion=conexionDB();
-			$DNISocio     =$_POST[DNISocio];
+			$DNISocio     =$_POST['DNISocio'];
 
 			if(strlen($DNISocio)==8){
 				$sql="SELECT codigoSocio FROM sm_socios WHERE dni = '$DNISocio'";
 				$row=mysqli_query($conexion,$sql);
 				$dato=mysqli_fetch_array($row);
-				$codigoSocio = $dato[codigoSocio];
+				$codigoSocio = $dato['codigoSocio'];
 
 				if(strlen($codigoSocio)>=14){
 					$sql = "SELECT sm_socios.nombre, sm_socios.apPaterno, sm_socios.apMaterno FROM sm_socios WHERE sm_socios.codigoSocio = '$codigoSocio'";
 					$row=mysqli_query($conexion,$sql);
 					$dato=mysqli_fetch_array($row);
-					$nombre    = $dato[nombre];
-					$apPaterno = $dato[apPaterno];
-					$apMaterno = $dato[apMaterno];
+					$nombre    = $dato['nombre'];
+					$apPaterno = $dato['apPaterno'];
+					$apMaterno = $dato['apMaterno'];
 					$nombreSocio= trim($nombre.' '.$apPaterno.' '.$apMaterno);
 
 					$sql = "SELECT COUNT(sm_lotes_socio.lotes) AS lotes FROM sm_lotes_socio WHERE sm_lotes_socio.codigoSocio = '$codigoSocio'";
 					$row=mysqli_query($conexion,$sql);
 					$dato=mysqli_fetch_array($row);
-					$lotes    = $dato[lotes];
+					$lotes    = $dato['lotes'];
 					
-					$codigoActividad = $_POST[codigoActividad];
+					$codigoActividad = $_POST['codigoActividad'];
 					$sql = "SELECT sm_mod_actividades.tipoActividad, sm_mod_actividades.temaActividad, sm_mod_actividades.formaActividad, sm_mod_actividades.formaControl, sm_mod_actividades.fechaActividad, sm_mod_actividades.horaActividad, sm_mod_actividades.mTardanza, sm_mod_actividades.mFalta FROM sm_mod_actividades WHERE sm_mod_actividades.codigoActividad = '$codigoActividad'";
 					$row=mysqli_query($conexion,$sql);
 					$dato=mysqli_fetch_array($row);
-					$tipoActividad  = $dato[tipoActividad];
-					$temaActividad  = $dato[temaActividad];
-					$formaActividad = $dato[formaActividad];
-					$formaControl   = $dato[formaControl];
-					$fechaActividad = $dato[fechaActividad];
-					$horaActividad  = $dato[horaActividad];
-					$mTardanza      = $dato[mTardanza];
-					$mFalta         = $dato[mFalta];
+					$tipoActividad  = $dato['tipoActividad'];
+					$temaActividad  = $dato['temaActividad'];
+					$formaActividad = $dato['formaActividad'];
+					$formaControl   = $dato['formaControl'];
+					$fechaActividad = $dato['fechaActividad'];
+					$horaActividad  = $dato['horaActividad'];
+					$mTardanza      = $dato['mTardanza'];
+					$mFalta         = $dato['mFalta'];
 
 					$fechaACT       = strtoupper(infoFecha($fechaActividad,'normal'));
 					$horaACT        = infoHora($horaActividad);
@@ -506,10 +515,10 @@
 						$sql = "SELECT asistio, ingreso, salida, retraso FROM sm_mod_asistencia WHERE codigoActividad = '$codigoActividad' AND codigoSocio = '$codigoSocio'";
 						$row=mysqli_query($conexion,$sql);
 						$dato=mysqli_fetch_array($row);
-						$asistio  = $dato[asistio];
-						$ingreso  = $dato[ingreso];
-						$salida  = $dato[salida];
-						$retraso  = $dato[retraso];
+						$asistio  = $dato['asistio'];
+						$ingreso  = $dato['ingreso'];
+						$salida  = $dato['salida'];
+						$retraso  = $dato['retraso'];
 
 						if($retraso>0){
 							$retraso=$retraso*100;
@@ -536,9 +545,9 @@
 						$sql = "SELECT asistio, ingreso, salida, retraso FROM sm_mod_asistencia WHERE codigoActividad = '$codigoActividad' AND codigoSocio = '$codigoSocio'";
 						$row=mysqli_query($conexion,$sql);
 						$dato=mysqli_fetch_array($row);
-						$asistio  = $dato[asistio];
-						$ingreso  = $dato[ingreso];
-						$salida   = $dato[salida];
+						$asistio  = $dato['asistio'];
+						$ingreso  = $dato['ingreso'];
+						$salida   = $dato['salida'];
 
 						$respuesta->asistio  = $asistio;
 						$respuesta->ingreso  = $ingreso;
@@ -585,14 +594,14 @@
 			$sql = "SELECT sm_mod_actividades.tipoActividad, sm_mod_actividades.temaActividad, sm_mod_actividades.formaActividad, sm_mod_actividades.formaControl, sm_mod_actividades.fechaActividad, sm_mod_actividades.horaActividad, sm_mod_actividades.mTardanza, sm_mod_actividades.mFalta FROM sm_mod_actividades WHERE sm_mod_actividades.codigoActividad = '$codigoActividad'";
 			$row=mysqli_query($conexion,$sql);
 			$dato=mysqli_fetch_array($row);
-			$tipoActividad  = $dato[tipoActividad];
-			$temaActividad  = $dato[temaActividad];
-			$formaActividad = $dato[formaActividad];
-			$formaControl   = $dato[formaControl];
-			$fechaActividad = $dato[fechaActividad];
-			$horaActividad  = $dato[horaActividad];
-			$mTardanza      = $dato[mTardanza];
-			$mFalta         = $dato[mFalta];
+			$tipoActividad  = $dato['tipoActividad'];
+			$temaActividad  = $dato['temaActividad'];
+			$formaActividad = $dato['formaActividad'];
+			$formaControl   = $dato['formaControl'];
+			$fechaActividad = $dato['fechaActividad'];
+			$horaActividad  = $dato['horaActividad'];
+			$mTardanza      = $dato['mTardanza'];
+			$mFalta         = $dato['mFalta'];
 
 			if($formaControl==0){
 				//ACTUALIZA TABLA sm_mod_asistencia_json
@@ -604,13 +613,13 @@
 				$rs=mysqli_query($conexion,$sql);
 				$i=1;
 				while($n=mysqli_fetch_array($rs)){
-					$codigoSocio = $n[codigoSocio];
-					$lotes       = $n[lotes];
-					$asistio     = $n[asistio];
-					$ingreso     = $n[ingreso];
-					$salida      = $n[salida];
-					$retraso     = $n[retraso];
-					$multa       = $n[multa];
+					$codigoSocio = $n['codigoSocio'];
+					$lotes       = $n['lotes'];
+					$asistio     = $n['asistio'];
+					$ingreso     = $n['ingreso'];
+					$salida      = $n['salida'];
+					$retraso     = $n['retraso'];
+					$multa       = $n['multa'];
 					$infoRetraso = $retraso*100;
 					$mTardanza   = $mTardanza*$lotes;
 					$mFalta      = $mFalta*$lotes;
@@ -652,13 +661,13 @@
 				$rs=mysqli_query($conexion,$sql);
 				$i=1;
 				while($n=mysqli_fetch_array($rs)){
-					$codigoSocio = $n[codigoSocio];
-					$lotes       = $n[lotes];
-					$asistio     = $n[asistio];
-					$ingreso     = $n[ingreso];
-					$salida      = $n[salida];
-					$retraso     = $n[retraso];
-					$multa       = $n[multa];
+					$codigoSocio = $n['codigoSocio'];
+					$lotes       = $n['lotes'];
+					$asistio     = $n['asistio'];
+					$ingreso     = $n['ingreso'];
+					$salida      = $n['salida'];
+					$retraso     = $n['retraso'];
+					$multa       = $n['multa'];
 					$infoRetraso = $retraso*100;
 					$mTardanza   = $mTardanza*$lotes;
 					$multaFalta  = $mFalta*$lotes;
@@ -681,7 +690,9 @@
 
 			$cerrarDB=cerrarDB();
 			
-			session_start();
+			if (session_status() === PHP_SESSION_NONE) {
+				session_start();
+			}
 			unset($_SESSION['codigoActividad']);
 			unset($_SESSION['estadoActividad']);
 			
