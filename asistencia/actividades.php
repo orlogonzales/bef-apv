@@ -196,13 +196,13 @@
 											<?php
 												$i=1;
 												while($n=mysqli_fetch_array($rs)){
-													$codigoActividad =$n[codigoActividad];
-													$tipoActividad   =$n[tipoActividad];
-													$temaActividad   =$n[temaActividad];
-													$formaActividad  =$n[formaActividad];
-													$fechaActividad  =$n[fechaActividad]; 
-													$horaActividad   =$n[horaActividad]; 
-													$lugarActividad  =$n[lugarActividad]; 
+													$codigoActividad =$n['codigoActividad'];
+													$tipoActividad   =$n['tipoActividad'];
+													$temaActividad   =$n['temaActividad'];
+													$formaActividad  =$n['formaActividad'];
+													$fechaActividad  =$n['fechaActividad'];
+													$horaActividad   =$n['horaActividad'];
+													$lugarActividad  =$n['lugarActividad'];
 													$aforo           =infoActividad($idJuntaDirectiva,$codigoActividad,'','aforo');
 
 													if($formaActividad==1){

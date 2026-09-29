@@ -1,11 +1,13 @@
 <?php
 	$ruta='../../';
 	include_once $ruta."php/funciones.php";
-	$tipoActividad   =$_GET[tipoActividad];
-	$codigoActividad =$_GET[codigoActividad];
+	$tipoActividad   = isset($_GET['tipoActividad']) ? $_GET['tipoActividad'] : '';
+	$codigoActividad = isset($_GET['codigoActividad']) ? $_GET['codigoActividad'] : '';
 	$archivoGenerado =infoActividad($idJuntaDirectiva,$codigoActividad,'','archivoACT');
 	$temaActividad   =texto(infoActividad($idJuntaDirectiva,$codigoActividad,'','temaActividad'));
 	
+	$rotulo  = '';
+	$rotuloM = '';
 	if($tipoActividad=="ASA"){ $rotulo="ASAMBLEA"; $rotuloM="Asamblea"; }
 	if($tipoActividad=="FAE"){ $rotulo="FAENA"; $rotuloM="Faena"; }
 

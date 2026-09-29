@@ -20,7 +20,7 @@
 		$query = "SELECT lotes FROM sm_lotes_socio WHERE codigoSocio = '$codigoSocio'";
 		$consulta = $conexion->query($query);
 		$resultado = $consulta->fetch_assoc();
-		$lotes = $resultado[lotes];
+		$lotes = isset($resultado['lotes']) ? $resultado['lotes'] : $lotes;
 
 		$datos[] = array(
 			'Nro'         => ceros($j,2),
