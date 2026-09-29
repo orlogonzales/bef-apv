@@ -13,8 +13,10 @@
 	use Dompdf\Dompdf;
 
 	$conexion      =conexionDB();
-	$conceptoPago  =$_GET[conceptoPago];
-	$opcion        =$_GET[opcion];
+	$conceptoPago  =$_GET['conceptoPago'] ?? '';
+	$opcion        =$_GET['opcion'] ?? '';
+	$idJuntaDirectiva = $_SESSION['idJDActual'] ?? '';
+	$nombreArchivo = 'reporte-cuotas-' . ($conceptoPago ?: 'general');
 	$hoy           =fechaSQL(infoTiempo('fechaHoy'));
 	$hora          =infoTiempo('hora');
 	$dniUsuario    =$_SESSION['dni_apv'];
@@ -97,15 +99,15 @@
 		$rs=mysqli_query($conexion,$sql);
 		$i=1;
 		while($n=mysqli_fetch_array($rs)){
-			$codigoSocio =$n[codigoSocio];
-			$lotes       =$n[lotes];
-			$montoCuota  =$n[montoCuota];
-			$montoPago   =$n[montoPago];
-			$estadoPago  =$n[estadoPago];
-			$dni         =$n[dni];
-			$nombre      =$n[nombre];
-			$apPaterno   =$n[apPaterno];
-			$apMaterno   =$n[apMaterno];
+			$codigoSocio =$n['codigoSocio'];
+			$lotes       =$n['lotes'];
+			$montoCuota  =$n['montoCuota'];
+			$montoPago   =$n['montoPago'];
+			$estadoPago  =$n['estadoPago'];
+			$dni         =$n['dni'];
+			$nombre      =$n['nombre'];
+			$apPaterno   =$n['apPaterno'];
+			$apMaterno   =$n['apMaterno'];
 			$programado  =conceptoProgramado($codigoSocio,$conceptoPago);
 
 			if($estadoPago=="NP" and $programado==0){
@@ -194,15 +196,15 @@
 		$rs=mysqli_query($conexion,$sql);
 		$i=1;
 		while($n=mysqli_fetch_array($rs)){
-			$codigoSocio =$n[codigoSocio];
-			$lotes       =$n[lotes];
-			$montoCuota  =$n[montoCuota];
-			$montoPago   =$n[montoPago];
-			$estadoPago  =$n[estadoPago];
-			$dni         =$n[dni];
-			$nombre      =$n[nombre];
-			$apPaterno   =$n[apPaterno];
-			$apMaterno   =$n[apMaterno];
+			$codigoSocio =$n['codigoSocio'];
+			$lotes       =$n['lotes'];
+			$montoCuota  =$n['montoCuota'];
+			$montoPago   =$n['montoPago'];
+			$estadoPago  =$n['estadoPago'];
+			$dni         =$n['dni'];
+			$nombre      =$n['nombre'];
+			$apPaterno   =$n['apPaterno'];
+			$apMaterno   =$n['apMaterno'];
 			$programado  =conceptoProgramado($codigoSocio,$conceptoPago);
 
 			if($estadoPago=="NP" and $programado==0){
@@ -291,15 +293,15 @@
 		$rs=mysqli_query($conexion,$sql);
 		$i=1;
 		while($n=mysqli_fetch_array($rs)){
-			$codigoSocio =$n[codigoSocio];
-			$lotes       =$n[lotes];
-			$montoCuota  =$n[montoCuota];
-			$montoPago   =$n[montoPago];
-			$estadoPago  =$n[estadoPago];
-			$dni         =$n[dni];
-			$nombre      =$n[nombre];
-			$apPaterno   =$n[apPaterno];
-			$apMaterno   =$n[apMaterno];
+			$codigoSocio =$n['codigoSocio'];
+			$lotes       =$n['lotes'];
+			$montoCuota  =$n['montoCuota'];
+			$montoPago   =$n['montoPago'];
+			$estadoPago  =$n['estadoPago'];
+			$dni         =$n['dni'];
+			$nombre      =$n['nombre'];
+			$apPaterno   =$n['apPaterno'];
+			$apMaterno   =$n['apMaterno'];
 			$programado  =conceptoProgramado($codigoSocio,$conceptoPago);
 
 			if($estadoPago=="NP" and $programado==0){
@@ -356,7 +358,7 @@
 
 	$reporte.='
 			'.$impresoPor.'
-		<body>
+		</body>
 		</html>
 	';
 	
@@ -372,6 +374,7 @@
 	$dompdf->setPaper('A4', 'landscape');
 	$dompdf->render();
 	$canvas = $dompdf->getCanvas();
+	$font = $dompdf->getFontMetrics()->get_font("helvetica", "normal");
 	$canvas->page_text(400, 560, "Página: {PAGE_NUM} de {PAGE_COUNT}", $font, 8, array(0,0,0));
 	$dompdf->stream($nombreArchivo.".pdf");
 ?>

@@ -13,9 +13,10 @@
 	use Dompdf\Dompdf;
 	
 	$conexion        =conexionDB();
-	$tipoActividad   =$_GET[tipoActividad];
-	$codigoActividad =$_GET[codigoActividad];
-	$opcion          =$_GET[opcion];
+	$tipoActividad   =$_GET['tipoActividad'] ?? '';
+	$codigoActividad =$_GET['codigoActividad'] ?? '';
+	$opcion          =$_GET['opcion'] ?? '';
+	$idJuntaDirectiva= $_SESSION['idJDActual'] ?? '';
 	$hoy             =fechaSQL(infoTiempo('fechaHoy'));
 	$hora            =infoTiempo('hora');
 	$dniUsuario      =$_SESSION['dni_apv'];
@@ -28,16 +29,16 @@
 	$sql="SELECT codigoActividad, tipoActividad, temaActividad, contenidoActividad, fechaActividad, horaActividad, lugarActividad, mTardanza, mFalta, fecha, hora, usuario FROM sm_mod_actividades WHERE codigoActividad='$codigoActividad'";
 	$row=mysqli_query($conexion,$sql);
 	$dato=mysqli_fetch_array($row);
-	$temaActividad      =$dato[temaActividad];
-	$contenidoActividad =$dato[contenidoActividad];
-	$fechaActividad     =$dato[fechaActividad];
-	$horaActividad      =$dato[horaActividad];
-	$lugarActividad     =$dato[lugarActividad];
-	$mTardanza         =$dato[mTardanza];
-	$mFalta            =$dato[mFalta];
-	$fecha             =$dato[fecha];
-	$hora              =$dato[hora];
-	$usuario           =$dato[usuario];
+	$temaActividad      =$dato['temaActividad'];
+	$contenidoActividad =$dato['contenidoActividad'];
+	$fechaActividad     =$dato['fechaActividad'];
+	$horaActividad      =$dato['horaActividad'];
+	$lugarActividad     =$dato['lugarActividad'];
+	$mTardanza         =$dato['mTardanza'];
+	$mFalta            =$dato['mFalta'];
+	$fecha             =$dato['fecha'];
+	$hora              =$dato['hora'];
+	$usuario           =$dato['usuario'];
 	$aforo             =infoActividad($idJuntaDirectiva,$codigoActividad,'','aforo');
 	$asistio           =infoActividad($idJuntaDirectiva,$codigoActividad,'','asistio');
 	$tarde             =infoActividad($idJuntaDirectiva,$codigoActividad,'','tarde');
@@ -143,19 +144,19 @@
 		$rs=mysqli_query($conexion,$sql);
 		$i=1;
 		while($n=mysqli_fetch_array($rs)){
-			$asistio        =$n[asistio];
-			$codigoSocio    =$n[codigoSocio];
-			$lotes          =$n[lotes];
+			$asistio        =$n['asistio'];
+			$codigoSocio    =$n['codigoSocio'];
+			$lotes          =$n['lotes'];
 			$temaActividad  =infoActividad($idJuntaDirectiva,$codigoActividad,'','temaActividad');
 			$multaTarde     =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaporTardanza');
 			$multaFalta     =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaPorFalta');
-			$multa          =$n[multa];
-			$retraso        =$n[retraso];
-			$estadoPago     =$n[estadoPago];
-			$apPaterno      =$n[apPaterno];
-			$apMaterno      =$n[apMaterno];
-			$nombre         =$n[nombre];
-			$dni            =$n[dni];
+			$multa          =$n['multa'];
+			$retraso        =$n['retraso'];
+			$estadoPago     =$n['estadoPago'];
+			$apPaterno      =$n['apPaterno'];
+			$apMaterno      =$n['apMaterno'];
+			$nombre         =$n['nombre'];
+			$dni            =$n['dni'];
 			$nombre         =texto($apPaterno.' '.$apMaterno.' '.$nombre);
 			$porcentajePago =porcentajePago($codigoSocio,$codigoActividad,$multa);
 			$razonBTpago    ='inasistencia';
@@ -278,19 +279,19 @@
 		$rs=mysqli_query($conexion,$sql);
 		$i=1;
 		while($n=mysqli_fetch_array($rs)){
-			$asistio        =$n[asistio];
-			$codigoSocio    =$n[codigoSocio];
-			$lotes          =$n[lotes];
+			$asistio        =$n['asistio'];
+			$codigoSocio    =$n['codigoSocio'];
+			$lotes          =$n['lotes'];
 			$temaActividad  =infoActividad($idJuntaDirectiva,$codigoActividad,'','temaActividad');
 			$multaTarde     =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaporTardanza');
 			$multaFalta     =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaPorFalta');
-			$multa          =$n[multa];
-			$retraso        =$n[retraso];
-			$estadoPago     =$n[estadoPago];
-			$apPaterno      =$n[apPaterno];
-			$apMaterno      =$n[apMaterno];
-			$nombre         =$n[nombre];
-			$dni            =$n[dni];
+			$multa          =$n['multa'];
+			$retraso        =$n['retraso'];
+			$estadoPago     =$n['estadoPago'];
+			$apPaterno      =$n['apPaterno'];
+			$apMaterno      =$n['apMaterno'];
+			$nombre         =$n['nombre'];
+			$dni            =$n['dni'];
 			$nombre         =texto($apPaterno.' '.$apMaterno.' '.$nombre);
 			$porcentajePago =porcentajePago($codigoSocio,$codigoActividad,$multa);
 			$razonBTpago    ='inasistencia';
@@ -413,19 +414,19 @@
 		$rs=mysqli_query($conexion,$sql);
 		$i=1;
 		while($n=mysqli_fetch_array($rs)){
-			$asistio        =$n[asistio];
-			$codigoSocio    =$n[codigoSocio];
-			$lotes          =$n[lotes];
+			$asistio        =$n['asistio'];
+			$codigoSocio    =$n['codigoSocio'];
+			$lotes          =$n['lotes'];
 			$temaActividad  =infoActividad($idJuntaDirectiva,$codigoActividad,'','temaActividad');
 			$multaTarde     =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaporTardanza');
 			$multaFalta     =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaPorFalta');
-			$multa          =$n[multa];
-			$retraso        =$n[retraso];
-			$estadoPago     =$n[estadoPago];
-			$apPaterno      =$n[apPaterno];
-			$apMaterno      =$n[apMaterno];
-			$nombre         =$n[nombre];
-			$dni            =$n[dni];
+			$multa          =$n['multa'];
+			$retraso        =$n['retraso'];
+			$estadoPago     =$n['estadoPago'];
+			$apPaterno      =$n['apPaterno'];
+			$apMaterno      =$n['apMaterno'];
+			$nombre         =$n['nombre'];
+			$dni            =$n['dni'];
 			$nombre         =texto($apPaterno.' '.$apMaterno.' '.$nombre);
 			$porcentajePago =porcentajePago($codigoSocio,$codigoActividad,$multa);
 			$razonBTpago    ='inasistencia';
@@ -548,19 +549,19 @@
 		$rs=mysqli_query($conexion,$sql);
 		$i=1;
 		while($n=mysqli_fetch_array($rs)){
-			$asistio        =$n[asistio];
-			$codigoSocio    =$n[codigoSocio];
-			$lotes          =$n[lotes];
+			$asistio        =$n['asistio'];
+			$codigoSocio    =$n['codigoSocio'];
+			$lotes          =$n['lotes'];
 			$temaActividad  =infoActividad($idJuntaDirectiva,$codigoActividad,'','temaActividad');
 			$multaTarde     =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaporTardanza');
 			$multaFalta     =infoActividad($idJuntaDirectiva,$codigoActividad,'','infoMultaPorFalta');
-			$multa          =$n[multa];
-			$retraso        =$n[retraso];
-			$estadoPago     =$n[estadoPago];
-			$apPaterno      =$n[apPaterno];
-			$apMaterno      =$n[apMaterno];
-			$nombre         =$n[nombre];
-			$dni            =$n[dni];
+			$multa          =$n['multa'];
+			$retraso        =$n['retraso'];
+			$estadoPago     =$n['estadoPago'];
+			$apPaterno      =$n['apPaterno'];
+			$apMaterno      =$n['apMaterno'];
+			$nombre         =$n['nombre'];
+			$dni            =$n['dni'];
 			$nombre         =texto($apPaterno.' '.$apMaterno.' '.$nombre);
 			$porcentajePago =porcentajePago($codigoSocio,$codigoActividad,$multa);
 			$razonBTpago    ='inasistencia';
@@ -653,7 +654,7 @@
 	}
 
 	$reporte.=$impresoPor.'
-		<body>
+		</body>
 		</html>
 	';
 
@@ -673,6 +674,7 @@
 	$dompdf->setPaper('A4', 'landscape');
 	$dompdf->render();
 	$canvas = $dompdf->getCanvas();
+	$font = $dompdf->getFontMetrics()->get_font("helvetica", "normal");
 	$canvas->page_text(400, 560, "Página: {PAGE_NUM} de {PAGE_COUNT}", $font, 8, array(0,0,0));
 	$dompdf->stream("reporte-".$rotuloArchivo."-".$codigoActividad.".pdf");
 ?>
