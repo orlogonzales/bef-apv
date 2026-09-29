@@ -39,13 +39,13 @@
 	$query = "SELECT CONCAT(sm_socios.nombre,' ', sm_socios.apPaterno,' ', sm_socios.apMaterno) AS nombrePresidente FROM sm_junta_directiva_integrantes INNER JOIN sm_socios ON sm_junta_directiva_integrantes.codigoSocio = sm_socios.codigoSocio WHERE idJuntaDirectiva = '$idJuntaDirectiva' AND idCargoJunta = '1'";
 	$row=mysqli_query($conexion,$query);
 	$dato=mysqli_fetch_array($row);
-	$nombrePresidente=$dato[nombrePresidente];
+	$nombrePresidente=$dato['nombrePresidente'];
 
 	$query = "SELECT fechaPeriodo, fechaFinPeriodo FROM sm_junta_directiva WHERE idJuntaDirectiva = '$idJuntaDirectiva'";
 	$row=mysqli_query($conexion,$query);
 	$dato=mysqli_fetch_array($row);
-	$fechaPeriodo=$dato[fechaPeriodo];
-	$fechaFinPeriodo=$dato[fechaFinPeriodo];
+	$fechaPeriodo=$dato['fechaPeriodo'];
+	$fechaFinPeriodo=$dato['fechaFinPeriodo'];
 	$inicioPeriodo=infoFecha($fechaPeriodo,'year');
 	$finPeriodo=infoFecha($fechaFinPeriodo,'year');
 
@@ -55,8 +55,8 @@
 		$query = "SELECT temaActividad, fechaActividad FROM sm_mod_actividades WHERE codigoActividad = '$codigoActividad'";
 		$row=mysqli_query($conexion,$query);
 		$dato=mysqli_fetch_array($row);
-		$temaActividad=$dato[temaActividad];
-		$fechaActividad=$dato[fechaActividad];
+		$temaActividad=$dato['temaActividad'];
+		$fechaActividad=$dato['fechaActividad'];
 		$infoTemaActividad=strtoupper($temaActividad.' | FECHA: '.infoFecha($fechaActividad,'normal'));
 
 		$sql="SELECT sm_mod_asistencia.tipoActividad, sm_mod_asistencia.codigoActividad, sm_mod_asistencia.codigoSocio, sm_socios.dni, CONCAT(sm_socios.nombre,' ',sm_socios.apPaterno,' ',sm_socios.apMaterno) AS nombreSocio, sm_mod_asistencia.asistio, sm_mod_asistencia.multa, sm_mod_asistencia.estadoPago FROM sm_mod_asistencia INNER JOIN sm_socios ON sm_mod_asistencia.codigoSocio = sm_socios.codigoSocio WHERE tipoActividad = '$tipoActividad' AND codigoActividad = '$codigoActividad' ORDER BY sm_socios.nombre ASC, sm_socios.apPaterno ASC, sm_socios.apMaterno ASC";
@@ -115,22 +115,22 @@
 		$query = "SELECT COUNT(id) AS perteneceJD FROM sm_mod_actividades WHERE idJuntaDirectiva = '$idJuntaDirectiva'";
 		$row=mysqli_query($conexion,$query);
 		$dato=mysqli_fetch_array($row);
-		$perteneceJD=$dato[perteneceJD];
+		$perteneceJD=$dato['perteneceJD'];
 		if($perteneceJD>0){
 			if(!empty($_GET['idJuntaDirectiva'])){
-				$codigoActividad=$n[codigoActividad];
+				$codigoActividad=$n['codigoActividad'];
 			}
 
 			if(!empty($_GET['tipoActividad'])){
-				$tipoActividad=$n[tipoActividad];
+				$tipoActividad=$n['tipoActividad'];
 			}
 
-			$codigoSocio=$n[codigoSocio];
-			$dni=$n[dni];
-			$nombreSocio=$n[nombreSocio];
-			$asistio=$n[asistio];
-			$multa=$n[multa];
-			$estadoPago=$n[estadoPago];
+			$codigoSocio=$n['codigoSocio'];
+			$dni=$n['dni'];
+			$nombreSocio=$n['nombreSocio'];
+			$asistio=$n['asistio'];
+			$multa=$n['multa'];
+			$estadoPago=$n['estadoPago'];
 			$infoCodigoActividad=$codigoActividad;
 
 			if($tipoActividad=='FAE'){
@@ -150,20 +150,20 @@
 			$query = "SELECT COUNT(id) AS lotesSocio FROM sm_lotes_socio WHERE codigoSocio='$codigoSocio'";
 			$info = $conexion->query($query);
 			$resultado = $info->fetch_assoc();
-			$lotesSocio = $resultado[lotesSocio];
+			$lotesSocio = $resultado['lotesSocio'];
 
 			$query = "SELECT temaActividad, fechaActividad FROM sm_mod_actividades WHERE idJuntaDirectiva = '$idJuntaDirectiva' AND tipoActividad = '$tipoActividad' AND codigoActividad = '$codigoActividad'";
 			$info = $conexion->query($query);
 			$resultado = $info->fetch_assoc();
-			$nombreActividad = $resultado[temaActividad];
-			$fechaActividad = $resultado[fechaActividad];
+			$nombreActividad = $resultado['temaActividad'];
+			$fechaActividad = $resultado['fechaActividad'];
 			$infoFechaActividad=infoFecha($fechaActividad,'normal');
 
 			$query = "SELECT monto, fechaOperacion FROM sm_mod_caja WHERE movimiento='ING' AND idJuntaDirectiva='$idJuntaDirectiva' AND codigoSocio='$codigoSocio' AND codigoConcepto ='$codigoActividad'";
 			$info = $conexion->query($query);
 			$resultado = $info->fetch_assoc();
-			$monto = $resultado[monto];
-			$fechaOperacion = $resultado[fechaOperacion];
+			$monto = $resultado['monto'];
+			$fechaOperacion = $resultado['fechaOperacion'];
 			
 			if($estadoPago=='SP' && $monto==$multa){
 				$infoPago = 'S/P';
@@ -234,7 +234,7 @@
 
 	$reporte.=$impresoPor;
 	$reporte.='
-		<body>
+		</body>
 		</html>
 	';
 
@@ -246,6 +246,7 @@
 	$dompdf->loadHtml($reporte);
 	$dompdf->setPaper('A4', 'landscape');
 	$dompdf->render();
+	$font = $dompdf->getFontMetrics()->get_font("helvetica", "normal");
 	$canvas = $dompdf->getCanvas();
 	$canvas->page_text(400, 560, "Página: {PAGE_NUM} de {PAGE_COUNT}", $font, 8, array(0,0,0));
 	$dompdf->stream("reporte-actividad-jd.pdf");

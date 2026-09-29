@@ -204,7 +204,8 @@
 	$dompdf->loadHtml($reporte);
 	$dompdf->setPaper('A4', 'landscape');
 	$dompdf->render();
+	$font = $dompdf->getFontMetrics()->get_font("helvetica", "normal");
 	$canvas = $dompdf->getCanvas();
-	$canvas->page_text(400, 560, "Página: {PAGE_NUM} de {PAGE_COUNT}", null, 8, array(0,0,0));
+	$canvas->page_text(400, 560, "Página: {PAGE_NUM} de {PAGE_COUNT}", $font, 8, array(0,0,0));
 	$dompdf->stream("reporte-caja-jd.pdf");
 ?>
