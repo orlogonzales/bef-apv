@@ -20,6 +20,10 @@
 	$multa           = 0;
 	$nombreSocio     =infoSocios($codigoSocio,'nombre');
 	$lotesSocio      =infoSocios($codigoSocio,'cantidadLotes');
+	$sqlDir          ="SELECT direccion FROM sm_socios WHERE codigoSocio='$codigoSocio'";
+	$rsDir           =mysqli_query($conexion, $sqlDir);
+	$rowDir          =mysqli_fetch_assoc($rsDir);
+	$direccionSocio  =trim($rowDir['direccion'] ?? '');
 	$hoy             =fechaSQL(infoTiempo('fechaHoy'));
 	$hora            =infoTiempo('hora');
 	$dniUsuario      =$_SESSION['dni_apv'];
@@ -41,9 +45,23 @@
 	';
 
 	$reporte.='
-		<h1>INFORME DE ASISTENCIAS, DEUDAS, PAGOS Y EXONERACIONES</h1>
-		<div class="codigobarra"><img src="'.$rutaCB.$fileCB.'"></div>
-		<div class="infoCodigobarra">CODIGO SOCIO. '.$codigoSocio.'</div>
+		<table width="100%" class="noTabla centrado" style="border: none !important; margin: 0 auto 15px auto;">
+			<tr>
+				<td style="border: none !important; text-align: center; font-size: 18px !important; line-height: 24px; padding-bottom: 8px;">
+					INFORME DE ASISTENCIAS, DEUDAS, PAGOS Y EXONERACIONES
+				</td>
+			</tr>
+			<tr>
+				<td style="border: none !important; text-align: center; padding: 0;">
+					<img src="'.$rutaCB.$fileCB.'" style="width: 250px; height: 45px;">
+				</td>
+			</tr>
+			<tr>
+				<td style="border: none !important; text-align: center; font-family: verdana, sans-serif; font-size: 9px !important; padding-top: 4px; padding-bottom: 5px;">
+					CODIGO SOCIO. '.$codigoSocio.'
+				</td>
+			</tr>
+		</table>
 		'.$detalles
 	;
 
@@ -154,7 +172,18 @@
 		$codigoLote=$n['codigoLote'];
 		$direccion=$n['direccion'];
 
-		if($direccion!=''){ $infoDireccion=$direccion; }else{ $infoDireccion='DIRECCION AUN NO REGISTRADA EN LA BASE DE DATOS'; }
+		if (preg_match('/^BEF-S\d+-M-?([A-Za-z0-9]+(?:-[A-Za-z0-9]+)*)-L\d+$/i', $codigoLote, $mManzana)) {
+			$manzana = 'M-' . $mManzana[1];
+		}
+
+		$direccionLote = trim($direccion);
+		if ($direccionLote !== '') {
+			$infoDireccion = $direccionLote;
+		} elseif ($direccionSocio !== '') {
+			$infoDireccion = $direccionSocio;
+		} else {
+			$infoDireccion = 'DIRECCION AUN NO REGISTRADA EN LA BASE DE DATOS';
+		}
 
 		$reporte.='
 				<tr>
